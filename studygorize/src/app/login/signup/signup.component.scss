@@ -1,0 +1,100 @@
+// @import 'src/scss-partials/mixins';
+// @import 'src/scss-partials/fonts';
+$animation-speed: 2s;
+
+.signup-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+.signup-body {
+  animation: growAndFadeIn $animation-speed;
+}
+
+.signup-header {
+  position: relative;
+  z-index: 0;
+  padding: 1em;
+  // margin-top: 10vh;
+  // overflow-x: hidden;
+  overflow-y: visible;
+  text-align: center;
+
+  &-image {
+    z-index: 0;
+    position: relative;
+    margin: auto;
+    padding: 1em;
+    // height: 150px;
+    width: 90vw;
+    max-width: 300px;
+    animation: growAndFadeIn $animation-speed cubic-bezier(.05,.05,.05,1);
+  }
+  
+  h1 {
+    // @include gradientTextDefault;
+    // font-family: $pacifico;
+  }
+  h2 {
+  }
+  h1,h2 {
+    animation: welcome $animation-speed;
+    // text-align: left;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+form {
+  position: relative;
+  input {
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+}
+
+.btn-signup {
+  margin-top: 3em;
+  width: 100%;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  // @include gradientTextDefault;
+}
+
+.login-container {
+  text-align: center;
+}
+
+
+
+@keyframes floatDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes welcome {
+  0%, 40% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes growAndFadeIn {
+  0%, 40% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}

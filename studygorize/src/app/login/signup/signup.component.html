@@ -1,0 +1,33 @@
+<div class="signup-container">
+  <div class="signup-header">
+    <img class="signup-header-image icon-drawer" src="assets/images/drawer_v5.svg" alt="">
+    <h1>Sign up</h1>
+  </div>
+  <div class="signup-body">
+    <form #form="ngForm" (ngSubmit)="onSignup()">
+      <div class="form-group">
+        <div *ngIf="warning" class="banner banner-warn">{{ warning }}</div>
+        <input
+          class="input-text"
+          id="email"
+          type="email"
+          name="email"
+          placeholder="email"
+          required
+          ngModel>
+        <input
+          class="input-text"
+          id="password"
+          type="password"
+          name="password"
+          placeholder="password"
+          required
+          ngModel>
+        <button class="btn btn-signup btn-primary btn-bold" type="submit">SIGN UP</button>
+      </div>
+    </form>
+    <div class="login-container">
+      <p>Already have an account? <a routerLink="/login">Login</a></p>
+    </div>
+  </div>
+</div>
