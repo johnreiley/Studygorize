@@ -7,7 +7,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './login/signup/signup.component';
 import { TopicsComponent } from './topics/topics.component';
-import { WebsiteBannerComponent } from './login/website-banner/website-banner.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SettingsComponent } from './settings/settings.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { WebsiteBannerComponent } from './login/website-banner/website-banner.co
     LoginComponent,
     SignupComponent,
     TopicsComponent,
-    WebsiteBannerComponent
+    NavbarComponent,
+    SettingsComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

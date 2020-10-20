@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <a routerLink="/" class="navbar-brand theme-font">
+        STUDYGORIZE
+    </a>
+    <button *ngIf="showNavOptions" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="showNavOptions" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a 
+                class="nav-link"
+                routerLink="/topics"
+                routerLinkActive="active">
+                    <i class="material-icons">topic</i>
+                    Topics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a
+                class="nav-link"
+                routerLink="/new-topic"
+                routerLinkActive="active">
+                    <i class="material-icons">post_add</i>
+                    Create
+                </a>
+            </li>
+            <li class="nav-item">
+                <a
+                class="nav-link"
+                routerLink="/settings"
+                routerLinkActive="active">
+                    <i class="material-icons">settings</i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

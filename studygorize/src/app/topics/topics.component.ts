@@ -13,8 +13,4 @@ export class TopicsComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSignout() {
-    this.authService.logout();
-  }
-
 }
