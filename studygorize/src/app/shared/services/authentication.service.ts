@@ -10,7 +10,7 @@ import { AuthMessage } from '../models/authMessage.model';
 export class AuthenticationService {
   private auth: any;
   isLoggedIn: boolean;
-  redirectUrl: string = '/recipes';
+  redirectUrl: string = '/topics';
   authStateChange = new Subject<boolean>();
   userState: any;
 

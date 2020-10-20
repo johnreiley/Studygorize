@@ -5,29 +5,31 @@
   </div>
   <div class="login-body">
     <form #form="ngForm" (ngSubmit)="onLogin()">
+      <div *ngIf="warning.output" class="alert alert-danger">{{ warning.output }}</div>
       <div class="form-group">
-        <div *ngIf="warning.output" class="banner banner-warn">{{ warning.output }}</div>
         <input
-          class="input-text"
-          id="email"
-          type="email"
-          name="email"
-          placeholder="email"
-          ngModel
-          required>
+            class="form-control"
+            id="email"
+            type="email"
+            name="email"
+            placeholder="email"
+            ngModel
+            required>
+      </div>
+      <div class="form-group">
         <input
-          class="input-text"
-          id="password"
-          type="password"
-          name="password"
-          placeholder="password"
-          ngModel
-          required>
+        class="form-control"
+        id="password"
+        type="password"
+        name="password"
+        placeholder="password"
+        ngModel
+        required>
         <div class="forgot-pass-container">
           <a href="#">Forgot Password</a>
         </div>
-        <button class="btn btn-login btn-primary btn-bold" type="submit">LOGIN</button>
       </div>
+      <button class="btn btn-login btn-primary btn-bold" type="submit">LOGIN</button>
     </form>
     <div class="sign-up-container">
       <p>Don't have an account? <a routerLink="/signup">Sign up</a></p>
