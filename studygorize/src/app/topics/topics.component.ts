@@ -14,8 +14,6 @@ export class TopicsComponent implements OnInit {
   constructor(private topicService: TopicService) {
     topicService.getTopics().subscribe((topics) => {
       this.topics = topics;
-
-      this.topics = [new Topic('123', 'Test Topic', [], [], []), new Topic('123', 'Test Topic', [], [], []), new Topic('123', 'Test Topic', [], [], []), new Topic('123', 'Test Topic', [], [], [])];
     })
   }
 

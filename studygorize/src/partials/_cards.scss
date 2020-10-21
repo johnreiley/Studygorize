@@ -1,0 +1,8 @@
+.card {
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+
+  &:hover {
+      box-shadow: $box-shadow-md;
+  }
+}
