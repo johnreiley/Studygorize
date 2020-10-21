@@ -1,1 +1,18 @@
-<p>topics works!</p>
+<div class="content-wrapper">
+  <h1>Topics</h1>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+    <div class="col mb-4">
+      <div 
+        class="card h-100 text-primary"
+        routerLink="new-topic"
+        data-toggle="tooltip"
+        title="Add a topic">
+        <i class="material-icons">add</i>
+      </div>
+    </div>
+    <app-topic-lite 
+      *ngFor="let topic of topics" 
+      [topic]="topic">
+    </app-topic-lite>
+  </div>
+</div>

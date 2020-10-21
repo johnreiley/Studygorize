@@ -1,6 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import './partials/fonts';
 
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+}
+
 .theme-font {
     font-family: $font-fredoka;
+}
+
+.content-wrapper {
+    max-width: 900px;
+}
+
+.btn.btn-primary {
+    box-shadow: 0 3px 10px 0 #007bff42;
+}
+
+.card[ng-reflect-router-link] {
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+    }
 }

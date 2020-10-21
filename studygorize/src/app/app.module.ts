@@ -10,6 +10,7 @@ import { TopicsComponent } from './topics/topics.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SettingsComponent } from './settings/settings.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { TopicLiteComponent } from './topics/topic-lite/topic-lite.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     TopicsComponent,
     NavbarComponent,
     SettingsComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TopicLiteComponent
   ],
   imports: [
     BrowserModule,
