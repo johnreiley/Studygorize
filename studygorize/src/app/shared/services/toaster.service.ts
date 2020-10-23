@@ -18,9 +18,9 @@ export class ToasterService {
    */
   generateToast(message: string, duration: number) {
     var toast = this.document.createElement('div');
-    toast.classList.add('toast');
+    toast.classList.add('custom-toast');
     toast.innerHTML = `
-    <div class="toast-body">
+    <div class="custom-toast-body">
         ${message}
     </div>`;
 

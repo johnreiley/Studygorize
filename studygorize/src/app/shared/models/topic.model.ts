@@ -6,10 +6,11 @@ export class Topic {
   constructor(
     public id: string,
     public date: number,
-    public name: string,
+    public title: string,
     public description: string,
     public categories: Category[],
     public setTemplate: Attribute[],
-    public sets: Set[]
+    public sets: Set[],
+    public isPublic: boolean
   ) {}
 }

@@ -11,7 +11,8 @@
                 <a 
                 class="nav-link"
                 routerLink="/topics"
-                routerLinkActive="active">
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}">
                     <i class="material-icons">topic</i>
                     Topics
                 </a>
@@ -19,7 +20,7 @@
             <li class="nav-item">
                 <a
                 class="nav-link"
-                routerLink="/new-topic"
+                [routerLink]="['/topics/new']"
                 routerLinkActive="active">
                     <i class="material-icons">post_add</i>
                     Create

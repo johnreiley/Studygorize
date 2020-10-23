@@ -1,0 +1,71 @@
+<div class="content-wrapper-900">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <h3 *ngIf="!isEditMode">Create a new topic</h3>
+        <!-- <h3 *ngIf="isEditMode"><i class="material-icons">arrow_back</i> Back to topic</h3> -->
+      </div>
+      <div class="col-md-2">
+        <button (click)="onSave()" class="btn btn-primary float-right">Create</button>
+      </div>
+    </div>
+    <form id="topic-form" [formGroup]="topicForm">
+
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="title" 
+          placeholder="Enter a title"
+          formControlName="title"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="descriptionInput">Description</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="titleInput" 
+          placeholder="Add a description"
+          formControlName="description">
+      </div>
+
+      <div class="form-group">
+        <label for="">Attributes</label>
+        <i 
+          class="material-icons text-primary help-icon" 
+          placement="right"
+          ngbPopover='An attribute is used to describe a part of a topic. For example, "name" or "color" would be an attribute of the topic "drinks".'>
+          help</i>
+        <div 
+          class="row row-cols-1"
+          formArrayName="attributes">
+          <div
+            *ngFor="let attributeControl of attributesControl; let i = index;"
+            [formGroupName]="i"
+            class="col mb-3">
+            <app-attribute-card 
+              [id]="i"
+              formControlName="attribute"
+              (deleteEvent)="onRemoveAttributeField(i)">
+            </app-attribute-card>
+          </div>
+          <div class="col mb-3">
+            <div class="card add-attribute-card" (click)="onAddAttributeField()">
+              <div class="card-body text-primary">
+                <i class="material-icons">add</i>
+                Add attribute
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <button type="button" (click)="onSave()" class="btn btn-primary btn-lg float-right">Create</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div> 

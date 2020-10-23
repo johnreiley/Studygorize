@@ -1,0 +1,20 @@
+<div class="card" #card>
+  <div class="card-header">
+    <span class="badge badge-light">{{id + 1}}</span>
+  </div>
+  <div class="card-body">
+    <div class="input-group">
+      <input 
+        [(ngModel)]="attribute" 
+        type="text" 
+        class="form-control" 
+        placeholder="Enter attribute" 
+        (change)="onChange(attribute)" 
+        (touch)="onTouched()"
+        required>
+      <div class="input-group-append">
+        <button class="btn btn-outline-danger" (click)=onDelete()><i class="material-icons">delete</i></button>
+      </div>
+    </div>
+  </div>
+</div>
