@@ -12,6 +12,15 @@
   .card-header {
     padding: 0 0.5rem;
   }
+
+  .drag-icon {
+    cursor: grab;
+    user-select: none;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
 }
 
 .fadeout {

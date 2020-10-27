@@ -6,6 +6,8 @@ import { Topic } from 'src/app/shared/models/topic.model';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-topic-edit',
@@ -13,9 +15,13 @@ import { TopicService } from 'src/app/shared/services/topic.service';
   styleUrls: ['./topic-edit.component.scss']
 })
 export class TopicEditComponent implements OnInit {
+  id: string;
   topicForm: FormGroup;
+  originalTopic: Topic;
   isEditMode = false;
   topic: Topic;
+  topicObservable: Observable<Topic>;
+  saveBtnTxt = "Create";
 
   constructor(
     private router: Router,
@@ -27,7 +33,33 @@ export class TopicEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
       this.initForm();
+
+      if (this.id) {
+        this.isEditMode = true;
+        this.saveBtnTxt = "Save";
+
+        this.topicObservable = this.topicService
+          .getTopic(this.id)
+          .pipe(tap((topic) => {
+            this.topicForm.patchValue(topic);
+            let attributes = (<FormArray>this.topicForm.get('attributes'));
+            attributes.clear();
+            topic.setTemplate.forEach(attribute => {
+              attributes.push(
+                new FormGroup({'attribute': new FormControl(attribute.value, Validators.required)})
+              );
+            })
+          }));
+        this.topicObservable.subscribe((topic) => {
+          this.originalTopic = topic;
+          if (!this.originalTopic) {
+            return;
+          }
+          this.topic = JSON.parse(JSON.stringify(this.originalTopic));
+        })
+      }
     })
   }
 
@@ -37,24 +69,29 @@ export class TopicEditComponent implements OnInit {
       return;
     }
 
-    if (this.isEditMode) {
-      // update the topic
-    } else {
-      let partialTopic = this.topicForm.value;
-      
-      partialTopic.attributes = partialTopic.attributes.map((attribute, i) => {
-        return {...new Attribute(i + 1, attribute.attribute)};
-      });
+    let partialTopic = this.topicForm.value;
+    
+    partialTopic.attributes = partialTopic.attributes.map((attribute, i) => {
+      return {...new Attribute(i + 1, attribute.attribute)};
+    });
 
-      let topic = new Topic(
-        '', Date.now(), 
-        partialTopic.title, 
-        partialTopic.description, 
-        [], partialTopic.attributes, 
-        [], false
-      );
-      
-      this.loader.startLoading();
+    let topic = new Topic(
+      '', Date.now(), 
+      partialTopic.title, 
+      partialTopic.description, 
+      [], partialTopic.attributes, 
+      [], false
+    );
+    
+    this.loader.startLoading();
+
+    if (this.isEditMode) {
+      this.topicService.updateTopic(this.originalTopic, topic).subscribe(() => {
+        this.router.navigate(['/topics']);
+        this.loader.stopLoading();
+        this.toastService.generateToast(`Updated topic "${topic.title}"`, 3000);
+      })
+    } else {
       this.topicService.saveTopic(topic).subscribe(() => {
         this.router.navigate(['/topics']);
         this.loader.stopLoading();

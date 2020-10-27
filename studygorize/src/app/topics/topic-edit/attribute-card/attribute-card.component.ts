@@ -18,7 +18,7 @@ export class AttributeCardComponent implements OnInit, ControlValueAccessor {
   @Output() deleteEvent = new EventEmitter<boolean>(); 
   @Input() parentForm: FormGroup;
   @Input() public id: number;
-  attribute: string;
+  @Input() attribute: string;
 
   constructor() { }
 

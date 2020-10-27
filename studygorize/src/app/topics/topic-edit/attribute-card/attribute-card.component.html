@@ -1,6 +1,7 @@
 <div class="card" #card>
   <div class="card-header">
     <span class="badge badge-light">{{id + 1}}</span>
+    <!-- <i class="material-icons drag-icon float-right" ngbTooltip="dragging not yet added" placement="left">drag_handle</i> -->
   </div>
   <div class="card-body">
     <div class="input-group">
@@ -13,7 +14,7 @@
         (touch)="onTouched()"
         required>
       <div class="input-group-append">
-        <button class="btn btn-outline-danger" (click)=onDelete()><i class="material-icons">delete</i></button>
+        <button type="button" class="btn btn-outline-danger" (click)=onDelete()><i class="material-icons">delete</i></button>
       </div>
     </div>
   </div>
