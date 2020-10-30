@@ -1,0 +1,33 @@
+<div class="content-wrapper-900">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/topics">Topics</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ topic?.title }}</li>
+    </ol>
+  </nav>
+  <h2>{{ topic?.title }}</h2>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <button class="btn btn-primary mr-1" type="button" disabled>+ New Set</button>
+        <button class="btn btn-outline-primary mr-1" type="button" disabled>Study</button>
+        <button class="btn btn-secondary" routerLink="edit" type="button">Edit</button>
+      </div>
+    </div>
+  </div>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+    <!-- <div class="col mb-4">
+      <div 
+        class="card card-add-item h-100 text-primary"
+        routerLink="new"
+        placement="bottom"
+        ngbTooltip="Create a set">
+        <i class="material-icons">add</i>
+      </div>
+    </div> -->
+    <app-set-lite 
+      *ngFor="let set of topic?.sets" 
+      [set]="set">
+    </app-set-lite>
+  </div>
+</div>

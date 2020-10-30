@@ -71,14 +71,16 @@ export class TopicService {
   }
 
   public saveTopic(topic: Topic) {
-    return new Observable<void>((observable) => {
+    return new Observable<string>((observable) => {
+      let topicId: string;
       this.topicCollectionRef.add({ ...topic })
         .then((topicRef: any) => {
+          topicId = topicRef.id;
           topicRef.update({
             id: topicRef.id,
             date: Date.now()
           }).then(() => {
-            observable.next();
+            observable.next(topicId);
           });
         });
     });
@@ -107,7 +109,7 @@ export class TopicService {
       this.topicCollectionRef.doc(newTopic.id).set({ ...newTopic })
         .then(() => {
           observable.next();
-        })
+        });
     })
   }
 }

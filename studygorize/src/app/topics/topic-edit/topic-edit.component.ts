@@ -87,13 +87,13 @@ export class TopicEditComponent implements OnInit {
 
     if (this.isEditMode) {
       this.topicService.updateTopic(this.originalTopic, topic).subscribe(() => {
-        this.router.navigate(['/topics']);
+        this.router.navigate([`/topics/${topic.id}`]);
         this.loader.stopLoading();
         this.toastService.generateToast(`Updated topic "${topic.title}"`, 3000);
       })
     } else {
-      this.topicService.saveTopic(topic).subscribe(() => {
-        this.router.navigate(['/topics']);
+      this.topicService.saveTopic(topic).subscribe((id) => {
+        this.router.navigate([`/topics/${id}`]);
         this.loader.stopLoading();
         this.toastService.generateToast(`Created new topic "${topic.title}"`, 3000);
       });

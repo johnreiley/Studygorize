@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-10">
         <h3 *ngIf="!isEditMode">Create a new topic</h3>
-        <a [routerLink]="['/topics/{id}']"><h3 *ngIf="isEditMode"><i class="material-icons back-btn">arrow_back_ios</i> Back to topic</h3></a>
+        <a [routerLink]="['/topics/' + id]"><h3 *ngIf="isEditMode"><i class="material-icons back-btn">arrow_back_ios</i> Back to topic</h3></a>
       </div>
       <div class="col-2">
         <button (click)="onSave()" class="btn btn-primary float-right">{{ saveBtnTxt }}</button>

@@ -6,3 +6,15 @@
       box-shadow: $box-shadow-md;
   }
 }
+
+.card.card-add-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  background-color: rgb(234, 244, 255);
+
+  .material-icons {
+    font-size: 32px;
+  }
+}

@@ -15,6 +15,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 import { TopicLiteComponent } from './topics/topic-lite/topic-lite.component';
 import { TopicEditComponent } from './topics/topic-edit/topic-edit.component';
 import { AttributeCardComponent } from './topics/topic-edit/attribute-card/attribute-card.component';
+import { TopicViewComponent } from './topics/topic-view/topic-view.component';
+import { SetLiteComponent } from './topics/topic-view/set-lite/set-lite.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { AttributeCardComponent } from './topics/topic-edit/attribute-card/attri
     LoadingSpinnerComponent,
     TopicLiteComponent,
     TopicEditComponent,
-    AttributeCardComponent
+    AttributeCardComponent,
+    TopicViewComponent,
+    SetLiteComponent
   ],
   imports: [
     BrowserModule,
