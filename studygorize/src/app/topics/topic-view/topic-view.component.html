@@ -11,7 +11,14 @@
       <div class="form-group">
         <button class="btn btn-primary mr-1" type="button" disabled>+ New Set</button>
         <button class="btn btn-outline-primary mr-1" type="button" disabled>Study</button>
-        <button class="btn btn-secondary" routerLink="edit" type="button">Edit</button>
+        <div ngbDropdown class="d-inline-block float-right" display="dynamic" placement="bottom-right">
+          <button ngbDropdownToggle class="btn btn-secondary" id="optionsDropdown">Options</button>
+          <div ngbDropdownMenu aria-labelledby="optionsDropdown">
+            <button ngbDropdownItem class="btn btn-secondary mr-1" routerLink="edit" type="button">Edit</button>
+            <div class="dropdown-divider"></div>
+            <button ngbDropdownItem class="btn btn-danger" type="button" (click)="openModal()">Delete</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

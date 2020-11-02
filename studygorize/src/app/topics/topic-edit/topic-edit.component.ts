@@ -8,6 +8,8 @@ import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TopicModalDeleteComponent } from '../topic-modal-delete/topic-modal-delete.component';
 
 @Component({
   selector: 'app-topic-edit',
@@ -28,7 +30,8 @@ export class TopicEditComponent implements OnInit {
     private route: ActivatedRoute,
     private topicService: TopicService,
     private toastService: ToasterService,
-    private loader: LoadingService
+    private loader: LoadingService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -100,6 +103,15 @@ export class TopicEditComponent implements OnInit {
     }
   }
 
+  onDelete() {
+    this.loader.startLoading();
+    this.topicService.deleteTopic(this.topic.id).subscribe(() => {
+      this.router.navigate(['/topics']);
+      this.loader.stopLoading();
+      this.toastService.generateToast(`Deleted topic "${this.topic.title}"`, 3000);
+    });
+  }
+
   onAddAttributeField() {
     (<FormArray>this.topicForm.get('attributes')).push(
         new FormGroup({ 'attribute': new FormControl('', Validators.required) })
@@ -124,5 +136,13 @@ export class TopicEditComponent implements OnInit {
 
   get attributesControl() {
     return (<FormArray>this.topicForm.get('attributes')).controls;
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(TopicModalDeleteComponent);
+    modalRef.componentInstance.topicTitle = this.topic.title;
+    modalRef.componentInstance.deleteEvent.subscribe(() => {
+      this.onDelete();
+    });
   }
 }

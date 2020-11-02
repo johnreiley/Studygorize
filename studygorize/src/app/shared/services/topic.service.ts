@@ -35,7 +35,7 @@ export class TopicService {
     })
   }
 
-  private fetchTopics() {
+  private fetchTopics(): Observable<Topic[]> {
     return new Observable<Topic[]>((observable) => {
       let topics: Topic[] = [];
       this.topicCollectionRef.get().then((snapshot) => {
@@ -70,7 +70,7 @@ export class TopicService {
     });
   }
 
-  public saveTopic(topic: Topic) {
+  public saveTopic(topic: Topic): Observable<string> {
     return new Observable<string>((observable) => {
       let topicId: string;
       this.topicCollectionRef.add({ ...topic })
@@ -111,5 +111,15 @@ export class TopicService {
           observable.next();
         });
     })
+  }
+
+  deleteTopic(id: string): Observable<void> {
+    return new Observable<void>(observable => {
+      this.topicCollectionRef.doc(id).delete()
+        .then(() => {
+          observable.next();
+        })
+        .catch(error => { console.log(error) })
+    });
   }
 }
