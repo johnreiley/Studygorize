@@ -1,0 +1,19 @@
+.card {
+  cursor: default;
+  overflow: hidden;
+
+  .card-header {
+    padding: 0 0.5rem;
+  }
+
+  .card-body {
+    padding: 1em;
+  }
+}
+
+.input-group-prepend {
+  width: 50%;
+  .input-group-text {
+    width: 100%;
+  }
+}

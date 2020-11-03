@@ -18,6 +18,7 @@ import { AttributeCardComponent } from './topics/topic-edit/attribute-card/attri
 import { TopicViewComponent } from './topics/topic-view/topic-view.component';
 import { SetLiteComponent } from './topics/topic-view/set-lite/set-lite.component';
 import { TopicModalDeleteComponent } from './topics/topic-modal-delete/topic-modal-delete.component';
+import { SetEditComponent } from './topics/topic-view/set-edit/set-edit.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TopicModalDeleteComponent } from './topics/topic-modal-delete/topic-mod
     AttributeCardComponent,
     TopicViewComponent,
     SetLiteComponent,
-    TopicModalDeleteComponent
+    TopicModalDeleteComponent,
+    SetEditComponent
   ],
   imports: [
     BrowserModule,

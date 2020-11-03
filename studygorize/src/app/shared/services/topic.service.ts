@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { observable, Observable } from 'rxjs';
 import { Attribute } from '../models/attribute.model';
+import { Set } from '../models/set.model';
 import { Topic } from '../models/topic.model';
 import { AuthenticationService } from './authentication.service';
 import { FirebaseService } from './firebase.service';
@@ -121,5 +122,28 @@ export class TopicService {
         })
         .catch(error => { console.log(error) })
     });
+  }
+
+  saveSet(topicId: string, set: Set): Observable<Topic> {
+    return new Observable<Topic>(observable => {
+      this.getTopic(topicId).subscribe((topic) => {
+        set.id = (topic.sets.length + 1).toString();
+        set.attributes = set.attributes.map(a => { return { ...a } });
+        topic.sets.push({ ...set });
+        this.topicCollectionRef.doc(topic.id).set({ ...topic })
+        .then(() => {
+          observable.next();
+        });
+      });
+    });
+
+  }
+
+  updateSet(topicId: string, oldSet: Set, newSet: Set) {
+
+  }
+
+  deleteSet(topicId: string, setId: string) {
+
   }
 }

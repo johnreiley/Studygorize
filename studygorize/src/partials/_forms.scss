@@ -1,3 +1,16 @@
 [required].ng-invalid.ng-touched {
   border: 1px solid #dc3545;
 }
+
+.dropdown-menu {
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    & > * {
+      margin-right: 3px;
+    }
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}

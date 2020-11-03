@@ -1,0 +1,80 @@
+<div
+  *ngIf="(topicObservable | async)"
+  class="content-wrapper-900">
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <h3 *ngIf="!isEditMode">Create a new set</h3>
+        <!-- <a [routerLink]="['/topics/' + topic.id + '/']"><h3 *ngIf="isEditMode"><i class="material-icons back-btn">arrow_back_ios</i> Back to set</h3></a> -->
+      </div>
+      <div class="col-2">
+        <button (click)="onSave()" class="btn btn-primary float-right">{{ saveBtnTxt }}</button>
+      </div>
+    </div>
+    <form id="set-form" [formGroup]="setForm">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="name" 
+          placeholder="Enter a name"
+          formControlName="name"
+          required>
+      </div>
+
+      <div 
+        *ngIf="(topicObservable | async)"
+        class="form-group">
+        <div 
+          class="row row-cols-1"
+          formArrayName="attributes">
+          <div
+            *ngFor="let attributeControl of attributesControl; let i = index;"            
+            [formGroupName]="i"
+            class="col mb-3">
+            <div class="card">
+              <div class="card-header">
+                <span class="badge badge-light">{{ i + 1 }}</span>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span class="input-group-text mb-1">{{ topic.setTemplate[i].value }}</span>
+                  </div>
+                  <div class="col-sm-6">
+                    <textarea 
+                    required
+                    type="text"
+                    class="form-control"
+                    formControlName="attribute"
+                    placeholder="Enter value"
+                    rows="1">
+                  </textarea>
+                  </div>
+                </div>
+                <!-- <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">{{ topic.setTemplate[i].value }}</span>
+                  </div>
+                  <input 
+                    required
+                    type="text"
+                    class="form-control"
+                    formControlName="attribute">
+                </div> -->
+              </div>
+            </div>
+
+          </div>
+          <div class="col">
+            <!-- <button *ngIf="isEditMode" type="button" (click)="openModal()" class="btn btn-danger btn-lg">Delete</button> -->
+            <button type="button" (click)="onSave()" class="btn btn-primary btn-lg float-right">{{ saveBtnTxt }}</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div> 
