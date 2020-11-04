@@ -6,6 +6,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { TopicEditComponent } from './topics/topic-edit/topic-edit.component';
 import { SetEditComponent } from './topics/topic-view/set-edit/set-edit.component';
+import { SetViewComponent } from './topics/topic-view/set-view/set-view.component';
 import { TopicViewComponent } from './topics/topic-view/topic-view.component';
 import { TopicsComponent } from './topics/topics.component';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'topics/:id', component: TopicViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/edit', component: TopicEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/new-set', component: SetEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/:id/set/:setId', component: SetViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
 ];
 
