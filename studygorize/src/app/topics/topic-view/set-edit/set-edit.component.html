@@ -40,12 +40,17 @@
               </div>
               <div class="card-body">
                 <div class="row">
-                  <div class="col-sm-6">
-                    <span class="input-group-text mb-1">{{ topic.setTemplate[i].value }}</span>
+                  <div class="col-sm-5">
+                    <span 
+                      [ngbTooltip]="[topic.setTemplate[i].value]"
+                      placement="bottom"
+                      container="body"
+                      trigger="click active"
+                      class="input-group-text text-truncate d-block mb-1"
+                      >{{ topic.setTemplate[i].value }}</span>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-7">
                     <textarea 
-                    required
                     type="text"
                     class="form-control"
                     formControlName="attribute"
@@ -54,16 +59,6 @@
                   </textarea>
                   </div>
                 </div>
-                <!-- <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">{{ topic.setTemplate[i].value }}</span>
-                  </div>
-                  <input 
-                    required
-                    type="text"
-                    class="form-control"
-                    formControlName="attribute">
-                </div> -->
               </div>
             </div>
 
