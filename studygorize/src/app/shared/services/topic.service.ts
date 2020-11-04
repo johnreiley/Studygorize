@@ -127,6 +127,10 @@ export class TopicService {
   saveSet(topicId: string, set: Set): Observable<Topic> {
     return new Observable<Topic>(observable => {
       this.getTopic(topicId).subscribe((topic) => {
+        topic.sets = topic.sets.map((set, i) => {
+          set.id = (i + 1).toString();
+          return set;
+        });
         set.id = (topic.sets.length + 1).toString();
         set.attributes = set.attributes.map(a => { return { ...a } });
         topic.sets.push({ ...set });
