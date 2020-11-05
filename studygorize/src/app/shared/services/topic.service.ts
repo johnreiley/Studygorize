@@ -23,7 +23,8 @@ export class TopicService {
       if (!isLoggedIn && this.unsubscribeRealTime) {
         this.unsubscribeRealTime();
       } else if (isLoggedIn) {
-        this.topicCollectionRef = firebaseService.getCollectionReference(this.authService.getUid(), this.key);        
+        this.topicCollectionRef = firebaseService.getCollectionReference(this.authService.getUid(), this.key);
+        // this.topicCollectionRef.
         this.unsubscribeRealTime = this.topicCollectionRef.onSnapshot((snapshot) => {
           let updatedTopics: Topic[] = [];
           snapshot.forEach(doc => {
@@ -88,23 +89,47 @@ export class TopicService {
   }
 
   public updateTopic(oldTopic: Topic, newTopic: Topic) {
+
     newTopic.id = oldTopic.id;
     newTopic.sets = oldTopic.sets;
     newTopic.categories = oldTopic.categories;
     newTopic.isPublic = oldTopic.isPublic;
 
-    newTopic.sets.map(set => {
-      set.attributes = set.attributes
-        // filter each set's attributes based on the new template attributes
-        .filter(attribute => newTopic.setTemplate.find(a => a.value == attribute.value))
-        // update the id of each attribute
-        .map(attribute => {
-          return new Attribute(
-            attribute.id = newTopic.setTemplate.find(a => a.value == attribute.value).id,
-            attribute.value
-          );
-        });
+    // match up persisting template attributes with the id from the old template
+    newTopic.setTemplate.forEach(attribute => {
+      let match = oldTopic.setTemplate.find(a => a.value === attribute.value);
+      if (match !== undefined) {
+        attribute.id = match.id;
+      }
     });
+
+    // filter out attributes on each set that don't match up with an id in the template
+    newTopic.sets.forEach(set => {
+      set.attributes = set.attributes.filter(a1 => newTopic.setTemplate.find(a2 => a1.id === a2.id));
+      while (set.attributes.length < newTopic.setTemplate.length) {
+        set.attributes.push(new Attribute(0, ''));
+      }
+    });
+
+    // make a copy of the sets so that we're not reading from attributes that have already been updated
+    // because there is a possibility for duplicate ids to appear if reading and modifying from same place
+    let newTopicSetsCopy: Set[] = JSON.parse(JSON.stringify(newTopic.sets));
+    newTopic.sets = newTopic.sets.map(set => {
+      set.attributes = [];
+      return set;
+    });
+
+    // for each template attribute, update the id according to its order and update
+    // id of the corresponding attribute in each set
+    newTopic.setTemplate.forEach((tempAttr, i) => {
+      newTopicSetsCopy.forEach(set => {
+        let updatedAttribute = {...new Attribute(i + 1, set.attributes.find(a => a.id === tempAttr.id).value)};
+        newTopic.sets.find(s => s.id === set.id).attributes.push(updatedAttribute);
+      });
+      tempAttr.id = i + 1;
+    });
+
+    console.log(newTopic);
 
     return new Observable<void>(observable => {
       this.topicCollectionRef.doc(newTopic.id).set({ ...newTopic })

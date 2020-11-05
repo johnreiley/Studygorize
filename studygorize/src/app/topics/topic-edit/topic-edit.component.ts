@@ -57,6 +57,7 @@ export class TopicEditComponent implements OnInit {
           }));
         this.topicObservable.subscribe((topic) => {
           this.originalTopic = topic;
+          console.log(this.originalTopic);
           if (!this.originalTopic) {
             return;
           }
@@ -73,28 +74,31 @@ export class TopicEditComponent implements OnInit {
     }
 
     let partialTopic = this.topicForm.value;
-    
-    partialTopic.attributes = partialTopic.attributes.map((attribute, i) => {
-      return {...new Attribute(i + 1, attribute.attribute)};
-    });
 
     let topic = new Topic(
       '', Date.now(), 
       partialTopic.title, 
       partialTopic.description, 
-      [], partialTopic.attributes, 
-      [], false
+      [], [], [], false
     );
     
     this.loader.startLoading();
 
     if (this.isEditMode) {
+      topic.setTemplate = partialTopic.attributes.map((attribute, i) => {
+        return {...new Attribute(0, attribute.attribute)};
+      });
+
       this.topicService.updateTopic(this.originalTopic, topic).subscribe(() => {
         this.router.navigate([`/topics/${topic.id}`]);
         this.loader.stopLoading();
         this.toastService.generateToast(`Updated topic "${topic.title}"`, 3000);
       })
     } else {
+      topic.setTemplate = partialTopic.attributes.map((attribute, i) => {
+        return {...new Attribute(i + 1, attribute.attribute)};
+      });
+
       this.topicService.saveTopic(topic).subscribe((id) => {
         this.router.navigate([`/topics/${id}`]);
         this.loader.stopLoading();

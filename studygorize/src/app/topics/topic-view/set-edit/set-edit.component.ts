@@ -77,7 +77,7 @@ export class SetEditComponent implements OnInit {
     if (this.setForm.valid) {
       this.loader.startLoading();
       let partialSet = this.setForm.value;
-      let attributes: Attribute[] = partialSet.attributes.map((attribute, i) => new Attribute((i + 1).toString(), attribute.attribute))
+      let attributes: Attribute[] = partialSet.attributes.map((attribute, i) => new Attribute(i + 1, attribute.attribute))
 
       let set = new Set(
         '', 
