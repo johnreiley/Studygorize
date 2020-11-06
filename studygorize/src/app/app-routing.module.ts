@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'topics/:id/edit', component: TopicEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/new-set', component: SetEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/set/:setId', component: SetViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/:id/set/:setId/edit', component: SetEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
 ];
 

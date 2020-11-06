@@ -10,6 +10,7 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
 import { Attribute } from 'src/app/shared/models/attribute.model';
+import { TopicModalDeleteComponent } from '../../topic-modal-delete/topic-modal-delete.component';
 
 @Component({
   selector: 'app-set-edit',
@@ -21,6 +22,7 @@ export class SetEditComponent implements OnInit {
   topicId: string;
   setForm: FormGroup;
   topic: Topic;
+  originalSet: Set;
   isEditMode = false;
   topicObservable: Observable<Topic>;
   saveBtnTxt = "Create";
@@ -36,28 +38,40 @@ export class SetEditComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.topicId = params['id'];
+      this.setId = params['setId'];
       this.initForm();
 
-      // if (this.topicId) {
-      //   this.isEditMode = true;
-      //   this.saveBtnTxt = "Save";
+      if (this.setId) {
+        this.isEditMode = true;
+        this.saveBtnTxt = "Save";
+      }
 
-        this.topicObservable = this.topicService
-          .getTopic(this.topicId)
-          .pipe(tap((topic: Topic) => {
-            // this.setForm.patchValue(topic.setTemplate);
-            let attributes = (<FormArray>this.setForm.get('attributes'));
-            attributes.clear();
+      this.topicObservable = this.topicService
+        .getTopic(this.topicId)
+        .pipe(tap((topic: Topic) => {
+          if (this.isEditMode) {
+            this.originalSet = topic.sets.find(s => s.id === this.setId);
+            this.setForm.patchValue(this.originalSet);
+          }
+          let attributes = (<FormArray>this.setForm.get('attributes'));
+          attributes.clear();
+          if (this.isEditMode) {
+            topic.setTemplate.forEach((attribute, i) => {
+              attributes.push(
+                new FormGroup({'attribute': new FormControl(this.originalSet.attributes[i].value)})
+              );
+            });
+          } else {
             topic.setTemplate.forEach(attribute => {
               attributes.push(
                 new FormGroup({'attribute': new FormControl('')})
-              );
-            })
-          }));
-        this.topicObservable.subscribe((topic) => {
-          this.topic = topic;
-        })
-      // }
+                );
+              });
+            }
+        }));
+      this.topicObservable.subscribe((topic) => {
+        this.topic = topic;
+      });
     })
   }
 
@@ -88,14 +102,41 @@ export class SetEditComponent implements OnInit {
       console.log(set);
       
       // save it
-      this.topicService.saveSet(this.topicId, set).subscribe(() => {
-        this.router.navigate([`/topics/${this.topic.id}`]);
-        this.loader.stopLoading();
-        this.toastService.generateToast(`Created set "${set.name}"`, 3000);
-      });
+      if (this.isEditMode) {
+        this.topicService.updateSet(this.topicId, this.originalSet, set).subscribe(() => {
+          this.router.navigate([`/topics/${this.topicId}/set/${this.setId}`]);
+          this.loader.stopLoading();
+          this.toastService.generateToast(`Updated set "${set.name}"`, 3000);
+        });
+      } else {
+        this.topicService.saveSet(this.topicId, set).subscribe(() => {
+          this.router.navigate([`/topics/${this.topic.id}`]);
+          this.loader.stopLoading();
+          this.toastService.generateToast(`Created set "${set.name}"`, 3000);
+        });
+      }
     }
+  }
 
+  onDelete() {
+    this.loader.startLoading();
+    this.topicService.deleteSet(this.topicId, this.setId).subscribe(() => {
+      this.router.navigate([`/topics/${this.topicId}`]);
+      this.loader.stopLoading();
+      this.toastService.generateToast(`Successfully deleted set "${this.originalSet.name}"`, 3000);
+    });
+  }
 
+  openModal() {
+    const modalRef = this.modalService.open(TopicModalDeleteComponent);
+    modalRef.componentInstance.topicTitle = this.topic.title;
+    modalRef.componentInstance.entityType = "set";
+    modalRef.componentInstance.entityName = this.originalSet.name;
+    modalRef.componentInstance.modalTitle = "Delete Set";
+
+    modalRef.componentInstance.deleteEvent.subscribe(() => {
+      this.onDelete();
+    });
   }
 
 }

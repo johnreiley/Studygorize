@@ -6,6 +6,7 @@ import { Set } from 'src/app/shared/models/set.model';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
+import { TopicModalDeleteComponent } from '../../topic-modal-delete/topic-modal-delete.component';
 
 @Component({
   selector: 'app-set-view',
@@ -43,6 +44,27 @@ export class SetViewComponent implements OnInit {
         });
       }
     })
+  }
+
+  onDelete() {
+    this.loader.startLoading();
+    this.topicService.deleteSet(this.topic.id, this.set.id).subscribe(() => {
+      this.router.navigate([`/topics/${this.topic.id}`]);
+      this.loader.stopLoading();
+      this.toastService.generateToast(`Successfully deleted set "${this.set.name}"`, 3000);
+    });
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(TopicModalDeleteComponent);
+    modalRef.componentInstance.topicTitle = this.topic.title;
+    modalRef.componentInstance.entityType = "set";
+    modalRef.componentInstance.entityName = this.set.name;
+    modalRef.componentInstance.modalTitle = "Delete Set";
+
+    modalRef.componentInstance.deleteEvent.subscribe(() => {
+      this.onDelete();
+    });
   }
 
 }

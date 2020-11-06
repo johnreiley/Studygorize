@@ -165,14 +165,32 @@ export class TopicService {
         });
       });
     });
-
   }
 
   updateSet(topicId: string, oldSet: Set, newSet: Set) {
-
+    return new Observable<void>(observable => {
+      newSet.id = oldSet.id;
+      newSet.tags = oldSet.tags;
+      this.getTopic(topicId).subscribe(topic => {
+        newSet.attributes = newSet.attributes.map(a => { return { ...a } })
+        topic.sets[topic.sets.indexOf(oldSet)] = { ...newSet };
+        this.topicCollectionRef.doc(topicId).set({ ...topic })
+        .then(() => {
+          observable.next();
+        })
+      });
+    });
   }
 
   deleteSet(topicId: string, setId: string) {
-
+    return new Observable<void>(observable => {
+      this.getTopic(topicId).subscribe(topic => {
+        topic.sets = topic.sets.filter(s => s.id !== setId);
+        this.topicCollectionRef.doc(topicId).set({ ...topic })
+        .then(() => {
+          observable.next();
+        })
+      });
+    });
   }
 }

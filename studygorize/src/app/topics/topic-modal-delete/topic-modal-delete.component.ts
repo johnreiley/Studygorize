@@ -8,6 +8,10 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TopicModalDeleteComponent implements OnInit {
   @Input() topicTitle: string;
+  @Input() entityType: string;
+  @Input() entityName: string;
+  @Input() modalTitle: string;
+  @Input() modalMessage: string;
   @Output() deleteEvent = new EventEmitter<void>();
 
   constructor(public activeModal: NgbActiveModal) { }
