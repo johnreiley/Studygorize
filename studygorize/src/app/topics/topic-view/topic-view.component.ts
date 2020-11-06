@@ -54,7 +54,11 @@ export class TopicViewComponent implements OnInit {
 
   openModal() {
     const modalRef = this.modalService.open(TopicModalDeleteComponent);
-    modalRef.componentInstance.topicTitle = this.topic.title;
+    modalRef.componentInstance.entityType = "topic";
+    modalRef.componentInstance.entityName = this.topic.title;
+    modalRef.componentInstance.modalTitle = "Delete Topic";
+    modalRef.componentInstance.modalMessage = "Deleting this topic will delete all of its sets.";
+    
     modalRef.componentInstance.deleteEvent.subscribe(() => {
       this.onDelete();
     });
