@@ -14,9 +14,9 @@
         <div ngbDropdown class="d-inline-block float-right" display="dynamic" placement="bottom-right">
           <button ngbDropdownToggle class="btn btn-secondary" id="optionsDropdown">Options</button>
           <div ngbDropdownMenu aria-labelledby="optionsDropdown">
-            <button ngbDropdownItem class="btn btn-secondary" disabled type="button">
-              <i class="material-icons">table_view</i>
-              Table View
+            <button ngbDropdownItem class="btn btn-secondary" type="button" (click)="onToggleView()">
+              <i class="material-icons">{{ toggleViewIcon }}</i>
+              {{ toggleViewBtnTxt }}
             </button>
             <div class="dropdown-divider"></div>
             <button ngbDropdownItem class="btn btn-secondary" routerLink="edit" type="button">
@@ -33,10 +33,30 @@
       </div>
     </div>
   </div>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+  <div *ngIf="isGridView" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
     <app-set-lite 
       *ngFor="let set of topic?.sets" 
       [set]="set">
     </app-set-lite>
+  </div>
+  <div class="table-responsive-xl">
+    <table class="table table-bordered table-hover" *ngIf="!isGridView">
+      <thead class="thead-light">
+        <tr>
+          <th>Name</th>
+          <th *ngFor="let attribute of topic?.setTemplate">
+            {{ attribute.value }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let set of topic?.sets" [routerLink]="['set/' + set?.id]">
+          <th>{{ set.name }}</th>
+          <td *ngFor="let setAttribute of set?.attributes">
+            {{ setAttribute.value }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

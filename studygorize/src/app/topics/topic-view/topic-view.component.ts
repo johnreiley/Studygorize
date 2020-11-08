@@ -15,6 +15,9 @@ import { TopicModalDeleteComponent } from '../topic-modal-delete/topic-modal-del
 })
 export class TopicViewComponent implements OnInit {
   public topic: Topic;
+  public isGridView = true;
+  public toggleViewBtnTxt = "Table View";
+  public toggleViewIcon = "table_view";
 
   constructor(
     private topicService: TopicService,
@@ -62,6 +65,18 @@ export class TopicViewComponent implements OnInit {
     modalRef.componentInstance.deleteEvent.subscribe(() => {
       this.onDelete();
     });
+  }
+
+  onToggleView() {
+    this.isGridView = !this.isGridView;
+
+    if (this.isGridView) {
+      this.toggleViewBtnTxt = "Table View";
+      this.toggleViewIcon = "table_view";
+    } else {
+      this.toggleViewBtnTxt = "Grid View";
+      this.toggleViewIcon = "view_comfy";
+    }
   }
 
 }
