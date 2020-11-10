@@ -45,11 +45,18 @@
           help</i>
         <div 
           class="row row-cols-1"
-          formArrayName="attributes">
+          formArrayName="attributes"
+          cdkDropList
+          (cdkDropListDropped)="onDrop($event)">
           <div
             *ngFor="let attributeControl of attributesControl; let i = index;"
             [formGroupName]="i"
-            class="col mb-3">
+            class="col mb-3 attribute-card-box"
+            cdkDragLockAxis="y"
+            cdkDrag>
+            <div class="col mb-3" *cdkDragPlaceholder>
+              <div class="attribute-placeholder card"></div>
+            </div>
             <app-attribute-card 
               [id]="i"
               formControlName="attribute"

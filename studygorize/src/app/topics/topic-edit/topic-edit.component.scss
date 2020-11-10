@@ -13,3 +13,20 @@
 .back-btn {
   font-size: 20px;
 }
+
+.attribute-placeholder {
+  height: 105px;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: dashed 3px lightgray;
+  background-color: rgb(248, 248, 248);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .attribute-card-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

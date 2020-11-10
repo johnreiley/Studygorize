@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TopicModalDeleteComponent } from '../topic-modal-delete/topic-modal-delete.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-topic-edit',
@@ -152,5 +153,14 @@ export class TopicEditComponent implements OnInit {
     modalRef.componentInstance.deleteEvent.subscribe(() => {
       this.onDelete();
     });
+  }
+
+  onDrop(event: CdkDragDrop<FormArray>) {
+    let attributesFormArray = this.topicForm.get('attributes'); 
+    let attributes = attributesFormArray.value;
+    moveItemInArray(attributes, event.previousIndex, event.currentIndex);
+    attributesFormArray.setValue(attributes);
+
+    console.log(this.topicForm.value);
   }
 }
