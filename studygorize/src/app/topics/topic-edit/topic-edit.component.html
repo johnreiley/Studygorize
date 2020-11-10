@@ -52,11 +52,13 @@
             *ngFor="let attributeControl of attributesControl; let i = index;"
             [formGroupName]="i"
             class="col mb-3 attribute-card-box"
+            [cdkDragStartDelay]="300"
             cdkDragLockAxis="y"
             cdkDrag>
             <div class="col mb-3" *cdkDragPlaceholder>
               <div class="attribute-placeholder card"></div>
             </div>
+            <i class="material-icons drag-icon" cdkDragHandle>drag_handle</i>
             <app-attribute-card 
               [id]="i"
               formControlName="attribute"

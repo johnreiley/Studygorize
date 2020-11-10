@@ -1,10 +1,17 @@
 .card[ng-reflect-router-link] {
   cursor: pointer;
-  transition: box-shadow 0.3s;
 
   &:hover {
       box-shadow: $box-shadow-md;
   }
+}
+
+.card {
+  transition: box-shadow 0.3s;
+}
+
+.drag-icon:active ~ app-attribute-card .card {
+  box-shadow: $box-shadow-md;
 }
 
 .card.card-add-item {
