@@ -44,10 +44,18 @@
             #tagInput
             type="text" 
             class="form-control" 
-            placeholder="Tag">
+            placeholder="Tag"
+            list="existingTags"
+            (blur)="onBlurTagInput()">
+          <datalist id="existingTags">
+            <option *ngFor="let tag of topic?.categories" [value]="tag.name"></option>
+          </datalist>
           <div class="input-group-append">    
             <button (click)="onAddTag(tagInput)" class="btn btn-primary">Add</button>
           </div>
+        </div>
+        <div *ngIf="showTagInputWarn" class="alert alert-danger" role="alert">
+          "{{ tagInputWarnText }}" has already been added
         </div>
       </div>
 

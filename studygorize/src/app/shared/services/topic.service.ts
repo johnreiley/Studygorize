@@ -6,6 +6,7 @@ import { Topic } from '../models/topic.model';
 import { AuthenticationService } from './authentication.service';
 import { FirebaseService } from './firebase.service';
 import { v4 as uuidv4 } from 'uuid';
+import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,73 @@ export class TopicService {
     });
   }
 
-  public generateUid(): string {
+  /**
+   * Reduces the tags to a list with distinct ids
+   */
+  private removeDuplicateTagsById(tags: Category[]): Category[] {
+    let temp = {};
+    tags.forEach(tag => {
+      temp[tag.id] = {...tag};
+    });
+    let distinctTags = [];
+    for (let tagId in temp) {
+      distinctTags.push(temp[tagId]);
+    }
+    return distinctTags.sort((t1, t2) => {
+      return t1.name >= t2.name ? 1 : -1;
+    });
+  }
+
+  /**
+   * Reduces the tags to a list with distinct names
+   */
+  private removeDuplicateTagsByName(tags: Category[]): Category[] {
+    let temp = {};
+    tags.forEach(tag => {
+      temp[tag.name] = tag;
+    });
+    let distinctTags = [];
+    for (let tagName in temp) {
+      distinctTags.push(temp[tagName]);
+    }
+    return distinctTags.sort((t1, t2) => {
+      return t1.name >= t2.name ? 1 : -1;
+    });
+  }
+
+  /**
+   * Finds tags with matching names in setTags and updates
+   * the ids with the id of the matching tag in allTags
+   * @param setTags the list of tags for the set
+   * @param allTags the lsit of tags from the topic
+   */
+  private updateTagIds(setTags: Category[], allTags: Category[]): Category[] {
+    // determine if there is a tag already with the same name
+    setTags.forEach(t1 => {
+      let dupTag = allTags.find(t2 => t1.id === t2.id);
+      if (dupTag) {
+        // if so, give it the same id
+        t1.id = dupTag.id;
+      }
+    });
+    return setTags;
+  }
+
+  /**
+   * Compiles all the tags across the sets and 
+   * returns a distinct array of tags
+   * @param topic 
+   */
+  private compileAllTags(topic: Topic): Category[] {
+    let allTags: Category[] = [];
+    topic.sets.forEach(set => {
+      allTags.push(...set.tags);
+    });
+    console.log(allTags);
+    return this.removeDuplicateTagsById(allTags);
+  }
+
+  public generateUuid(): string {
     return uuidv4();
   }
 
@@ -94,7 +161,6 @@ export class TopicService {
   }
 
   public updateTopic(oldTopic: Topic, newTopic: Topic) {
-
     newTopic.id = oldTopic.id;
     newTopic.sets = oldTopic.sets;
     newTopic.categories = oldTopic.categories;
@@ -163,7 +229,9 @@ export class TopicService {
         });
         set.id = (topic.sets.length + 1).toString();
         set.attributes = set.attributes.map(a => { return { ...a } });
+        set.tags = this.removeDuplicateTagsByName(this.updateTagIds(set.tags, topic.categories));
         topic.sets.push({ ...set });
+        topic.categories = this.compileAllTags(topic);
         this.topicCollectionRef.doc(topic.id).set({ ...topic })
         .then(() => {
           observable.next();
@@ -176,8 +244,10 @@ export class TopicService {
     return new Observable<void>(observable => {
       newSet.id = oldSet.id;
       this.getTopic(topicId).subscribe(topic => {
-        newSet.attributes = newSet.attributes.map(a => { return { ...a } })
+        newSet.attributes = newSet.attributes.map(a => { return { ...a } });
+        newSet.tags = this.removeDuplicateTagsByName(this.updateTagIds(newSet.tags, topic.categories));
         topic.sets[topic.sets.indexOf(oldSet)] = { ...newSet };
+        topic.categories = this.compileAllTags(topic);
         this.topicCollectionRef.doc(topicId).set({ ...topic })
         .then(() => {
           observable.next();

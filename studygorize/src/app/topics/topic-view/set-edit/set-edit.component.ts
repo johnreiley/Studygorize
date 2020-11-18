@@ -28,6 +28,8 @@ export class SetEditComponent implements OnInit {
   topicObservable: Observable<Topic>;
   saveBtnTxt = "Create";
   showTagInput = false;
+  showTagInputWarn = false;
+  tagInputWarnText: string = "";
   @ViewChild('tagInput') tagInput: ElementRef; 
 
   constructor(    
@@ -156,22 +158,33 @@ export class SetEditComponent implements OnInit {
 
   onShowTagInput() {
     this.showTagInput = true;
-    // this.tagInput.nativeElement.focus();
+    setTimeout(() => {
+      this.tagInput.nativeElement.focus();
+    }, 50);
+  }
+
+  onBlurTagInput() {
+    this.showTagInputWarn = false;
   }
   
   onAddTag(tagInput) {
-    console.log(this.tagsControl);
-    this.showTagInput = false;
-    this.originalSet.tags
-    let tags = (<FormArray>this.setForm.get('tags'));
-    let id = this.topicService.generateUid();
-    tags.push(
-      new FormGroup({'name': new FormControl(tagInput.value), 'id': new FormControl(id)})
-    )
+    let isUnique = (<FormArray>this.setForm.get('tags')).value.find(t2 => t2.name === tagInput.value) ? false : true;
+    if (isUnique) {
+      this.showTagInputWarn = false;
+      this.showTagInput = false;
+      this.originalSet.tags
+      let tags = (<FormArray>this.setForm.get('tags'));
+      let id = this.topicService.generateUuid();
+      tags.push(
+        new FormGroup({'name': new FormControl(tagInput.value), 'id': new FormControl(id)})
+      );
+    } else {
+      this.tagInputWarnText = tagInput.value;
+      this.showTagInputWarn = true;
+    }
   }
 
   onRemoveTag(index) {
     (<FormArray>this.setForm.get('tags')).removeAt(index);
   }
-
 }
