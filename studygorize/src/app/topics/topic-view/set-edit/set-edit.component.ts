@@ -116,7 +116,6 @@ export class SetEditComponent implements OnInit {
         partialSet.tags, 
         attributes
       )
-      console.log(set);
       
       // save it
       if (this.isEditMode) {

@@ -94,14 +94,15 @@ export class TopicService {
    */
   private updateTagIds(setTags: Category[], allTags: Category[]): Category[] {
     // determine if there is a tag already with the same name
-    setTags.forEach(t1 => {
+    return setTags.map(t1 => {
       let dupTag = allTags.find(t2 => t1.id === t2.id);
-      if (dupTag) {
+      if (dupTag != undefined) {
         // if so, give it the same id
         t1.id = dupTag.id;
       }
+
+      return t1;
     });
-    return setTags;
   }
 
   /**
@@ -114,8 +115,8 @@ export class TopicService {
     topic.sets.forEach(set => {
       allTags.push(...set.tags);
     });
-    console.log(allTags);
-    return this.removeDuplicateTagsById(allTags);
+    allTags = this.removeDuplicateTagsById(allTags);
+    return this.removeDuplicateTagsByName(allTags);
   }
 
   public generateUuid(): string {
@@ -260,6 +261,7 @@ export class TopicService {
     return new Observable<void>(observable => {
       this.getTopic(topicId).subscribe(topic => {
         topic.sets = topic.sets.filter(s => s.id !== setId);
+        topic.categories = this.compileAllTags(topic);
         this.topicCollectionRef.doc(topicId).set({ ...topic })
         .then(() => {
           observable.next();
