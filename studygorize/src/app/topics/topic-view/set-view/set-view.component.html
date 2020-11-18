@@ -27,6 +27,20 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col mb-3">
+      <span class="input-group-text tag-container">
+        <i class="material-icons mr-2">local_offer</i>
+        <app-tag-badge
+          *ngFor="let tag of set?.tags" 
+          [tag]="tag.name"
+        ></app-tag-badge>
+        <span *ngIf="hasNoTags">
+          No tags
+        </span>
+      </span>
+    </div>
+  </div>
   <div class="row row-cols-1">
     <div
       *ngFor="let attribute of topic?.setTemplate; let i = index;"

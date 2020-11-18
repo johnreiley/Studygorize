@@ -15,3 +15,10 @@
   text-align: left;
   min-height: 38px;
 }
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.3em;
+}

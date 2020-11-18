@@ -21,6 +21,7 @@ import { SetLiteComponent } from './topics/topic-view/set-lite/set-lite.componen
 import { TopicModalDeleteComponent } from './topics/topic-modal-delete/topic-modal-delete.component';
 import { SetEditComponent } from './topics/topic-view/set-edit/set-edit.component';
 import { SetViewComponent } from './topics/topic-view/set-view/set-view.component';
+import { TagBadgeComponent } from './shared/components/tag-badge/tag-badge.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SetViewComponent } from './topics/topic-view/set-view/set-view.componen
     SetLiteComponent,
     TopicModalDeleteComponent,
     SetEditComponent,
-    SetViewComponent
+    SetViewComponent,
+    TagBadgeComponent
   ],
   imports: [
     BrowserModule,

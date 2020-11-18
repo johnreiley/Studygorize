@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,7 @@ import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
 import { Attribute } from 'src/app/shared/models/attribute.model';
 import { TopicModalDeleteComponent } from '../../topic-modal-delete/topic-modal-delete.component';
+import { Category } from 'src/app/shared/models/category.model';
 
 @Component({
   selector: 'app-set-edit',
@@ -26,6 +27,8 @@ export class SetEditComponent implements OnInit {
   isEditMode = false;
   topicObservable: Observable<Topic>;
   saveBtnTxt = "Create";
+  showTagInput = false;
+  @ViewChild('tagInput') tagInput: ElementRef; 
 
   constructor(    
     private router: Router,
@@ -54,13 +57,20 @@ export class SetEditComponent implements OnInit {
             this.setForm.patchValue(this.originalSet);
           }
           let attributes = (<FormArray>this.setForm.get('attributes'));
+          let tags = (<FormArray>this.setForm.get('tags'));
           attributes.clear();
+          tags.clear();
           if (this.isEditMode) {
             topic.setTemplate.forEach((attribute, i) => {
               attributes.push(
                 new FormGroup({'attribute': new FormControl(this.originalSet.attributes[i].value)})
               );
             });
+            this.originalSet.tags.forEach(tag => {
+              tags.push(
+                new FormGroup({'name': new FormControl(tag.name), 'id': new FormControl(tag.id)})
+              );
+            })
           } else {
             topic.setTemplate.forEach(attribute => {
               attributes.push(
@@ -78,12 +88,17 @@ export class SetEditComponent implements OnInit {
   initForm() {
     this.setForm = new FormGroup({
       'name': new FormControl('', Validators.required),
-      'attributes': new FormArray([])
+      'attributes': new FormArray([]),
+      'tags': new FormArray([])
     });
   }
 
   get attributesControl() {
     return (<FormArray>this.setForm.get('attributes')).controls;
+  }
+
+  get tagsControl() {
+    return (<FormArray>this.setForm.get('tags')).controls;
   }
 
   onSave() {
@@ -96,7 +111,7 @@ export class SetEditComponent implements OnInit {
       let set = new Set(
         '', 
         partialSet.name, 
-        [], 
+        partialSet.tags, 
         attributes
       )
       console.log(set);
@@ -137,6 +152,26 @@ export class SetEditComponent implements OnInit {
     modalRef.componentInstance.deleteEvent.subscribe(() => {
       this.onDelete();
     });
+  }
+
+  onShowTagInput() {
+    this.showTagInput = true;
+    // this.tagInput.nativeElement.focus();
+  }
+  
+  onAddTag(tagInput) {
+    console.log(this.tagsControl);
+    this.showTagInput = false;
+    this.originalSet.tags
+    let tags = (<FormArray>this.setForm.get('tags'));
+    let id = this.topicService.generateUid();
+    tags.push(
+      new FormGroup({'name': new FormControl(tagInput.value), 'id': new FormControl(id)})
+    )
+  }
+
+  onRemoveTag(index) {
+    (<FormArray>this.setForm.get('tags')).removeAt(index);
   }
 
 }

@@ -1,0 +1,18 @@
+.badge-pill {
+  padding: 0.3em 0.5em 0.3em 1em;
+  margin: 0.2em 0.5em 0.2em 0;
+  display: flex;
+  align-items: center;
+
+  .badge-text {
+    padding-right: 0.5em;
+    line-height: 20px;
+  }
+
+  .material-icons {
+    font-size: 20px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -16,6 +16,7 @@ import { TopicModalDeleteComponent } from '../../topic-modal-delete/topic-modal-
 export class SetViewComponent implements OnInit {
   topic: Topic;
   set: Set;
+  hasNoTags: boolean;
 
   constructor(
     private topicService: TopicService,
@@ -38,6 +39,7 @@ export class SetViewComponent implements OnInit {
             this.router.navigate(['/topics' + `${topicId}`]);
           } else {
             this.set = topic.sets.find(s => s.id === setId);
+            this.hasNoTags = this.set.tags.length > 0 ? false : true;
             this.topic = topic;
             this.loader.stopLoading();
           }

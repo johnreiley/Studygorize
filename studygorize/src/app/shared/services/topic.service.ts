@@ -5,6 +5,7 @@ import { Set } from '../models/set.model';
 import { Topic } from '../models/topic.model';
 import { AuthenticationService } from './authentication.service';
 import { FirebaseService } from './firebase.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class TopicService {
         observable.next(topics);
       });
     });
+  }
+
+  public generateUid(): string {
+    return uuidv4();
   }
 
   public getTopics(): Observable<Topic[]> {
@@ -170,7 +175,6 @@ export class TopicService {
   updateSet(topicId: string, oldSet: Set, newSet: Set) {
     return new Observable<void>(observable => {
       newSet.id = oldSet.id;
-      newSet.tags = oldSet.tags;
       this.getTopic(topicId).subscribe(topic => {
         newSet.attributes = newSet.attributes.map(a => { return { ...a } })
         topic.sets[topic.sets.indexOf(oldSet)] = { ...newSet };
