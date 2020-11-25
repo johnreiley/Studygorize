@@ -1,0 +1,9 @@
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  .material-icons {
+    padding-left: 0.3em;
+  }
+}

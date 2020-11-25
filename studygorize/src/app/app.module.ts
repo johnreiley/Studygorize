@@ -26,6 +26,8 @@ import { TopicModalDeleteComponent } from './topics/topic-modal-delete/topic-mod
 import { SetEditComponent } from './topics/topic-view/set-edit/set-edit.component';
 import { SetViewComponent } from './topics/topic-view/set-view/set-view.component';
 import { TagBadgeComponent } from './shared/components/tag-badge/tag-badge.component';
+import { StudyComponent } from './topics/study/study.component';
+import { StudyCardComponent } from './topics/study/study-card/study-card.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { TagBadgeComponent } from './shared/components/tag-badge/tag-badge.compo
     TopicModalDeleteComponent,
     SetEditComponent,
     SetViewComponent,
-    TagBadgeComponent
+    TagBadgeComponent,
+    StudyComponent,
+    StudyCardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <span class="col-sm-8 attribute">{{ attribute }}</span>
+      <div class="col-sm-4">
+        <a 
+          class="btn btn-primary icon-btn float-right" 
+          *ngIf="!shouldShowAnswer"
+          (click)=onReveal()>
+          Reveal
+          <i class="material-icons">visibility</i>
+        </a>
+      </div>
+    </div>
+    <div class="row answer-text" *ngIf="shouldShowAnswer">
+      <div class="col-12">
+        {{ answer }}
+      </div>  
+    </div>
+  </div>
+</div>

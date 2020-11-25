@@ -1,0 +1,55 @@
+<div class="content-wrapper-900">
+  <div class="study-content" *ngIf="!showFinalSelection; else finalSelection">
+    <div class="row">
+      <div class="col-10" *ngIf="(topicObservable | async)">
+        <h3>{{ sets[currentSetIndex]?.name }}</h3>
+      </div>
+      <div class="col-2">
+        <span class="counter">{{ currentSetIndex + 1 }}/{{ sets?.length }}</span>
+      </div>
+    </div>
+    <div class="row row-cols-1" *ngIf="(topicObservable | async)">
+      <div class="col mb-3" *ngFor="let attribute of sets[currentSetIndex].attributes; let i = index;">
+        <app-study-card
+          [attribute]="topic.setTemplate[i]?.value"
+          [answer]="attribute.value"
+        ></app-study-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button 
+          class="btn btn-outline-dark icon-btn float-right"
+          (click)=onNextSet()>
+          Next set
+          <i class="material-icons">arrow_forward</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template #finalSelection>
+    <div class="selection-content">
+      <div class="row">
+        <div class="col mb-3 mt-3">
+          <h4>All Done!</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3">
+          <button class="btn btn-primary icon-btn selection-btn" (click)=onStudyAgain()>
+            Study Again
+            <i class="material-icons">refresh</i>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3">
+          <a class="btn btn-outline-success icon-btn selection-btn" routerLink="../">
+            Finish
+            <i class="material-icons">done</i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

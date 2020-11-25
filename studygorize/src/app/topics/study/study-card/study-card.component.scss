@@ -1,0 +1,24 @@
+.card .card-body {
+  padding: 0.75rem;
+}
+
+.attribute {
+  margin-bottom: 0;
+  padding-left: 1rem;
+  // line-height: 2.2rem;
+  font-weight: bold;
+}
+
+.answer-text {
+  animation: fadein 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
