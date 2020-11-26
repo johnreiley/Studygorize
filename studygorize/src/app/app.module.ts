@@ -28,6 +28,8 @@ import { SetViewComponent } from './topics/topic-view/set-view/set-view.componen
 import { TagBadgeComponent } from './shared/components/tag-badge/tag-badge.component';
 import { StudyComponent } from './topics/study/study.component';
 import { StudyCardComponent } from './topics/study/study-card/study-card.component';
+import { CreateOptionsComponent } from './create-options/create-options.component';
+import { ImportComponent } from './topics/import/import.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { StudyCardComponent } from './topics/study/study-card/study-card.compone
     SetViewComponent,
     TagBadgeComponent,
     StudyComponent,
-    StudyCardComponent
+    StudyCardComponent,
+    CreateOptionsComponent,
+    ImportComponent
   ],
   imports: [
     BrowserModule,

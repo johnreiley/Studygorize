@@ -7,6 +7,7 @@ import { AuthenticationService } from './authentication.service';
 import { FirebaseService } from './firebase.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Category } from '../models/category.model';
+import { Papa } from 'ngx-papaparse';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class TopicService {
   private key: string = "topics";
 
   constructor(private firebaseService: FirebaseService,
+    private papa: Papa,
     private authService: AuthenticationService) {
     this.topicCollectionRef = firebaseService.getCollectionReference(this.authService.getUid(), this.key);
 
@@ -119,8 +121,71 @@ export class TopicService {
     return this.removeDuplicateTagsByName(allTags);
   }
 
+  /**
+   * Converts the result of papaparse to an array
+   * of Topic objects
+   * @param array the papaparse result
+   */
+  private ObjectArrayToTopicArray(array): Topic {
+    let objectArray = <Array<any>>array.data;
+    let sets: Set[] = [];
+    let setTemplate: Attribute[] = [];
+
+    if (objectArray[0]) {
+      let index = 0;
+      for (const property in objectArray[0]) {
+        if (index > 0) {
+          setTemplate.push({...new Attribute(index, property)});
+        }
+        index++;
+      }
+    }
+
+    sets = objectArray.map((object, i) => {
+      let attributes = [];
+      let index = 0;
+      for (const property in object) {
+        if (index > 0) {
+          attributes.push({...new Attribute(index, object[property])});
+        }
+        index++;
+      }
+      return {...new Set(i.toString(), object["name"], [], attributes)};
+    }).filter((set) => {
+      return set.name != "";
+    });
+
+    return {...new Topic(
+      "",
+      Date.now(),
+      "",
+      "",
+      [],
+      setTemplate,
+      sets,
+      false
+    )};
+  }
+
   public generateUuid(): string {
     return uuidv4();
+  }
+
+  public saveCsvAsTopic(file): Observable<string> {
+    return new Observable<string>((observable) => {
+      this.papa.parse(file, {
+        header: true,
+        complete: (result) => {
+          console.log(result);
+          let topic = this.ObjectArrayToTopicArray(result);
+          topic.title = file.name.split('.')[0];
+          console.log(topic);
+          this.saveTopic(topic).subscribe((id) => {
+            observable.next(id);
+          });
+        }
+      });
+    })
   }
 
   public getTopics(): Observable<Topic[]> {
