@@ -1,12 +1,16 @@
 .icon-btn {
+  &-left .material-icons {
+    padding-right: 0.3em;
+  }
+  &-right .material-icons{
+    padding-left: 0.3em;
+  }
+}
+
+.icon-btn-left, .icon-btn-right {
   display: flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
-  .material-icons.left {
-    padding-right: 0.3em;
-  }
-  .material-icons.right {
-    padding-left: 0.3em;
-  }
 }
+
