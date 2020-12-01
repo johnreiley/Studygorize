@@ -1,3 +1,11 @@
 .csv-example-img {
-  max-width: 85vw;
+  max-width: 100%;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.material-icons {
+  transition: transform 0.3s;
 }

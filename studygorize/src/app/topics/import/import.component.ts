@@ -10,6 +10,7 @@ import { TopicService } from 'src/app/shared/services/topic.service';
 })
 export class ImportComponent implements OnInit {
   @ViewChild('csvInput') csvInput: ElementRef;
+  isOpen = false;
 
   constructor(
     private topicService: TopicService,
@@ -28,5 +29,9 @@ export class ImportComponent implements OnInit {
         this.loadingService.stopLoading();
       });
     }
+  }
+
+  onToggleAccordian() {
+    this.isOpen = !this.isOpen;
   }
 }
