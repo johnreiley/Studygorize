@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TopicService } from 'src/app/shared/services/topic.service';
 import { Set } from 'src/app/shared/models/set.model';
@@ -44,7 +44,8 @@ export class StudyComponent implements OnInit {
     })
   }
 
-  onNextSet() {
+  onNextSet(button: HTMLButtonElement) {
+    button.blur();
     if (this.isLast) {
       this.showFinalSelection = true;
     } else {
@@ -53,6 +54,12 @@ export class StudyComponent implements OnInit {
         this.isLast = true;
       }
     }
+    window.scrollTo(0, 0);
+  }
+
+  onPreviousSet(button: HTMLButtonElement) {
+    button.blur();
+    this.currentSetIndex--;
     window.scrollTo(0, 0);
   }
 

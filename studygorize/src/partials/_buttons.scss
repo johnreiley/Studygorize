@@ -3,7 +3,10 @@
   align-items: center;
   justify-content: center;
   width: fit-content;
-  .material-icons {
+  .material-icons.left {
+    padding-right: 0.3em;
+  }
+  .material-icons.right {
     padding-left: 0.3em;
   }
 }
