@@ -9,6 +9,7 @@
   transition: bottom 0.5s, opacity 0.5s;
 
   .custom-toast-body {
+      cursor: pointer;
       margin: auto;
       max-width: 250px;
       border-radius: 3px;

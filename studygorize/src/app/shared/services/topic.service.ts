@@ -150,7 +150,8 @@ export class TopicService {
         }
         index++;
       }
-      return {...new Set(i.toString(), object["name"], [], attributes)};
+      let name = object["Name"] !== undefined ? object["Name"] : object["name"]
+      return {...new Set(i.toString(), name, [], attributes)};
     }).filter((set) => {
       return set.name != "";
     });
@@ -167,6 +168,11 @@ export class TopicService {
     )};
   }
 
+  private containsNameProperty(object: any): boolean {
+    console.log(object["Name"]);
+    return (object["name"] !== undefined || object["Name"] !== undefined);
+  }
+
   public generateUuid(): string {
     return uuidv4();
   }
@@ -177,12 +183,16 @@ export class TopicService {
         header: true,
         complete: (result) => {
           console.log(result);
-          let topic = this.ObjectArrayToTopicArray(result);
-          topic.title = file.name.split('.')[0];
-          console.log(topic);
-          this.saveTopic(topic).subscribe((id) => {
-            observable.next(id);
-          });
+          if (!this.containsNameProperty(result.data[0])) {
+            observable.next(undefined);
+          } else {
+            let topic = this.ObjectArrayToTopicArray(result);
+            topic.title = file.name.split('.')[0];
+            console.log(topic);
+            this.saveTopic(topic).subscribe((id) => {
+              observable.next(id);
+            });
+          }
         }
       });
     })
