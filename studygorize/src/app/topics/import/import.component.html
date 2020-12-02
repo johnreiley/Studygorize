@@ -20,12 +20,13 @@
           </div>
           <div id="instructionsBody" class="collapse" aria-labelledby="instructionsHeader" data-parent="#instructions">
             <div class="card-body">
-              <span><strong>Make sure your CSV file is formatted correctly: </strong></span><br>
+              <h5><strong>Make sure your CSV file is formatted correctly: </strong></h5>
               <ul>
-                <li>The CSV must contain columns (headers)</li>
-                <li>The first column must be called "Name." This column will become the names of each corresponding set.</li>
-                <li>The rest of the columns represent the topic attributes</li>
-                <li>The title of the topic will be taken from the name of the imported file</li>
+                <li>The CSV must contain column headers</li>
+                <li><strong>Name:</strong> The first column header must be called "Name." This column will become the names of each corresponding set.</li>
+                <li><strong>Attributes:</strong> The rest of the column headers represent the topic attributes</li>
+                <li><strong>Topic title:</strong> The title of the topic will be taken from the name of the imported file</li>
+                <li><strong>Tags:</strong> Tags are optional. If you want to import tags for each set as well, add a column called "Tags." Each tag needs to be separated by a comma.</li>
               </ul>
               <p><strong>Example: </strong></p>
               <span>Drinks.csv</span><br>
