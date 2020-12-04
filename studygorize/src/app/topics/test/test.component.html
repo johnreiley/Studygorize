@@ -1,0 +1,11 @@
+<div class="content-wrapper-600">
+  <h2>{{ topic?.title }} Test</h2>
+  <form>
+    <div *ngFor="let question of test?.questions; let i = index;" id="{{'question-' + i}}" class="form-group">
+      <label for="{{'questionInput-' + i}}">  
+        <strong class="mr-1">{{ i + 1 }}.</strong><span>{{ question.name }}</span>
+      </label>
+      <input class="form-control" type="text" id="{{'questionInput-' + i}}">
+    </div>
+  </form>
+</div>

@@ -7,6 +7,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ImportComponent } from './topics/import/import.component';
 import { StudyComponent } from './topics/study/study.component';
+import { TestComponent } from './topics/test/test.component';
 import { TopicEditComponent } from './topics/topic-edit/topic-edit.component';
 import { SetEditComponent } from './topics/topic-view/set-edit/set-edit.component';
 import { SetViewComponent } from './topics/topic-view/set-view/set-view.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'topics/:id/set/:setId', component: SetViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/set/:setId/edit', component: SetEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id/study', component: StudyComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/:id/test', component: TestComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
 ];
 
