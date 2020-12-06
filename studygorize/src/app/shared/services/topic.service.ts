@@ -126,7 +126,7 @@ export class TopicService {
    * of Topic objects
    * @param array the papaparse result
    */
-  private ObjectArrayToTopicArray(array): Topic {
+  private ObjectArrayToTopic(array): Topic {
     let objectArray = <Array<any>>array.data;
     let sets: Set[] = [];
     let setTemplate: Attribute[] = [];
@@ -134,28 +134,31 @@ export class TopicService {
     if (objectArray[0]) {
       let index = 0;
       for (const property in objectArray[0]) {
-        if (index > 0) {
+        if (!this.isReservedKeyword(property)) {
           setTemplate.push({...new Attribute(index, property)});
         }
         index++;
       }
     }
-
     sets = objectArray.map((object, i) => {
       let attributes = [];
+      let tags: Category[] = [];
       let index = 0;
       for (const property in object) {
-        if (index > 0) {
+        if (!this.isReservedKeyword(property)) {
           attributes.push({...new Attribute(index, object[property])});
+        } else if (property.toLowerCase() === "tags") {
+          tags = (<string>object[property]).split(',').map(tag => { return {...new Category(this.generateUuid(), tag.trim())} });
         }
         index++;
       }
-      return {...new Set(i.toString(), object["name"], [], attributes)};
+      let name = object["Name"] !== undefined ? object["Name"] : object["name"]
+      return {...new Set(i.toString(), name, tags, attributes)};
     }).filter((set) => {
       return set.name != "";
     });
 
-    return {...new Topic(
+    let topic = new Topic(
       "",
       Date.now(),
       "",
@@ -164,7 +167,23 @@ export class TopicService {
       setTemplate,
       sets,
       false
-    )};
+    );
+
+    topic.categories = this.compileAllTags(topic);
+    topic.sets.forEach(set => {
+      set.tags = this.removeDuplicateTagsByName(this.updateTagIds(set.tags, topic.categories));
+    })
+
+    return {...topic};
+  }
+
+  private containsNameProperty(object: any): boolean {
+    console.log(object["Name"]);
+    return (object["name"] !== undefined || object["Name"] !== undefined);
+  }
+
+  private isReservedKeyword(property: string): boolean {
+    return (property.toLowerCase() === "name" || property.toLowerCase() === "tags");
   }
 
   public generateUuid(): string {
@@ -176,13 +195,15 @@ export class TopicService {
       this.papa.parse(file, {
         header: true,
         complete: (result) => {
-          console.log(result);
-          let topic = this.ObjectArrayToTopicArray(result);
-          topic.title = file.name.split('.')[0];
-          console.log(topic);
-          this.saveTopic(topic).subscribe((id) => {
-            observable.next(id);
-          });
+          if (!this.containsNameProperty(result.data[0])) {
+            observable.next(undefined);
+          } else {
+            let topic = this.ObjectArrayToTopic(result);
+            topic.title = file.name.split('.')[0];
+            this.saveTopic(topic).subscribe((id) => {
+              observable.next(id);
+            });
+          }
         }
       });
     })
@@ -265,8 +286,6 @@ export class TopicService {
       });
       tempAttr.id = i + 1;
     });
-
-    console.log(newTopic);
 
     return new Observable<void>(observable => {
       this.topicCollectionRef.doc(newTopic.id).set({ ...newTopic })

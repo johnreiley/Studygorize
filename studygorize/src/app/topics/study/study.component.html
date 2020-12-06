@@ -18,9 +18,18 @@
     </div>
     <div class="row">
       <div class="col-12 mb-3">
+        <button
+          #previous
+          *ngIf="currentSetIndex > 0"
+          class="btn btn-outline-dark icon-btn-left float-left"
+          (click)=onPreviousSet(previous)>
+          <i class="material-icons">arrow_back</i>
+          Previous set
+        </button>
         <button 
-          class="btn btn-outline-dark icon-btn float-right"
-          (click)=onNextSet()>
+          #next
+          class="btn btn-outline-dark icon-btn-right float-right"
+          (click)=onNextSet(next)>
           Next set
           <i class="material-icons">arrow_forward</i>
         </button>
@@ -36,7 +45,7 @@
       </div>
       <div class="row">
         <div class="col mb-3">
-          <button class="btn btn-primary icon-btn selection-btn" (click)=onStudyAgain()>
+          <button class="btn btn-primary icon-btn-right selection-btn" (click)=onStudyAgain()>
             Study Again
             <i class="material-icons">refresh</i>
           </button>
@@ -44,7 +53,7 @@
       </div>
       <div class="row">
         <div class="col mb-3">
-          <a class="btn btn-outline-success icon-btn selection-btn" routerLink="../">
+          <a class="btn btn-outline-success icon-btn-right selection-btn" routerLink="../">
             Finish
             <i class="material-icons">done</i>
           </a>

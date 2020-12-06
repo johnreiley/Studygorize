@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TopicService } from 'src/app/shared/services/topic.service';
 import { Set } from 'src/app/shared/models/set.model';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { Topic } from 'src/app/shared/models/topic.model';
 import { Observable } from 'rxjs';
+import confetti from '../../../javascript/confetti.min.js';
 
 @Component({
   selector: 'app-study',
@@ -19,7 +20,6 @@ export class StudyComponent implements OnInit {
   public showFinalSelection = false;
   public topicObservable: Observable<Topic>;
   private topicId: string;
-
 
   constructor(
     private topicService: TopicService,
@@ -44,15 +44,23 @@ export class StudyComponent implements OnInit {
     })
   }
 
-  onNextSet() {
+  onNextSet(button: HTMLButtonElement) {
+    button.blur();
     if (this.isLast) {
       this.showFinalSelection = true;
+      confetti.start(3000);
     } else {
       this.currentSetIndex++;
       if (this.currentSetIndex === this.sets.length - 1) {
         this.isLast = true;
       }
     }
+    window.scrollTo(0, 0);
+  }
+
+  onPreviousSet(button: HTMLButtonElement) {
+    button.blur();
+    this.currentSetIndex--;
     window.scrollTo(0, 0);
   }
 

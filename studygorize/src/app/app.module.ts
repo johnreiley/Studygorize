@@ -30,6 +30,7 @@ import { StudyComponent } from './topics/study/study.component';
 import { StudyCardComponent } from './topics/study/study-card/study-card.component';
 import { CreateOptionsComponent } from './create-options/create-options.component';
 import { ImportComponent } from './topics/import/import.component';
+import { TestComponent } from './topics/test/test.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ImportComponent } from './topics/import/import.component';
     StudyComponent,
     StudyCardComponent,
     CreateOptionsComponent,
-    ImportComponent
+    ImportComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
