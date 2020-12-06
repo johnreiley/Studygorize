@@ -5,6 +5,7 @@ import { Set } from 'src/app/shared/models/set.model';
 import { ToasterService } from 'src/app/shared/services/toaster.service';
 import { Topic } from 'src/app/shared/models/topic.model';
 import { Observable } from 'rxjs';
+import confetti from '../../../javascript/confetti.min.js';
 
 @Component({
   selector: 'app-study',
@@ -19,7 +20,6 @@ export class StudyComponent implements OnInit {
   public showFinalSelection = false;
   public topicObservable: Observable<Topic>;
   private topicId: string;
-
 
   constructor(
     private topicService: TopicService,
@@ -48,6 +48,7 @@ export class StudyComponent implements OnInit {
     button.blur();
     if (this.isLast) {
       this.showFinalSelection = true;
+      confetti.start(3000);
     } else {
       this.currentSetIndex++;
       if (this.currentSetIndex === this.sets.length - 1) {
