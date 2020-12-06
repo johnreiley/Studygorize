@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Test } from 'src/app/shared/models/test-models/test.model';
 import { TestConfig } from 'src/app/shared/models/test-models/testConfig.model';
@@ -17,6 +17,8 @@ export class TestComponent implements OnInit {
   public testConfig: TestConfig;
   public currentQuestionIndex = 0;
   public topic: Topic;
+  public isLast = false;
+  public showResults = false;
 
   constructor(
     private testService: TestService,
@@ -32,10 +34,10 @@ export class TestComponent implements OnInit {
         // get the topic
         this.topicService.getTopic(params["id"]).subscribe((topic) => {
           this.topic = topic;
-    
+          
           // create config
-          this.testConfig = new TestConfig(false, 20, false, true);
-
+          this.testConfig = new TestConfig(false, 20, true, true);
+          
           // generate the test
           this.test = this.testService.generateTest(this.testConfig, topic);
         });
@@ -47,13 +49,29 @@ export class TestComponent implements OnInit {
 
   }
 
-  onNext() {
+  onNext(button: HTMLButtonElement) {
+    if (this.isLast) {
+      // grade the test
+      this.test = this.testService.gradeTest(this.test);
 
+      // show the results
+      this.showResults = true;
+    } else {
+      this.currentQuestionIndex++;
+      if (this.currentQuestionIndex === this.test.questions.length - 1) {
+        this.isLast = true;
+      }
+    }
+    button.blur();
+    window.scrollTo(0, 0);
   }
 
-  onPrevious() {
-    if (this.testConfig.allowPrevousNavigation) {
-
+  onPrevious(button: HTMLButtonElement) {
+    if (this.testConfig.allowPrevousNavigation && this.currentQuestionIndex > 0) {
+      this.isLast = false;
+      this.currentQuestionIndex--;
+      window.scrollTo(0, 0);
+      button.blur();
     }
   }
 

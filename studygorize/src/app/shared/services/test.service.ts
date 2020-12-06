@@ -16,11 +16,15 @@ export class TestService {
   constructor() { }
 
   private generateFillInTheBlankQuestion(setName: string, attributeName: string, attributeValue: string, ): IQuestion {
-    return new FillInTheBlankQuestion(`${setName} : ${attributeName}`, attributeValue);
+    return new FillInTheBlankQuestion(`${setName} : ${attributeName}`, attributeValue, "");
   }
 
-  private generateAttributeDictionary(setTemplate: Attribute[], sets: Set[]): any {
+  private generateAttributeDictionary(setTemplate: Attribute[], sets: Set[], config: TestConfig): any {
     let attributeDictionary = {};
+
+    if (config.skipAttributesWithNoValue) {
+      sets = this.filterAttributesWithNoValue(sets);
+    }
 
     setTemplate.forEach(attribute => {
       if (attributeDictionary[attribute.id] === undefined) {
@@ -34,6 +38,12 @@ export class TestService {
         (<Array<DictionaryAttribute>>attributeDictionary[setTemplate[i].id])
           .push({attributeValue: attribute.value, setName: set.name});
       })
+    })
+
+    setTemplate.forEach(attribute => {
+      if (attributeDictionary[attribute.id] !== undefined && attributeDictionary[attribute.id].length === 0) {
+        delete attributeDictionary[attribute.id];
+      }
     })
 
     return attributeDictionary;
@@ -51,16 +61,27 @@ export class TestService {
     }
   }
 
+  private filterAttributesWithNoValue(sets: Set[]): Set[] {
+    return sets.map(set => {
+      set.attributes = set.attributes.filter(a => a.value !== "");
+      return set;
+    });
+  }
+
   generateTest(config: TestConfig, topic: Topic): Test {
     // create dictionary out of attributes {attribute1: [], attribute2: [], attribute3: []}
-    let attributeDictionary = this.generateAttributeDictionary(topic.setTemplate, topic.sets);
+    let attributeDictionary = this.generateAttributeDictionary(topic.setTemplate, topic.sets, config);
 
+    
     // figure out the max number of questions
-    let maxQuestions = this.getMaxQuestionCount(topic.sets, config.skipAttributesWithNoValue);
+    let maxQuestionCount = this.getMaxQuestionCount(topic.sets, config.skipAttributesWithNoValue);
+    if (config.questionCount === 0) {
+      config.questionCount = maxQuestionCount;
+    }
     // generate the questions
     let questions: IQuestion[] = [];
     let attribute: Attribute;
-    for (let i = 0; i < config.questionCount && i < maxQuestions; i++) {
+    for (let i = 0; i < config.questionCount && i < maxQuestionCount; i++) {
       // randomly select the attributes to be tested on
       do {
         attribute = topic.setTemplate[Math.floor(Math.random() * topic.setTemplate.length)];
@@ -76,10 +97,21 @@ export class TestService {
       }
     }
 
-    return new Test(questions, undefined);
+    return new Test(questions, undefined, undefined);
   }
 
-  gradeTest(test: Test, answers: any): Test {
+  gradeTest(test: Test): Test {
+    test.grade = 100;
+
+    test.totalCorrect = test.questions.reduce((acc, curr) => {
+      if (curr.isCorrect()) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    test.grade = Math.round((test.totalCorrect / test.questions.length) * 100);
+
     return test;
   }
 }
