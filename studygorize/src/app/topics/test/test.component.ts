@@ -36,7 +36,7 @@ export class TestComponent implements OnInit {
           this.topic = topic;
           
           // create config
-          this.testConfig = new TestConfig(false, 20, true, true);
+          this.testConfig = new TestConfig(false, 0, true, true);
           
           // generate the test
           this.test = this.testService.generateTest(this.testConfig, topic);
