@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { QuestionType } from 'src/app/shared/models/test-models/questionType.model';
 import { Test } from 'src/app/shared/models/test-models/test.model';
 import { TestConfig } from 'src/app/shared/models/test-models/testConfig.model';
 import { Topic } from 'src/app/shared/models/topic.model';
@@ -16,6 +17,7 @@ export class TestComponent implements OnInit {
   public test: Test;
   public testConfig: TestConfig;
   public currentQuestionIndex = 0;
+  public questionTypes = QuestionType;
   public topic: Topic;
   public isLast = false;
   public showResults = false;
@@ -36,7 +38,7 @@ export class TestComponent implements OnInit {
           this.topic = topic;
           
           // create config
-          this.testConfig = new TestConfig(false, 20, true, true);
+          this.testConfig = new TestConfig(false, 0, true, true, true, true);
           
           // generate the test
           this.test = this.testService.generateTest(this.testConfig, topic);
@@ -73,6 +75,10 @@ export class TestComponent implements OnInit {
       window.scrollTo(0, 0);
       button.blur();
     }
+  }
+
+  updateQuestionResponse(response: string) {
+    this.test.questions[this.currentQuestionIndex].userResponse = response;
   }
 
 }

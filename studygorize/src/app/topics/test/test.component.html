@@ -10,15 +10,22 @@
     </div>
     <form>
       <div id="{{'question-' + (currentQuestionIndex + 1)}}" class="form-group">
-        <label for="{{'questionInput-' + (currentQuestionIndex + 1)}}">  
-          <strong class="mr-1">{{ currentQuestionIndex + 1 }}.</strong><span>{{ test?.questions[currentQuestionIndex].name }}</span>
-        </label>
-        <input 
-          name="answerInput"
-          class="form-control" 
-          type="text" 
-          id="{{'questionInput-' + (currentQuestionIndex + 1)}}" 
-          [(ngModel)]="test?.questions[currentQuestionIndex].userResponse">
+        <div class="question-container" [ngSwitch]=test?.questions[currentQuestionIndex].getQuestionType()>
+          <app-short-answer-question
+            *ngSwitchCase="questionTypes.ShortAnswer"
+            [index] = currentQuestionIndex
+            [question] = test?.questions[currentQuestionIndex]
+            [response] = "test?.questions[currentQuestionIndex].userResponse"
+            (onChangeEvent)="updateQuestionResponse($event)"
+          ></app-short-answer-question>
+          <app-multiple-choice-question
+            *ngSwitchCase="questionTypes.MultipleChoice"
+            [index] = currentQuestionIndex
+            [question] = test?.questions[currentQuestionIndex]
+            [radioSelected] = "test?.questions[currentQuestionIndex].userResponse"
+            (onChangeEvent)="updateQuestionResponse($event)"
+          ></app-multiple-choice-question>
+        </div>
       </div>
       <div class="row">
         <div class="col-12 mb-3">

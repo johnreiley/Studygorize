@@ -31,6 +31,8 @@ import { StudyCardComponent } from './topics/study/study-card/study-card.compone
 import { CreateOptionsComponent } from './create-options/create-options.component';
 import { ImportComponent } from './topics/import/import.component';
 import { TestComponent } from './topics/test/test.component';
+import { MultipleChoiceQuestionComponent } from './topics/test/multiple-choice-question/multiple-choice-question.component';
+import { ShortAnswerQuestionComponent } from './topics/test/short-answer-question/short-answer-question.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { TestComponent } from './topics/test/test.component';
     StudyCardComponent,
     CreateOptionsComponent,
     ImportComponent,
-    TestComponent
+    TestComponent,
+    MultipleChoiceQuestionComponent,
+    ShortAnswerQuestionComponent
   ],
   imports: [
     BrowserModule,

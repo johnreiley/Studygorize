@@ -1,0 +1,18 @@
+<label for="{{'question-' + (index + 1)}}">  
+  <strong class="mr-1">{{ index + 1 }}.</strong><span>{{ question?.name }}</span>
+</label>
+<fieldset class="form-group" id="{{'question-' + (index + 1)}}">
+  <div class="form-check" *ngFor="let option of question?.options; let i = index;">
+    <input
+      type="radio" 
+      class="form-check-input"
+      name="options"
+      id="{{ 'option-' + (i + 1) }}"
+      [(ngModel)]="radioSelected"
+      (change)="onChange()"
+      [value]="option">
+    <label class="form-check-label" for="{{ 'option-' + (i + 1) }}">
+      {{ option }}
+    </label>
+  </div>
+</fieldset>

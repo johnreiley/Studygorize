@@ -3,6 +3,8 @@ export class TestConfig {
     public shuffle: boolean,
     public questionCount: number,
     public allowPrevousNavigation: boolean,
-    public skipAttributesWithNoValue: boolean
+    public skipAttributesWithNoValue: boolean,
+    public includeShortAnswer: boolean,
+    public includeMultipleChoice: boolean
   ) {}
 }
