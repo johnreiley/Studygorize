@@ -78,7 +78,7 @@ export class TestService {
 
     // filter out attributes that don't have enough options
     for (let prop in attributeDictionary) {
-      if (attributeDictionary[prop] !== undefined && attributeDictionary[prop].length < 2) {
+      if (attributeDictionary[prop] !== undefined && this.distinct(attributeDictionary[prop]).length < 2) {
         let attribute = topic.setTemplate.find(a => a.id.toString() === prop);
         topic.setTemplate.splice(topic.setTemplate.indexOf(attribute), 1);
         delete attributeDictionary[prop];
@@ -97,7 +97,7 @@ export class TestService {
       .splice(answerIndex, 1)[0];
 
       // generate the options
-      let attributeArray: string[] = [ ...optionsBankDictionary[attribute.id] ].map(da => da.attributeValue);
+      let attributeArray: string[] = this.distinct([ ...optionsBankDictionary[attribute.id] ].map(da => da.attributeValue));
       attributeArray.splice(attributeArray.indexOf(answerAttribute.attributeValue), 1);
       attributeArray = this.shuffle(attributeArray);
       attributeArray = attributeArray.splice(0, (attributeArray.length > 3 ? 3 : attributeArray.length));
@@ -202,6 +202,29 @@ export class TestService {
     }
 
     return array;
+  }
+
+  /**
+   * returns a array of distinct elements
+   * @param array of primitive types
+   */
+  private distinct(array: any[]): any[] {
+    let dictionary = {};
+    let distinctArray = [];
+
+    array.forEach((el, i) => {
+      if (typeof(el) !== "object" && typeof(el) !== "function") {
+        dictionary[el] = el;
+      } else {
+        dictionary[`object-${i}`] = el;
+      }
+    });
+
+    for (let prop in dictionary) {
+      distinctArray.push(dictionary[prop]);
+    }
+
+    return distinctArray;
   }
 
   public generateTest(config: TestConfig, topic: Topic): Test {
