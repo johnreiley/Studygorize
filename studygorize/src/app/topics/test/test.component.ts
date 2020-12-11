@@ -20,6 +20,7 @@ export class TestComponent implements OnInit {
   public questionTypes = QuestionType;
   public topic: Topic;
   public isLast = false;
+  public showOptions = true;
   public showResults = false;
 
   constructor(
@@ -31,17 +32,12 @@ export class TestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.test = new Test([], 0, 0);
     this.route.params.subscribe((params: Params) => {
       if (params["id"]) {
         // get the topic
         this.topicService.getTopic(params["id"]).subscribe((topic) => {
           this.topic = topic;
-          
-          // create config
-          this.testConfig = new TestConfig(false, 0, true, true, true, true);
-          
-          // generate the test
-          this.test = this.testService.generateTest(this.testConfig, topic);
         });
       }
     });
@@ -79,6 +75,12 @@ export class TestComponent implements OnInit {
 
   updateQuestionResponse(response: string) {
     this.test.questions[this.currentQuestionIndex].userResponse = response;
+  }
+
+  onStartTest(config: TestConfig) {
+    this.testConfig = config;
+    this.test = this.testService.generateTest(this.testConfig, this.topic);
+    this.showOptions = false;
   }
 
 }

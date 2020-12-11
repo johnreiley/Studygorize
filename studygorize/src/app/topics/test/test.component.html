@@ -1,5 +1,7 @@
 <div class="content-wrapper-600 m-auto">
-  <div class="test-content" *ngIf="!showResults; else results">
+  <app-test-options *ngIf="showOptions" (submitConfig)="onStartTest($event)"></app-test-options>
+  
+  <div class="test-content" *ngIf="!showResults && !showOptions">
     <div class="row">
       <div class="col-10">
         <h2>{{ topic?.title }} Test</h2>
@@ -59,7 +61,7 @@
     </form>
   </div>
 
-  <ng-template #results>
+  <div class="results-content" *ngIf="showResults">
     <h2>{{ topic?.title }} Test</h2>
     <h4>Grade: {{ test.grade }}%</h4>
     <h4>Correct: {{ test.totalCorrect }}/{{ test.questions.length }}</h4>
@@ -89,5 +91,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
+  </div>
 </div>

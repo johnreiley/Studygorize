@@ -33,6 +33,7 @@ import { ImportComponent } from './topics/import/import.component';
 import { TestComponent } from './topics/test/test.component';
 import { MultipleChoiceQuestionComponent } from './topics/test/multiple-choice-question/multiple-choice-question.component';
 import { ShortAnswerQuestionComponent } from './topics/test/short-answer-question/short-answer-question.component';
+import { TestOptionsComponent } from './topics/test/test-options/test-options.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ShortAnswerQuestionComponent } from './topics/test/short-answer-questio
     ImportComponent,
     TestComponent,
     MultipleChoiceQuestionComponent,
-    ShortAnswerQuestionComponent
+    ShortAnswerQuestionComponent,
+    TestOptionsComponent
   ],
   imports: [
     BrowserModule,

@@ -42,20 +42,15 @@ export class TestService {
   private generateShortAnswerQuestions(topic: Topic, questionCount: number, attributeDictionary: any): IQuestion[] {
     let questions: IQuestion[] = [];
     let attribute: Attribute;
-
-    console.log("SET TEMPLATE IN SAQG: ", topic.setTemplate);
-    console.log("ATTRIBUTE DICTIONARY: ", attributeDictionary);
-    let newAttributeDictionary = cloneDeep(attributeDictionary);
-
+    
     for (let i = 0; i < questionCount; i++) {
       // randomly select the attributes to be tested on
-      let tempCounter = 0;
       do {
         attribute = topic.setTemplate[Math.floor(Math.random() * topic.setTemplate.length)];
-      } while (newAttributeDictionary[attribute.id] === undefined && tempCounter < 30);
+      } while (attributeDictionary[attribute.id] === undefined);
 
-      let answerAttribute: DictionaryAttribute = newAttributeDictionary[attribute.id]
-        .splice(Math.floor(Math.random() * newAttributeDictionary[attribute.id].length), 1)[0];
+      let answerAttribute: DictionaryAttribute = attributeDictionary[attribute.id]
+        .splice(Math.floor(Math.random() * attributeDictionary[attribute.id].length), 1)[0];
       
       questions.push(new ShortAnswerQuestion(
         this.generateQuestionName(answerAttribute.setName, attribute.value), 
@@ -63,8 +58,8 @@ export class TestService {
         "")
       );
       
-      if (newAttributeDictionary[attribute.id].length === 0) {
-        delete newAttributeDictionary[attribute.id];
+      if (attributeDictionary[attribute.id].length === 0) {
+        delete attributeDictionary[attribute.id];
       }
     }
 
@@ -75,20 +70,21 @@ export class TestService {
     let questions: IQuestion[] = [];
     let attribute: Attribute;
     let optionsBankDictionary = cloneDeep(attributeDictionary);
+    let setTemplate = cloneDeep(topic.setTemplate);
 
     // filter out attributes that don't have enough options
-    for (let prop in attributeDictionary) {
-      if (attributeDictionary[prop] !== undefined && this.distinct(attributeDictionary[prop]).length < 2) {
-        let attribute = topic.setTemplate.find(a => a.id.toString() === prop);
-        topic.setTemplate.splice(topic.setTemplate.indexOf(attribute), 1);
-        delete attributeDictionary[prop];
+    for (let prop in optionsBankDictionary) {
+      if (optionsBankDictionary[prop] !== undefined && this.distinct(optionsBankDictionary[prop]).length < 2) {
+        let attribute = setTemplate.find(a => a.id.toString() === prop);
+        setTemplate.splice(setTemplate.indexOf(attribute), 1);
+        delete optionsBankDictionary[prop];
       }
     }
 
     for (let i = 0; i < questionCount; i++) {
       // randomly select which attribute to use
       do {
-        attribute = topic.setTemplate[Math.floor(Math.random() * topic.setTemplate.length)];
+        attribute = setTemplate[Math.floor(Math.random() * setTemplate.length)];
       } while (attributeDictionary[attribute.id] === undefined);
 
       // pick the answer
@@ -171,7 +167,7 @@ export class TestService {
         });
         let numValues = Object.keys(valueDictionary).length;
         if (numValues >= 2) {
-          total += numValues;
+          total += attributeDictionary[prop].length;
         }
       }
     }
@@ -228,7 +224,6 @@ export class TestService {
   }
 
   public generateTest(config: TestConfig, topic: Topic): Test {
-    console.log("GENERATE TEST")
     // create dictionary out of attributes {attribute1: [], attribute2: [], attribute3: []}
     let attributeDictionary = this.generateAttributeDictionary(topic.setTemplate, topic.sets, config);
 
