@@ -10,6 +10,7 @@ import { Topic } from '../models/topic.model';
 import { MultipleChoiceQuestion } from '../models/test-models/multipleChoiceQuestion.model';
 import { cloneDeep } from 'lodash';
 import { QuestionType } from '../models/test-models/questionType.model';
+import { TypedQuestion } from '../models/test-models/typedQuestion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class TestService {
 
   private generateQuestionName(setName: string, attributeName: string) {
     return `${setName} : ${attributeName}`;
+  }
+
+  private generateMultiTopicQuestionName(topicTitle: string, setName: string, attributeName: string) {
+    return `${topicTitle} : ${setName} : ${attributeName}`;
   }
 
   // private generateQuestionsBase(topic: Topic, questionCount: number, attributeDictionary: any, callback: Function): IQuestion[] {
@@ -39,7 +44,9 @@ export class TestService {
   //   return questions;
   // }
 
-  private generateShortAnswerQuestions(topic: Topic, questionCount: number, attributeDictionary: any): IQuestion[] {
+  private generateShortAnswerQuestions(topic: Topic, questionCount: number, 
+    attributeDictionary: any, useLongQuestionName: boolean): IQuestion[] {
+    
     let questions: IQuestion[] = [];
     let attribute: Attribute;
     
@@ -52,8 +59,14 @@ export class TestService {
       let answerAttribute: DictionaryAttribute = attributeDictionary[attribute.id]
         .splice(Math.floor(Math.random() * attributeDictionary[attribute.id].length), 1)[0];
       
+      let questionName;
+      if (useLongQuestionName) {
+        questionName = this.generateMultiTopicQuestionName(topic.title, answerAttribute.setName, attribute.value);
+      } else {
+        questionName = this.generateQuestionName(answerAttribute.setName, attribute.value)
+      }
       questions.push(new ShortAnswerQuestion(
-        this.generateQuestionName(answerAttribute.setName, attribute.value), 
+        questionName,
         answerAttribute.attributeValue, 
         "")
       );
@@ -66,7 +79,9 @@ export class TestService {
     return questions;
   }
 
-  private generateMultipleChoiceQuestions(topic: Topic, questionCount: number, attributeDictionary: any): IQuestion[] {
+  private generateMultipleChoiceQuestions(topic: Topic, questionCount: number, 
+    attributeDictionary: any, useLongQuestionName: boolean): IQuestion[] {
+    
     let questions: IQuestion[] = [];
     let attribute: Attribute;
     let optionsBankDictionary = cloneDeep(attributeDictionary);
@@ -100,8 +115,14 @@ export class TestService {
       let options = [answerAttribute.attributeValue, ...attributeArray];
       options = this.shuffle(options);
 
+      let questionName;
+      if (useLongQuestionName) {
+        questionName = this.generateMultiTopicQuestionName(topic.title, answerAttribute.setName, attribute.value);
+      } else {
+        questionName = this.generateQuestionName(answerAttribute.setName, attribute.value)
+      }
       questions.push(new MultipleChoiceQuestion(
-        this.generateQuestionName(answerAttribute.setName, attribute.value),
+        questionName,
         answerAttribute.attributeValue, 
         "", 
         options)); 
@@ -201,6 +222,20 @@ export class TestService {
   }
 
   /**
+   * Sorts a list of typed questions by their type
+   * @param questions 
+   */
+  private sortByQuestionType(questions: TypedQuestion[]): TypedQuestion[] {
+    return questions.sort((q1, q2) => {
+      if (q1.getQuestionType() >= q2.getQuestionType()) {
+        return 1;
+      } else {
+        return -1
+      }
+    });
+  }
+
+  /**
    * returns a array of distinct elements
    * @param array of primitive types
    */
@@ -255,11 +290,11 @@ export class TestService {
         questionTypeDiviser--;
         maxQuestionCount = maxQuestionCount - multiChoiceQuestionCount;
       }
-      questions = questions.concat(this.generateMultipleChoiceQuestions(topic, multiChoiceQuestionCount, attributeDictionary));
+      questions = questions.concat(this.generateMultipleChoiceQuestions(topic, multiChoiceQuestionCount, attributeDictionary, config.isMultiTopicTest));
     }
     if (config.includeShortAnswer) {
       let shortAnswerQuestionCount = Math.floor(maxQuestionCount / questionTypeDiviser);
-      questions = questions.concat(this.generateShortAnswerQuestions(topic, shortAnswerQuestionCount, attributeDictionary));
+      questions = questions.concat(this.generateShortAnswerQuestions(topic, shortAnswerQuestionCount, attributeDictionary, config.isMultiTopicTest));
     }
 
     // make sure there aren't more questions than expected because I'm paranoid
@@ -267,6 +302,53 @@ export class TestService {
     return new Test(questions, undefined, undefined);
   }
 
+  /**
+   * Creates a single test for multiple topics
+   * @param configTopicPair an object with config and topic property
+   */
+  public generateMultiTopicTest(config: TestConfig, topics: Topic[]): Test {
+    let tests: Test[] = [];
+    let configTopicPairs = this.generateConfigTopicPairs(config, topics);
+
+    // generate test for each of the topics
+    configTopicPairs.forEach(pair => {
+      tests.push(this.generateTest(pair.config, pair.topic));
+    });
+
+    // combine all of the questions into one test
+    let combinedTest = tests.reduce((acc: Test, test: Test) => {
+      acc.questions = acc.questions.concat(...test.questions);
+      return acc;
+    }, new Test([], undefined, undefined));
+
+    // shuffle the questions then sort by question type
+    this.shuffle(combinedTest.questions);
+    this.sortByQuestionType(<any[]>combinedTest.questions);
+
+    return combinedTest;
+  }
+
+  /**
+   * Creates an array of config topic pairs that can be used to generate multiple tests
+   * @param config the config for all of the tests
+   * @param topics the array of topics that will be used
+   */
+  public generateConfigTopicPairs(config: TestConfig, topics: Topic[]): { config: TestConfig; topic: Topic; }[] {
+    return topics
+      .filter(topic => config.topicOptions.find(option => option.topicId === topic.id && option.include) !== undefined)
+      .map(topic => {
+        return {
+          config: config,
+          topic: topic
+        }
+    });
+  }
+
+  /**
+   * Grades a test by iterating over all of the questions and calculating
+   * a percent based on the amount correct.
+   * @param test the test to be graded
+   */
   public gradeTest(test: Test): Test {
     test.grade = 100;
 

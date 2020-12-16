@@ -1,4 +1,4 @@
 export enum QuestionType {
-  ShortAnswer,
-  MultipleChoice
+  MultipleChoice,
+  ShortAnswer
 }

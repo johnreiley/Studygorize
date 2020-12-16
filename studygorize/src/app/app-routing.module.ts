@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent},
   { path: 'create', component: CreateOptionsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics', component: TopicsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/test', component: TestComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/new', component: TopicEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/import', component: ImportComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id', component: TopicViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},

@@ -19,6 +19,8 @@ export class TestComponent implements OnInit {
   public currentQuestionIndex = 0;
   public questionTypes = QuestionType;
   public topic: Topic;
+  public topics: Topic[];
+  public isMultiTopicTest = false;
   public isLast = false;
   public showOptions = true;
   public showResults = false;
@@ -39,6 +41,11 @@ export class TestComponent implements OnInit {
         this.topicService.getTopic(params["id"]).subscribe((topic) => {
           this.topic = topic;
         });
+      } else {
+        this.isMultiTopicTest = true;
+        this.topicService.getTopics().subscribe((topics) => {
+          this.topics = topics;
+        })
       }
     });
   }
@@ -79,7 +86,11 @@ export class TestComponent implements OnInit {
 
   onStartTest(config: TestConfig) {
     this.testConfig = config;
-    this.test = this.testService.generateTest(this.testConfig, this.topic);
+    if (this.testConfig.isMultiTopicTest) {
+      this.test = this.testService.generateMultiTopicTest(this.testConfig, this.topics);
+    } else {
+      this.test = this.testService.generateTest(this.testConfig, this.topic);
+    }
     this.showOptions = false;
   }
 
