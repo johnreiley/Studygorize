@@ -94,4 +94,20 @@ export class TestComponent implements OnInit {
     this.showOptions = false;
   }
 
+  onNewTest() {
+    this.showResults = false;
+    this.showOptions = true;
+    this.currentQuestionIndex = 0;
+    this.isLast = false;
+    this.test = new Test([], 0, 0);
+  }
+
+  onRedoTest() {
+    this.currentQuestionIndex = 0;
+    this.isLast = false;
+    this.showResults = false;
+    this.test.grade = 0;
+    this.test.totalCorrect = 0;
+  }
+
 }

@@ -71,6 +71,18 @@
     </h2>
     <h4>Grade: {{ test.grade }}%</h4>
     <h4>Correct: {{ test.totalCorrect }}/{{ test.questions.length }}</h4>
+    <div class="form-group">
+      <button class="btn btn-primary icon-btn-right" (click)="onNewTest()">
+        New Test
+        <i class="material-icons">undo</i>
+      </button>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary icon-btn-right" (click)="onRedoTest()">
+        Redo Test
+        <i class="material-icons">refresh</i>
+      </button>
+    </div>
     <div *ngFor="let question of test?.questions; let i = index;" id="{{'question-' + i}}" class="form-group">
       <label for="{{'questionInput-' + i}}">  
         <strong class="mr-1">{{ i + 1 }}.</strong><span>{{ question.name }}</span>
