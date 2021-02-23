@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { Router, Scroll } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
@@ -34,6 +35,8 @@ import { TestComponent } from './topics/test/test.component';
 import { MultipleChoiceQuestionComponent } from './topics/test/multiple-choice-question/multiple-choice-question.component';
 import { ShortAnswerQuestionComponent } from './topics/test/short-answer-question/short-answer-question.component';
 import { TestOptionsComponent } from './topics/test/test-options/test-options.component';
+
+const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
 
 @NgModule({
   declarations: [
@@ -68,7 +71,8 @@ import { TestOptionsComponent } from './topics/test/test-options/test-options.co
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    SocketIoModule.forRoot(socketConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
