@@ -1,15 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+// import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { Router, Scroll } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs/operators';
-
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -35,8 +35,11 @@ import { TestComponent } from './topics/test/test.component';
 import { MultipleChoiceQuestionComponent } from './topics/test/multiple-choice-question/multiple-choice-question.component';
 import { ShortAnswerQuestionComponent } from './topics/test/short-answer-question/short-answer-question.component';
 import { TestOptionsComponent } from './topics/test/test-options/test-options.component';
+import { PartyComponent } from './party/party.component';
+import { PartyWaitingRoomComponent } from './party/party-waiting-room/party-waiting-room.component';
+import { PartyOptionsComponent } from './party/party-options/party-options.component';
 
-const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
+// const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: { withCredentials: false } };
 
 @NgModule({
   declarations: [
@@ -63,16 +66,20 @@ const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: {}
     TestComponent,
     MultipleChoiceQuestionComponent,
     ShortAnswerQuestionComponent,
-    TestOptionsComponent
+    TestOptionsComponent,
+    PartyComponent,
+    PartyWaitingRoomComponent,
+    PartyOptionsComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
     DragDropModule,
-    SocketIoModule.forRoot(socketConfig)
+    // SocketIoModule.forRoot(socketConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

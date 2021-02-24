@@ -1,4 +1,4 @@
-enum PartyState {
+export enum PartyState {
   WaitingRoom = "WAITING_ROOM",
   QuestionLoading = "QUESTION_LOADING",
   ShowOptions = "SHOW_OPTIONS",

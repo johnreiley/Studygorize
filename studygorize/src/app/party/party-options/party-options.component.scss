@@ -1,0 +1,14 @@
+.options-container {
+  border: solid 1px lightgray;
+  padding: 1em;
+  border-radius: 7px;
+}
+
+.submit-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.alert.alert-danger {
+  margin-top: 0.5em;
+}

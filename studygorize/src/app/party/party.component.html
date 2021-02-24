@@ -1,1 +1,15 @@
-<p>party works!</p>
+<div [ngSwitch]="partyState">
+  
+  <app-party-waiting-room 
+    *ngSwitchCase="PartyState.WaitingRoom"
+    [partyId]="partyId">
+  </app-party-waiting-room>
+  
+  <div *ngSwitchDefault>
+    <app-party-options 
+      [topics]="topics" 
+      (createParty)="createParty($event)">
+    </app-party-options>
+  </div>
+
+</div>
