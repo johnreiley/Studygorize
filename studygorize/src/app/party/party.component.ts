@@ -16,7 +16,7 @@ import { TopicService } from '../shared/services/topic.service';
 export class PartyComponent implements OnInit, OnDestroy {
   partyId: string;
   partyState: PartyState;
-  users: PartyUser[];
+  users: PartyUser[] = [];
   topics: Topic[];
   private partyService: PartyService;
 
@@ -36,6 +36,14 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.partyService.userJoined.subscribe((user: PartyUser) => {
       this.users.push(user);
     })
+
+    this.partyService.userLeft.subscribe((uuid: string) => {
+      let user = this.users.find(u => u.uuid === uuid);
+      let index = this.users.indexOf(user);
+      if (index > -1) {
+        this.users.splice(index, 1);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -48,6 +56,9 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   createParty(partyConfig: PartyConfig) {
     this.loadingService.startLoading();
+    
+    // generate the test here...
+
     if (this.partyId === undefined) {
       let subscription = this.partyService.partyCreated.subscribe((partyId) => {
         this.partyId = partyId;

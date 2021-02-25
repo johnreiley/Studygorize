@@ -14,6 +14,7 @@ export class PartyService {
   readonly responseRecieved = new Subject<{uuid: string, value: number}>();
   readonly partyCreated = new Subject<string>();
   readonly userJoined = new Subject<PartyUser>();
+  readonly userLeft = new Subject<string>();
   
   private socket: Socket;
   private partyState: PartyState;
@@ -33,6 +34,10 @@ export class PartyService {
         // this.users.push({ uuid, name, score: 0 });
         this.userJoined.next({ uuid, name, score: 0 });
       }
+    });
+    
+    this.socket.on('userLeft', (uuid: string) => {
+      this.userLeft.next(uuid);
     });
 
     // this.socket.fromEvent<{ uuid: string, value: number }>('selectOption').subscribe(({ uuid, value }) => {

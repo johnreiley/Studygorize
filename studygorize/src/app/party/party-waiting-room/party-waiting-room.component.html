@@ -2,7 +2,7 @@
   <div class="alert alert-primary text-center">
     Join at <strong>www.studygorize.party</strong> with party code: <strong>{{ partyId }}</strong>
   </div>
-  <div class="row">
+  <div class="row mb-2">
     <div class="col-6">
       <h4>Party</h4>
     </div>
@@ -18,7 +18,19 @@
   </div>
   <div class="row">
     <div class="col">
-
+      <div *ngIf="users.length > 0; else noOneHere" class="users-container">
+        <div
+          *ngFor="let user of users" 
+          class="user-tag alert alert-secondary">
+          <strong>{{ user.name }}</strong>
+        </div>
+      </div>
+      <ng-template #noOneHere>
+        <h5 class="text-center text-muted">Waiting for players to join...</h5>
+        <div class="progress w-100">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" style="width: 100%"></div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
