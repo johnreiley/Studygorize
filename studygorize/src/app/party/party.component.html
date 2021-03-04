@@ -5,6 +5,12 @@
     [partyId]="partyId"
     [users]="users">
   </app-party-waiting-room>
+
+  <app-question-loading
+    *ngSwitchCase="PartyState.QuestionLoading"
+    [question]="test?.questions[currentQuestionIndex].name"
+    [time]="7">
+  </app-question-loading>
   
   <div *ngSwitchDefault>
     <app-party-options 
@@ -14,3 +20,12 @@
   </div>
 
 </div>
+
+<section *ngIf="showQuestionCount" id="questionCount">
+  <h4>{{ currentQuestionIndex + 1 }}/{{ test?.questions.length }}</h4>
+</section>
+<section *ngIf="showPartyId" id="partyId">
+  <div class="alert alert-primary text-center">
+    <strong>studygorize.party</strong> Party Code: <strong>{{ partyId }}</strong>
+  </div>
+</section>

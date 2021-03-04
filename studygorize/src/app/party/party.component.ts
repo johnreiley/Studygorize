@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PartyConfig } from '../shared/models/party-models/partyConfig.model';
 import { PartyState } from '../shared/models/party-models/partyState.model';
 import { PartyUser } from '../shared/models/party-models/partyUser.model';
+import { Test } from '../shared/models/test-models/test.model';
 import { Topic } from '../shared/models/topic.model';
 import { LoadingService } from '../shared/services/loading.service';
 import { PartyService } from '../shared/services/party.service';
@@ -18,6 +19,10 @@ export class PartyComponent implements OnInit, OnDestroy {
   partyState: PartyState;
   users: PartyUser[] = [];
   topics: Topic[];
+  quiz: Test;
+  showQuestionCount: boolean = false;
+  currentQuestionIndex: Number = 0;
+  showPartyId: boolean = false;
   private partyService: PartyService;
 
   constructor(private topicService: TopicService,
