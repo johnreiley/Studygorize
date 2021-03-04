@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PartyConfig } from 'src/app/shared/models/party-models/partyConfig.model';
+import { TestConfig } from 'src/app/shared/models/test-models/testConfig.model';
 import { TopicOption } from 'src/app/shared/models/test-models/topicOption.model';
 import { Topic } from 'src/app/shared/models/topic.model';
 
@@ -11,7 +12,14 @@ import { Topic } from 'src/app/shared/models/topic.model';
 export class PartyOptionsComponent implements OnInit {
   @Output() createParty = new EventEmitter<PartyConfig>();
   @Input() topics: Topic[];
-  partyConfig: PartyConfig = {
+  partyConfig: TestConfig = {
+    shuffle: false, 
+    questionCount: 0, 
+    isMultiTopicTest: true,
+    allowPrevousNavigation: false, 
+    skipAttributesWithNoValue: true,
+    includeShortAnswer: false, 
+    includeMultipleChoice: true,
     topicOptions: []
   }
 

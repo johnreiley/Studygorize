@@ -12,7 +12,13 @@
           <i class="material-icons">person</i>
           {{ users.length }}
         </button>
-        <button class="btn btn-primary">Start</button>
+        <button 
+          class="btn" 
+          [ngClass]="{'btn-secondary': (users.length < 2), ' btn-primary': (users.length > 1)}" 
+          [disabled]="users.length < 2"
+          (click)="onStart()">
+          Start
+        </button>
       </div>
     </div>
   </div>

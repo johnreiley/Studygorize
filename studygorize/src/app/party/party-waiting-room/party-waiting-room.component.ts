@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PartyUser } from 'src/app/shared/models/party-models/partyUser.model';
 
 @Component({
@@ -9,10 +9,15 @@ import { PartyUser } from 'src/app/shared/models/party-models/partyUser.model';
 export class PartyWaitingRoomComponent implements OnInit {
   @Input() partyId: string;
   @Input() users: PartyUser[] = [];
+  @Output() startParty = new EventEmitter<void>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onStart() {
+    this.startParty.emit();
   }
 
 }

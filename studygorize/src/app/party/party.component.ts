@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PartyConfig } from '../shared/models/party-models/partyConfig.model';
 import { PartyState } from '../shared/models/party-models/partyState.model';
 import { PartyUser } from '../shared/models/party-models/partyUser.model';
+import { MultipleChoiceQuestion } from '../shared/models/test-models/multipleChoiceQuestion.model';
 import { Test } from '../shared/models/test-models/test.model';
+import { TestConfig } from '../shared/models/test-models/testConfig.model';
 import { Topic } from '../shared/models/topic.model';
 import { LoadingService } from '../shared/services/loading.service';
 import { PartyService } from '../shared/services/party.service';
@@ -19,9 +21,10 @@ export class PartyComponent implements OnInit, OnDestroy {
   partyState: PartyState;
   users: PartyUser[] = [];
   topics: Topic[];
-  quiz: Test;
+  test: Test;
+  partyConfig: TestConfig;
   showQuestionCount: boolean = false;
-  currentQuestionIndex: Number = 0;
+  currentQuestionIndex: number = 0;
   showPartyId: boolean = false;
   private partyService: PartyService;
 
@@ -59,10 +62,12 @@ export class PartyComponent implements OnInit, OnDestroy {
     return PartyState;
   }
 
-  createParty(partyConfig: PartyConfig) {
+  createParty(partyConfig: TestConfig) {
     this.loadingService.startLoading();
     
     // generate the test here...
+    this.test = this.testService.generateMultiTopicTest(partyConfig, this.topics);
+    console.log("QUIZ: ", this.test);
 
     if (this.partyId === undefined) {
       let subscription = this.partyService.partyCreated.subscribe((partyId) => {
@@ -73,6 +78,30 @@ export class PartyComponent implements OnInit, OnDestroy {
       });
       this.partyService.createParty();
     }
+  }
+
+  startParty() {
+    console.log('START PARTY!!!')
+    if (this.users.length > 1) {
+      this.showPartyId = true;
+      this.showQuestionCount = true;
+      this.partyState = PartyState.QuestionLoading;
+      this.partyService.loadQuestion();
+      // do more setup...
+    }
+  }
+
+  showOptions() {
+    let currQuestion = this.test.questions[this.currentQuestionIndex] as MultipleChoiceQuestion;
+    this.partyService.sendOptions(currQuestion.options.length);
+    this.partyState = PartyState.ShowOptions;
+    // do stuff...
+  }
+
+  loadNextQuestion() {
+    this.currentQuestionIndex++;
+    this.partyState = PartyState.QuestionLoading;
+    this.partyService.loadQuestion();
   }
 
 }

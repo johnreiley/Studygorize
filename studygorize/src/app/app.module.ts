@@ -39,6 +39,7 @@ import { PartyComponent } from './party/party.component';
 import { PartyWaitingRoomComponent } from './party/party-waiting-room/party-waiting-room.component';
 import { PartyOptionsComponent } from './party/party-options/party-options.component';
 import { PartyQuestionLoadingComponent } from './party/party-question-loading/party-question-loading.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 // const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: { withCredentials: false } };
 
@@ -71,7 +72,8 @@ import { PartyQuestionLoadingComponent } from './party/party-question-loading/pa
     PartyComponent,
     PartyWaitingRoomComponent,
     PartyOptionsComponent,
-    PartyQuestionLoadingComponent
+    PartyQuestionLoadingComponent,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
