@@ -1,0 +1,19 @@
+.options-container {
+  display: flex;
+  align-items: center;
+  height: 75vh;
+
+  .wrapper {
+    position: fixed;
+    bottom: 5em;
+    left: 1em;
+    right: 1em;
+  }
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 1em;
+}

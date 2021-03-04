@@ -14,6 +14,11 @@
     (showOptions)="showOptions()">
   </app-party-question-loading>
   
+  <app-party-question-options
+    *ngSwitchCase="PartyState.ShowOptions"
+    [question]="test?.questions[currentQuestionIndex]">
+  </app-party-question-options>
+
   <div *ngSwitchDefault>
     <app-party-options 
       [topics]="topics" 

@@ -1,0 +1,32 @@
+@import '../../../../partials/variables';
+
+.question-option {
+  height: fit-content;
+  border-radius: 7px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 25vh;
+  animation: popInLite 0.7s;
+  transition: all 0.5s;
+
+  .option-letter {
+    margin: 0 0.1em 0 0.5em;
+    font-size: calc(1vw + 20px);
+  }
+  .option-text {
+    font-size: calc(1vw + 7px);
+    max-height: 150px;
+    overflow: hidden;
+    margin: 10px;
+    display: block;
+  }
+}
+
+.muted-option {
+  background-color: lightgray !important;
+}
+
+.highlighted-option {
+  box-shadow: $box-shadow-md;
+}

@@ -1,3 +1,5 @@
+@import '../../../partials/animations';
+
 .users-container {
   border: solid 1px lightgray;
   padding: 1em;
@@ -16,19 +18,4 @@
   width: fit-content;
   height: fit-content;
   animation: popIn 1s;
-}
-
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  12% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  25% { transform: scale(0.9); }
-  50% { transform: scale(1.05); }
-  75% { transform: scale(0.98); }
-  100% { transform: scale(1); }
 }
