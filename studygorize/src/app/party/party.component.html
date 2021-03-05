@@ -1,30 +1,33 @@
-<div [ngSwitch]="partyState">
+<div class="view">
   
   <app-party-waiting-room 
-    *ngSwitchCase="PartyState.WaitingRoom"
+    *ngIf="partyState === PartyState.WaitingRoom"
     [partyId]="partyId"
     [users]="users"
     (startParty)="startParty()">
   </app-party-waiting-room>
 
   <app-party-question-loading
-    *ngSwitchCase="PartyState.QuestionLoading"
+    *ngIf="partyState === PartyState.QuestionLoading"
     [question]="partyQuestions[currentQuestionIndex].name"
     [time]="5"
     (showOptions)="showOptions()">
   </app-party-question-loading>
   
   <app-party-question-options
-    *ngSwitchCase="PartyState.ShowOptions"
-    [question]="partyQuestions[currentQuestionIndex]">
+    *ngIf="partyState === PartyState.ShowOptions || partyState === PartyState.QuestionResult"
+    [duration]="questionDuration"
+    [question]="partyQuestions[currentQuestionIndex]"
+    (showAnswer)="onShowResults()"
+    (skipQuestion)="onSkipQuestion()"
+    (next)="showScoreboard()">
   </app-party-question-options>
 
-  <div *ngSwitchDefault>
-    <app-party-options 
-      [topics]="topics" 
-      (createParty)="createParty($event)">
-    </app-party-options>
-  </div>
+  <app-party-options 
+    *ngIf="partyState === PartyState.PartyOptions"
+    [topics]="topics" 
+    (createParty)="createParty($event)">
+  </app-party-options>
 
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PartyQuestion } from 'src/app/shared/models/party-models/partyQuestion.model';
 import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multipleChoiceQuestion.model';
 
@@ -9,6 +9,10 @@ import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multip
 })
 export class PartyQuestionOptionsComponent implements OnInit {
   @Input() question: PartyQuestion;
+  @Input() duration: number; 
+  @Output() showAnswer = new EventEmitter<void>();
+  @Output() skipQuestion = new EventEmitter<void>();
+  @Output() next = new EventEmitter<void>();
   revealAnswer: boolean = false;
   optionDict = {};
   
@@ -23,14 +27,17 @@ export class PartyQuestionOptionsComponent implements OnInit {
 
   onReveal() {
     this.revealAnswer = true;
+    this.showAnswer.emit();
   }
 
   onNext() {
-
+    this.next.emit();
   }
 
   onSkip() {
+    this.duration = 0;
     this.revealAnswer = true;
+    this.skipQuestion.emit();
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PartyConfig } from '../shared/models/party-models/partyConfig.model';
 import { PartyQuestion } from '../shared/models/party-models/partyQuestion.model';
+import { PartyQuestionResult } from '../shared/models/party-models/partyQuestionResult.model';
 import { PartyState } from '../shared/models/party-models/partyState.model';
 import { PartyUser } from '../shared/models/party-models/partyUser.model';
 import { MultipleChoiceQuestion } from '../shared/models/test-models/multipleChoiceQuestion.model';
@@ -23,10 +24,12 @@ export class PartyComponent implements OnInit, OnDestroy {
   users: PartyUser[] = [];
   topics: Topic[];
   partyQuestions: PartyQuestion[] = [];
+  questionResults: PartyQuestionResult[] = [];
   partyConfig: TestConfig;
   showQuestionCount: boolean = false;
   currentQuestionIndex: number = 0;
   showPartyId: boolean = false;
+  questionDuration: number = 15;
   private partyService: PartyService;
 
   constructor(private topicService: TopicService,
@@ -53,14 +56,26 @@ export class PartyComponent implements OnInit, OnDestroy {
       if (index > -1) {
         this.users.splice(index, 1);
       }
-      if (this.users.length === 0) {
-        this.endParty();
+      if (this.users.length === 0 && this.partyState !== PartyState.WaitingRoom) {
+        // this.endParty();
       }
     });
 
     this.partyService.responseRecieved.subscribe(({uuid, value}) => {
+      // prepare a result for the user to receive
+      console.log(`RECEIVED: ${value} from ${uuid}`);
+      console.log('The answer is: ', this.partyQuestions[this.currentQuestionIndex].answerIndex);
       if (this.partyState === PartyState.ShowOptions) {
-
+        let isCorrect = value == this.partyQuestions[this.currentQuestionIndex].answerIndex; 
+        let score = 0; 
+        if (isCorrect) {
+          score = this.partyService.calcScore(this.questionDuration, this.questionDuration);
+        }
+        this.questionResults.push({
+          uuid,
+          isCorrect,
+          score
+        });
       }
     })
   }
@@ -91,13 +106,11 @@ export class PartyComponent implements OnInit, OnDestroy {
   }
 
   startParty() {
-    console.log('START PARTY!!!')
     if (this.users.length > 1) {
       this.showPartyId = true;
       this.showQuestionCount = true;
       this.partyState = PartyState.QuestionLoading;
       this.partyService.loadQuestion();
-      // do more setup...
     }
   }
 
@@ -105,7 +118,54 @@ export class PartyComponent implements OnInit, OnDestroy {
     let currQuestion = this.partyQuestions[this.currentQuestionIndex];
     this.partyService.sendOptions(currQuestion.options.length);
     this.partyState = PartyState.ShowOptions;
-    // do stuff...
+  }
+
+  onShowResults() {
+    this.partyState = PartyState.QuestionResult;
+    // figure out which users haven't answered yet..
+    let unanswered = this.users.filter(u => this.questionResults.find(r => r.uuid === u.uuid) === undefined);
+    this.questionResults.concat(
+      unanswered.map((u) => {
+        return {
+          uuid: u.uuid,
+          isCorrect: false,
+          score: 0
+        }
+      })
+    );
+    this.partyService.sendQuestionResults([...this.questionResults]);
+    // update the score of each user
+    this.questionResults.forEach(q => {
+      if (q.score !== 0) {
+        let user = this.users.find(u => u.uuid === q.uuid);
+        if (user !== undefined) {
+          user.score += q.score;
+        }
+      }
+    });
+    this.questionResults = [];
+  }
+
+  onSkipQuestion() {
+    this.partyState = PartyState.QuestionResult;
+    this.questionResults = this.users.map((u) => {
+      return {
+        uuid: u.uuid,
+        isCorrect: false,
+        score: 0
+      }
+    });
+    this.partyService.sendQuestionResults([...this.questionResults]);
+    this.questionResults = [];
+  }
+
+  showScoreboard() {
+    if (this.currentQuestionIndex < this.partyQuestions.length - 1) {
+      // this.partyState = PartyState.Scoreboard;
+      this.loadNextQuestion();
+    } else {
+      this.partyState = PartyState.PartyResults;
+    }
   }
 
   loadNextQuestion() {
@@ -119,6 +179,7 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.partyState = PartyState.PartyOptions;
     this.users = [];
     this.partyQuestions = [];
+    this.questionResults = [];
     this.partyConfig = undefined;
     this.showQuestionCount = false;
     this.currentQuestionIndex = 0;

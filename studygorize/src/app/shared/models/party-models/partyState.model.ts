@@ -4,5 +4,6 @@ export enum PartyState {
   QuestionLoading = "QUESTION_LOADING",
   ShowOptions = "SHOW_OPTIONS",
   QuestionResult = "QUESTION_RESULT",
+  Scoreboard = "SCOREBOARD",
   PartyResults = "PARTY_RESULTS"
 }

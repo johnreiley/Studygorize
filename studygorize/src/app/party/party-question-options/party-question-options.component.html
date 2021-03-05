@@ -1,8 +1,10 @@
 <div class="question-options-container">
   <h3 class="text-center">{{ question.name }}</h3>
+  <button *ngIf="!revealAnswer" (click)="onSkip()" class="btn btn-primary">Skip</button>
+  <button *ngIf="revealAnswer" (click)="onNext()" class="btn btn-primary">Next</button>
   <section class="options-container">
     <div class="wrapper">
-      <app-progress-bar [seconds]="15" (progressDone)="onReveal()"></app-progress-bar>
+      <app-progress-bar [seconds]="duration" (progressDone)="onReveal()"></app-progress-bar>
       <div class="options">
         <app-party-question-option 
           *ngFor="let option of question.options; let i = index" 

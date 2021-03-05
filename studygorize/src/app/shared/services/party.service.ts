@@ -68,9 +68,7 @@ export class PartyService {
   }
 
   public sendQuestionResults(results: PartyQuestionResult[]) {
-    results.forEach(result => {
-      this.socket.emit('questionResult', { ...result });
-    });
+      this.socket.emit('questionResult', [...results]);
     this.partyState = PartyState.QuestionResult;
   }
 
