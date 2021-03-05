@@ -9,14 +9,14 @@
 
   <app-party-question-loading
     *ngSwitchCase="PartyState.QuestionLoading"
-    [question]="test?.questions[currentQuestionIndex].name"
+    [question]="partyQuestions[currentQuestionIndex].name"
     [time]="5"
     (showOptions)="showOptions()">
   </app-party-question-loading>
   
   <app-party-question-options
     *ngSwitchCase="PartyState.ShowOptions"
-    [question]="test?.questions[currentQuestionIndex]">
+    [question]="partyQuestions[currentQuestionIndex]">
   </app-party-question-options>
 
   <div *ngSwitchDefault>
@@ -29,7 +29,7 @@
 </div>
 
 <section *ngIf="showQuestionCount" id="questionCount">
-  <h4>{{ currentQuestionIndex + 1 }}/{{ test?.questions.length }}</h4>
+  <h4>{{ currentQuestionIndex + 1 }}/{{ partyQuestions.length }}</h4>
 </section>
 <section *ngIf="showPartyId" id="partyId">
   <div class="alert alert-primary text-center">

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PartyQuestion } from 'src/app/shared/models/party-models/partyQuestion.model';
 import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multipleChoiceQuestion.model';
 
 @Component({
@@ -7,7 +8,7 @@ import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multip
   styleUrls: ['./party-question-options.component.scss']
 })
 export class PartyQuestionOptionsComponent implements OnInit {
-  @Input() question: MultipleChoiceQuestion;
+  @Input() question: PartyQuestion;
   revealAnswer: boolean = false;
   optionDict = {};
   
@@ -15,13 +16,20 @@ export class PartyQuestionOptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.question.options.forEach((o, i) => {
-      this.optionDict[i] = { option: i, isAnswer: o === this.question.answer }
+      this.optionDict[i] = { option: i, isAnswer: i === this.question.answerIndex }
     });
     console.log(this.optionDict)
   }
 
   onReveal() {
-    console.log("REVEAL YOUR TRUE IDENTITY!")
+    this.revealAnswer = true;
+  }
+
+  onNext() {
+
+  }
+
+  onSkip() {
     this.revealAnswer = true;
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PartyConfig } from '../shared/models/party-models/partyConfig.model';
+import { PartyQuestion } from '../shared/models/party-models/partyQuestion.model';
 import { PartyState } from '../shared/models/party-models/partyState.model';
 import { PartyUser } from '../shared/models/party-models/partyUser.model';
 import { MultipleChoiceQuestion } from '../shared/models/test-models/multipleChoiceQuestion.model';
@@ -21,7 +22,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   partyState: PartyState;
   users: PartyUser[] = [];
   topics: Topic[];
-  test: Test;
+  partyQuestions: PartyQuestion[] = [];
   partyConfig: TestConfig;
   showQuestionCount: boolean = false;
   currentQuestionIndex: number = 0;
@@ -36,6 +37,7 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadingService.startLoading();
+    this.partyState = PartyState.PartyOptions;
     this.topicService.getTopics().subscribe((topics) => {
       this.topics = topics;
       this.loadingService.stopLoading();
@@ -51,7 +53,16 @@ export class PartyComponent implements OnInit, OnDestroy {
       if (index > -1) {
         this.users.splice(index, 1);
       }
+      if (this.users.length === 0) {
+        this.endParty();
+      }
     });
+
+    this.partyService.responseRecieved.subscribe(({uuid, value}) => {
+      if (this.partyState === PartyState.ShowOptions) {
+
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -65,9 +76,8 @@ export class PartyComponent implements OnInit, OnDestroy {
   createParty(partyConfig: TestConfig) {
     this.loadingService.startLoading();
     
-    // generate the test here...
-    this.test = this.testService.generateMultiTopicTest(partyConfig, this.topics);
-    console.log("QUIZ: ", this.test);
+    let test = this.testService.generateMultiTopicTest(partyConfig, this.topics);
+    this.partyQuestions = this.partyService.convert(test);
 
     if (this.partyId === undefined) {
       let subscription = this.partyService.partyCreated.subscribe((partyId) => {
@@ -92,7 +102,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   }
 
   showOptions() {
-    let currQuestion = this.test.questions[this.currentQuestionIndex] as MultipleChoiceQuestion;
+    let currQuestion = this.partyQuestions[this.currentQuestionIndex];
     this.partyService.sendOptions(currQuestion.options.length);
     this.partyState = PartyState.ShowOptions;
     // do stuff...
@@ -102,6 +112,17 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.currentQuestionIndex++;
     this.partyState = PartyState.QuestionLoading;
     this.partyService.loadQuestion();
+  }
+
+  endParty() {
+    this.partyId = undefined;
+    this.partyState = PartyState.PartyOptions;
+    this.users = [];
+    this.partyQuestions = [];
+    this.partyConfig = undefined;
+    this.showQuestionCount = false;
+    this.currentQuestionIndex = 0;
+    this.showPartyId = false;
   }
 
 }

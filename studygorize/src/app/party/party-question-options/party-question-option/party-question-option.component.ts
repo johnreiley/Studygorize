@@ -20,7 +20,6 @@ export class PartyQuestionOptionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.letter, " ", this.isAnswer, " ", this.reveal);
   }
 
   get letter() {

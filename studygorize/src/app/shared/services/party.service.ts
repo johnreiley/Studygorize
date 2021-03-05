@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { PartyQuestionResult } from '../models/party-models/partyQuestionResult.model';
 import { PartyState } from '../models/party-models/partyState.model';
 import { PartyUser } from '../models/party-models/partyUser.model';
+import { PartyQuestion } from '../models/party-models/partyQuestion.model';
+import { Test } from '../models/test-models/test.model';
+import { MultipleChoiceQuestion } from '../models/test-models/multipleChoiceQuestion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +23,13 @@ export class PartyService {
   private partyState: PartyState;
   // private users: PartyUser[];
 
-  constructor(/*private socket: Socket*/) {
+  constructor() {
     this.socket = io('http://localhost:8080', { withCredentials: false }); 
-    // this.socket.fromEvent<string>('partyCreated').subscribe((partyId: string) => {
     this.socket.on('partyCreated', (partyId: string) => {
       this.partyCreated.next(partyId);
       this.partyState = PartyState.WaitingRoom;
     });
 
-    // this.socket.fromEvent<{ uuid: string, name: string }>('userJoined').subscribe(({ uuid, name }) => {
     this.socket.on('userJoined', ({ uuid, name }) => {
       if (this.partyState === PartyState.WaitingRoom) {
         // this.users.push({ uuid, name, score: 0 });
@@ -40,7 +41,6 @@ export class PartyService {
       this.userLeft.next(uuid);
     });
 
-    // this.socket.fromEvent<{ uuid: string, value: number }>('selectOption').subscribe(({ uuid, value }) => {
     this.socket.on('selectOption', ({ uuid, value }) => {
       if (this.partyState === PartyState.ShowOptions) {
         this.responseRecieved.next({uuid, value});
@@ -82,5 +82,25 @@ export class PartyService {
   public closeConnection() {
     // this.socket.disconnect();
     this.socket.close();
+  }
+
+  /**
+   * Calculates the user's score for a question
+   * @param timeLeft the time in miliseconds left on the question
+   * @param totalTime the total time in miliseconds to answer the question
+   * @returns the users score for the question
+   */
+  public calcScore(timeLeft: number, totalTime: number) {
+    return Math.floor((timeLeft / totalTime) * 100);
+  }
+
+  public convert(test: Test): PartyQuestion[] {
+    return test.questions.map((q: MultipleChoiceQuestion) => {
+      return {
+        name: q.name,
+        answerIndex: q.options.indexOf(q.answer),
+        options: q.options
+      }
+    });
   }
 }
