@@ -23,6 +23,12 @@
     (next)="showScoreboard()">
   </app-party-question-options>
 
+  <app-party-scoreboard
+    *ngIf="partyState === PartyState.Scoreboard"
+    [users]="users"
+    (next)="loadNextQuestion()"
+  ></app-party-scoreboard>
+
   <app-party-options 
     *ngIf="partyState === PartyState.PartyOptions"
     [topics]="topics" 

@@ -124,7 +124,7 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.partyState = PartyState.QuestionResult;
     // figure out which users haven't answered yet..
     let unanswered = this.users.filter(u => this.questionResults.find(r => r.uuid === u.uuid) === undefined);
-    this.questionResults.concat(
+    this.questionResults = this.questionResults.concat(
       unanswered.map((u) => {
         return {
           uuid: u.uuid,
@@ -161,8 +161,7 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   showScoreboard() {
     if (this.currentQuestionIndex < this.partyQuestions.length - 1) {
-      // this.partyState = PartyState.Scoreboard;
-      this.loadNextQuestion();
+      this.partyState = PartyState.Scoreboard;
     } else {
       this.partyState = PartyState.PartyResults;
     }
