@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PartyQuestion } from 'src/app/shared/models/party-models/partyQuestion.model';
 import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multipleChoiceQuestion.model';
 
@@ -7,9 +7,9 @@ import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multip
   templateUrl: './party-question-options.component.html',
   styleUrls: ['./party-question-options.component.scss']
 })
-export class PartyQuestionOptionsComponent implements OnInit {
+export class PartyQuestionOptionsComponent implements OnInit, OnChanges {
   @Input() question: PartyQuestion;
-  @Input() duration: number; 
+  @Input() duration: number;
   @Output() showAnswer = new EventEmitter<void>();
   @Output() skipQuestion = new EventEmitter<void>();
   @Output() next = new EventEmitter<void>();
@@ -25,9 +25,17 @@ export class PartyQuestionOptionsComponent implements OnInit {
     console.log(this.optionDict)
   }
 
+  ngOnChanges() {
+    if (this.duration === 0) {
+      this.onReveal();
+    }
+  }
+
   onReveal() {
-    this.revealAnswer = true;
-    this.showAnswer.emit();
+    if (!this.revealAnswer) {
+      this.revealAnswer = true;
+      this.showAnswer.emit();
+    }
   }
 
   onNext() {

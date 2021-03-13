@@ -30,7 +30,9 @@ export class PartyComponent implements OnInit, OnDestroy {
   currentQuestionIndex: number = 0;
   showPartyId: boolean = false;
   questionDuration: number = 5;
+  questionResponseCount: number = 0;
   private partyService: PartyService;
+  private DEFAULT_QUESTION_DURATION: number = 5;
 
   constructor(private topicService: TopicService,
     private testService: TestService,
@@ -63,8 +65,6 @@ export class PartyComponent implements OnInit, OnDestroy {
 
     this.partyService.responseRecieved.subscribe(({uuid, value}) => {
       // prepare a result for the user to receive
-      console.log(`RECEIVED: ${value} from ${uuid}`);
-      console.log('The answer is: ', this.partyQuestions[this.currentQuestionIndex].answerIndex);
       if (this.partyState === PartyState.ShowOptions) {
         let isCorrect = value == this.partyQuestions[this.currentQuestionIndex].answerIndex; 
         let score = 0; 
@@ -76,6 +76,10 @@ export class PartyComponent implements OnInit, OnDestroy {
           isCorrect,
           score
         });
+        this.questionResponseCount++;
+        if (this.questionResponseCount === this.users.length) {
+          this.questionDuration = 0;
+        }
       }
     })
   }
@@ -144,6 +148,7 @@ export class PartyComponent implements OnInit, OnDestroy {
       }
     });
     this.questionResults = [];
+    this.questionResponseCount = 0;
   }
 
   onSkipQuestion() {
@@ -166,8 +171,9 @@ export class PartyComponent implements OnInit, OnDestroy {
       this.partyState = PartyState.PartyResults;
     }
   }
-
+  
   loadNextQuestion() {
+    this.questionDuration = this.DEFAULT_QUESTION_DURATION;
     this.currentQuestionIndex++;
     this.partyState = PartyState.QuestionLoading;
     this.partyService.loadQuestion();

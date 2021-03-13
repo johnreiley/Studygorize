@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit {
+export class ProgressBarComponent implements OnInit, OnChanges {
   @Input() seconds = 0;
   @Output() progressDone = new EventEmitter<void>();
+  duration: string = '0s';
 
   constructor() { }
 
@@ -17,7 +18,7 @@ export class ProgressBarComponent implements OnInit {
     }, (this.seconds * 1000));
   }
 
-  get duration() {
-    return `${this.seconds}s`;
+  ngOnChanges() {
+    this.duration = `${this.seconds}s`;
   }
 }
