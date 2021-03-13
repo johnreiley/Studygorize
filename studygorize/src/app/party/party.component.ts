@@ -29,7 +29,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   showQuestionCount: boolean = false;
   currentQuestionIndex: number = 0;
   showPartyId: boolean = false;
-  questionDuration: number = 15;
+  questionDuration: number = 5;
   private partyService: PartyService;
 
   constructor(private topicService: TopicService,

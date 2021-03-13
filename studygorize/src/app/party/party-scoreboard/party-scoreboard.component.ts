@@ -13,7 +13,13 @@ export class PartyScoreboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.users = this.users.sort((a, b) => a.score >= b.score ? -1 : 1).slice(0, 8);
+    this.users = this.users.sort((a, b) => {
+      if (a.score === b.score) {
+        return a.uuid > b.uuid ? -1 : 1;
+      } else {
+        return a.score > b.score ? -1 : 1;
+      }
+    }).slice(0, 8);
   }
 
   onNext() {

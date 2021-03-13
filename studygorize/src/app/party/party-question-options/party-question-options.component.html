@@ -1,7 +1,9 @@
 <div class="question-options-container">
-  <h3 class="text-center">{{ question.name }}</h3>
-  <button *ngIf="!revealAnswer" (click)="onSkip()" class="btn btn-primary">Skip</button>
-  <button *ngIf="revealAnswer" (click)="onNext()" class="btn btn-primary">Next</button>
+  <section class="options-header">
+    <button id="skipBtn" *ngIf="!revealAnswer" (click)="onSkip()" class="btn btn-primary">Skip</button>
+    <button id="nextBtn" *ngIf="revealAnswer" (click)="onNext()" class="btn btn-primary">Next</button>
+    <h3 id="questionTxt" class="text-center">{{ question.name }}</h3>
+  </section>
   <section class="options-container">
     <div class="wrapper">
       <app-progress-bar [seconds]="duration" (progressDone)="onReveal()"></app-progress-bar>

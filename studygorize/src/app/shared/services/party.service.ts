@@ -31,10 +31,10 @@ export class PartyService {
     });
 
     this.socket.on('userJoined', ({ uuid, name }) => {
-      if (this.partyState === PartyState.WaitingRoom) {
+      this.userJoined.next({ uuid, name, score: 0 });
+      // if (this.partyState === PartyState.WaitingRoom) {
         // this.users.push({ uuid, name, score: 0 });
-        this.userJoined.next({ uuid, name, score: 0 });
-      }
+      // }
     });
     
     this.socket.on('userLeft', (uuid: string) => {

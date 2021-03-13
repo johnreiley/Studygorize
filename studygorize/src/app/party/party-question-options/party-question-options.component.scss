@@ -1,7 +1,17 @@
+#skipBtn, #nextBtn {
+  position: absolute;
+  right: 1em;
+  top: calc(88px + 1em);
+}
+
+#questionTxt {
+  margin-right: 50px;
+}
+
 .options-container {
   display: flex;
   align-items: center;
-  height: 75vh;
+  // height: 75vh;
 
   .wrapper {
     position: fixed;
@@ -14,6 +24,5 @@
 .options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  // grid-template-rows: repeat(2, 1fr);
   grid-gap: 1em;
 }
