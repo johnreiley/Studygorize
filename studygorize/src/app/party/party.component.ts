@@ -11,6 +11,7 @@ import { Topic } from '../shared/models/topic.model';
 import { LoadingService } from '../shared/services/loading.service';
 import { PartyService } from '../shared/services/party.service';
 import { TestService } from '../shared/services/test.service';
+import { TimerService } from '../shared/services/timer.service';
 import { TopicService } from '../shared/services/topic.service';
 
 @Component({
@@ -36,7 +37,8 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   constructor(private topicService: TopicService,
     private testService: TestService,
-    private loadingService: LoadingService) { 
+    private loadingService: LoadingService,
+    private timerService: TimerService) { 
       this.partyService = new PartyService();
     }
 
@@ -66,10 +68,11 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.partyService.responseRecieved.subscribe(({uuid, value}) => {
       // prepare a result for the user to receive
       if (this.partyState === PartyState.ShowOptions) {
+        const timeLeft = this.questionDuration - this.timerService.secondsElapsed;
         let isCorrect = value == this.partyQuestions[this.currentQuestionIndex].answerIndex; 
         let score = 0; 
         if (isCorrect) {
-          score = this.partyService.calcScore(this.questionDuration, this.questionDuration);
+          score = this.partyService.calcScore(timeLeft, this.questionDuration);
         }
         this.questionResults.push({
           uuid,

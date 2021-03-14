@@ -84,12 +84,12 @@ export class PartyService {
 
   /**
    * Calculates the user's score for a question
-   * @param timeLeft the time in miliseconds left on the question
-   * @param totalTime the total time in miliseconds to answer the question
+   * @param timeLeft the time in seconds left on the question
+   * @param totalTime the total time in seconds to answer the question
    * @returns the users score for the question
    */
   public calcScore(timeLeft: number, totalTime: number) {
-    return Math.floor((timeLeft / totalTime) * 100);
+    return Math.floor((timeLeft / totalTime) * 500);
   }
 
   public convert(test: Test): PartyQuestion[] {
