@@ -32,6 +32,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   showPartyId: boolean = false;
   questionDuration: number = 5;
   questionResponseCount: number = 0;
+  questionResponses: number[] = [];
   private partyService: PartyService;
   private DEFAULT_QUESTION_DURATION: number = 5;
 
@@ -79,8 +80,8 @@ export class PartyComponent implements OnInit, OnDestroy {
           isCorrect,
           score
         });
-        this.questionResponseCount++;
-        if (this.questionResponseCount === this.users.length) {
+        this.questionResponses.push(value);
+        if (this.questionResponses.length === this.users.length) {
           this.questionDuration = 0;
         }
       }
@@ -151,7 +152,7 @@ export class PartyComponent implements OnInit, OnDestroy {
       }
     });
     this.questionResults = [];
-    this.questionResponseCount = 0;
+    this.questionResponses = [];
   }
 
   onSkipQuestion() {

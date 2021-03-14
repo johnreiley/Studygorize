@@ -21,11 +21,10 @@ export class PartyService {
   
   private socket: Socket;
   private partyState: PartyState;
-  // private users: PartyUser[];
 
   constructor() {
-    // this.socket = io('http://localhost:8080', { withCredentials: false }); 
-    this.socket = io('https://studygorize-party-301.wm.r.appspot.com', { withCredentials: false }); 
+    this.socket = io('http://localhost:8080', { withCredentials: false }); 
+    // this.socket = io('https://studygorize-party-301.wm.r.appspot.com', { withCredentials: false }); 
     this.socket.on('partyCreated', (partyId: string) => {
       this.partyCreated.next(partyId);
       this.partyState = PartyState.WaitingRoom;
@@ -33,9 +32,6 @@ export class PartyService {
 
     this.socket.on('userJoined', ({ uuid, name }) => {
       this.userJoined.next({ uuid, name, score: 0 });
-      // if (this.partyState === PartyState.WaitingRoom) {
-        // this.users.push({ uuid, name, score: 0 });
-      // }
     });
     
     this.socket.on('userLeft', (uuid: string) => {

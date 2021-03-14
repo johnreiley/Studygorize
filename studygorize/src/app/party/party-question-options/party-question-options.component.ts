@@ -10,10 +10,12 @@ import { MultipleChoiceQuestion } from 'src/app/shared/models/test-models/multip
 export class PartyQuestionOptionsComponent implements OnInit, OnChanges {
   @Input() question: PartyQuestion;
   @Input() duration: number;
+  @Input() responses: number[];
   @Output() showAnswer = new EventEmitter<void>();
   @Output() skipQuestion = new EventEmitter<void>();
   @Output() next = new EventEmitter<void>();
   revealAnswer: boolean = false;
+  showResponses: boolean = false;
   optionDict = {};
   
   constructor() { }
@@ -34,6 +36,7 @@ export class PartyQuestionOptionsComponent implements OnInit, OnChanges {
   onReveal() {
     if (!this.revealAnswer) {
       this.revealAnswer = true;
+      this.showResponses = true;
       this.showAnswer.emit();
     }
   }

@@ -323,6 +323,9 @@ export class TestService {
 
     // shuffle the questions then sort by question type
     this.shuffle(combinedTest.questions);
+    if (config.questionCount > 0) {
+      combinedTest.questions = combinedTest.questions.slice(0, config.questionCount);
+    }
     this.sortByQuestionType(<any[]>combinedTest.questions);
 
     return combinedTest;

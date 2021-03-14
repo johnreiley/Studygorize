@@ -1,4 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+// $primary: rgb(30, 192, 165);
+@import "../node_modules/bootstrap/scss/bootstrap";
+
 @import './partials/fonts';
 @import './partials/variables';
 @import './partials/cards';

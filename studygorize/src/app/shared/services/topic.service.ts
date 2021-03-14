@@ -222,10 +222,10 @@ export class TopicService {
   public getTopic(id: string): Observable<Topic> {
     return new Observable<Topic>((observable) => {
       if (this.topics.length > 0) {
-        observable.next(this.topics.find(r => r.id === id))
+        observable.next(JSON.parse(JSON.stringify(this.topics.find(r => r.id === id))));
       } else {
         this.fetchTopics().subscribe((topics) => {
-          observable.next(topics.find(r => r.id === id));
+          observable.next(JSON.parse(JSON.stringify(topics.find(r => r.id === id))));
         })
       }
     });

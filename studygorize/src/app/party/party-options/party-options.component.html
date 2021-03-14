@@ -18,6 +18,24 @@
           You need to select at least one topic
         </div>
       </fieldset>
+      <fieldset class="form-group">
+        <label for="questionLimit"><h6 class="mb-2">Question Limit</h6></label>
+        <i 
+          class="material-icons text-primary help-icon" 
+          placement="right"
+          ngbPopover='Set the question limit to zero to remove any limit'>
+          help</i>
+        <input [(ngModel)]="partyConfig.questionCount" 
+          id="questionLimit" 
+          name="questionCount" 
+          class="form-control" 
+          type="number" 
+          min="0" 
+          value="25">
+        <div *ngIf="showQuestionLimitError" class="alert alert-danger" role="alert">
+          Enter a valid question limit
+        </div>
+      </fieldset>
       <div class="form-group submit-btn-container mb-0">
         <button type="submit" class="btn btn-primary">Create Party</button>
       </div>

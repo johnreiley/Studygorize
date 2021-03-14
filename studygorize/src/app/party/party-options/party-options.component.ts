@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PartyConfig } from 'src/app/shared/models/party-models/partyConfig.model';
 import { TestConfig } from 'src/app/shared/models/test-models/testConfig.model';
 import { TopicOption } from 'src/app/shared/models/test-models/topicOption.model';
@@ -14,7 +14,7 @@ export class PartyOptionsComponent implements OnInit {
   @Input() topics: Topic[];
   partyConfig: TestConfig = {
     shuffle: false, 
-    questionCount: 0, 
+    questionCount: 25, 
     isMultiTopicTest: true,
     allowPrevousNavigation: false, 
     skipAttributesWithNoValue: true,
@@ -24,6 +24,7 @@ export class PartyOptionsComponent implements OnInit {
   }
 
   showTopicOptionsError = false;
+  showQuestionLimitError = false;
 
   constructor() { }
 
@@ -48,6 +49,13 @@ export class PartyOptionsComponent implements OnInit {
       isValid = false;
     } else {
       this.showTopicOptionsError = false;
+    }
+
+    if (this.partyConfig.questionCount === undefined || this.partyConfig.questionCount < 0) {
+      this.showQuestionLimitError = true;
+      isValid = false;
+    } else {
+      this.showQuestionLimitError = false;
     }
     
     if (isValid) {

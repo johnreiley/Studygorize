@@ -12,6 +12,7 @@ html, body {
 .results {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   height: calc(100% + 1em);
   display: flex;
