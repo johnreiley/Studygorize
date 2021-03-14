@@ -35,6 +35,11 @@
     (createParty)="createParty($event)">
   </app-party-options>
 
+  <app-party-results
+    *ngIf="partyState === PartyState.PartyResults"
+    [users]="users">
+  </app-party-results>
+
 </div>
 
 <section *ngIf="showQuestionCount" id="questionCount">

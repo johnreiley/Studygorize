@@ -1,0 +1,65 @@
+#newPartyBtn {
+  position: absolute;
+  right: 1em;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.results {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: calc(100% + 1em);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow-y: hidden;
+}
+
+.place-pedistal {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  width: 150px;
+  background-color: gray;
+  height: 50px;
+  margin: 0 1em;
+  animation: growUpward 4s;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+
+  &:nth-of-type(1) {
+    height: 300px;
+    animation-duration: 4s;
+  }
+  &:nth-of-type(2) {
+    height: 400px;
+    animation-duration: 5s;
+  }
+  &:nth-of-type(3) {
+    height: 200px;
+    animation-duration: 3s;
+  }
+  
+  .pedistal-name {
+    font-size: 32px;
+    transform: translatey(-42px);
+  }
+  .pedistal-score {
+    font-size: 28px;
+    color: #ffffff;
+  }
+}
+
+@keyframes growUpward {
+  0% {
+    transform: translatey(100vh);
+  }
+  100% {
+    transform: translatey(0);
+  }
+}
