@@ -24,7 +24,8 @@ export class PartyService {
   // private users: PartyUser[];
 
   constructor() {
-    this.socket = io('http://localhost:8080', { withCredentials: false }); 
+    // this.socket = io('http://localhost:8080', { withCredentials: false }); 
+    this.socket = io('https://studygorize-party-301.wm.r.appspot.com', { withCredentials: false }); 
     this.socket.on('partyCreated', (partyId: string) => {
       this.partyCreated.next(partyId);
       this.partyState = PartyState.WaitingRoom;
