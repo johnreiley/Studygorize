@@ -17,6 +17,8 @@ export class PartyQuestionOptionsComponent implements OnInit, OnChanges {
   revealAnswer: boolean = false;
   showResponses: boolean = false;
   optionDict = {};
+  letters = [ 'A', 'B', 'C', 'D' ];
+  refinedResponses: number[] = [];
   
   constructor() { }
 
@@ -35,6 +37,11 @@ export class PartyQuestionOptionsComponent implements OnInit, OnChanges {
 
   onReveal() {
     if (!this.revealAnswer) {
+      this.refinedResponses = this.responses.reduce((acc, curr) => {
+        acc[curr]++;
+        return acc;
+      }, [0,0,0,0]).slice(0, this.question.options.length);
+      console.log(this.refinedResponses);
       this.revealAnswer = true;
       this.showResponses = true;
       this.showAnswer.emit();

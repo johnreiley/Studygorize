@@ -4,6 +4,11 @@
     <button id="nextBtn" *ngIf="revealAnswer" (click)="onNext()" class="btn btn-primary">Next</button>
     <h3 id="questionTxt" class="text-center">{{ question.name }}</h3>
   </section>
+  <section *ngIf="showResponses" class="responses-container">
+    <div *ngFor="let responseTally of refinedResponses; let i = index" class="response-tally">
+      <span class="theme-font">{{letters[i]}}</span><span>: {{responseTally}}</span>
+    </div>
+  </section>
   <section class="options-container">
     <div class="wrapper">
       <app-progress-bar [seconds]="duration" (progressDone)="onReveal()"></app-progress-bar>
