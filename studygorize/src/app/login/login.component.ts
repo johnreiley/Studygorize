@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       }
       return;
     }
-    this.loadingService.startLoading();
+    this.loadingService.startLoading('Logging in');
     this.authService
       .login('email',
         { email: this.loginForm.value.email, password: this.loginForm.value.password })

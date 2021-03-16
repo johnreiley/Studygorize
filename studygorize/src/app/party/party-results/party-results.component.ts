@@ -16,7 +16,7 @@ export class PartyResultsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.users = this.users.slice(0, 3);
+    this.users = this.users.slice(0, 3).sort((a, b) => a.score > b.score ? -1 : 1);
     while(this.users.length < 3) {
       this.users.push({
         name: "",

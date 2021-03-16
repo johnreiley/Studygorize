@@ -28,7 +28,7 @@ export class SetViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loader.startLoading();
+    this.loader.startLoading('');
     this.route.params.subscribe((params: Params) => {
       let topicId = params['id'];
       let setId = params['setId'];
@@ -49,7 +49,7 @@ export class SetViewComponent implements OnInit {
   }
 
   onDelete() {
-    this.loader.startLoading();
+    this.loader.startLoading('');
     this.topicService.deleteSet(this.topic.id, this.set.id).subscribe(() => {
       this.router.navigate([`/topics/${this.topic.id}`]);
       this.loader.stopLoading();

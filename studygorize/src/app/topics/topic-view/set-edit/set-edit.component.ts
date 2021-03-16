@@ -106,7 +106,7 @@ export class SetEditComponent implements OnInit {
   onSave() {
     // is it valid?
     if (this.setForm.valid) {
-      this.loader.startLoading();
+      this.loader.startLoading('');
       let partialSet = this.setForm.value;
       let attributes: Attribute[] = partialSet.attributes.map((attribute, i) => new Attribute(i + 1, attribute.attribute))
 
@@ -135,7 +135,7 @@ export class SetEditComponent implements OnInit {
   }
 
   onDelete() {
-    this.loader.startLoading();
+    this.loader.startLoading('');
     this.topicService.deleteSet(this.topicId, this.setId).subscribe(() => {
       this.router.navigate([`/topics/${this.topicId}`]);
       this.loader.stopLoading();

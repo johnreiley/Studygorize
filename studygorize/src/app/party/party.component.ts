@@ -30,11 +30,11 @@ export class PartyComponent implements OnInit, OnDestroy {
   showQuestionCount: boolean = false;
   currentQuestionIndex: number = 0;
   showPartyId: boolean = false;
-  questionDuration: number = 5;
+  questionDuration: number = 10;
   questionResponseCount: number = 0;
   questionResponses: number[] = [];
   private partyService: PartyService;
-  private DEFAULT_QUESTION_DURATION: number = 5;
+  private DEFAULT_QUESTION_DURATION: number = 10;
 
   constructor(private topicService: TopicService,
     private testService: TestService,
@@ -44,7 +44,7 @@ export class PartyComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.loadingService.startLoading();
+    this.loadingService.startLoading('');
     this.partyState = PartyState.PartyOptions;
     this.topicService.getTopics().subscribe((topics) => {
       this.topics = topics;
@@ -97,7 +97,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   }
 
   createParty(partyConfig: TestConfig) {
-    this.loadingService.startLoading();
+    this.loadingService.startLoading('Creating party');
     
     let test = this.testService.generateMultiTopicTest(partyConfig, this.topics);
     this.partyQuestions = this.partyService.convert(test);
@@ -172,7 +172,10 @@ export class PartyComponent implements OnInit, OnDestroy {
     if (this.currentQuestionIndex < this.partyQuestions.length - 1) {
       this.partyState = PartyState.Scoreboard;
     } else {
+      this.showPartyId = false;
+      this.showQuestionCount = false;
       this.partyState = PartyState.PartyResults;
+      this.partyService.sendPartyResults();
     }
   }
   

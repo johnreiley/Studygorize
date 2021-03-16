@@ -1,3 +1,5 @@
+@import '../../../partials/variables';
+
 #newPartyBtn {
   position: absolute;
   right: 1em;
@@ -11,10 +13,11 @@ html, body {
 
 .results {
   position: fixed;
+  z-index: -1;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 1em);
+  height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -25,25 +28,28 @@ html, body {
   display: flex;
   align-items: center;
   flex-flow: column;
-  width: 150px;
-  background-color: gray;
+  width: 15%;
+  background-color: #c3c3c3;
   height: 50px;
-  margin: 0 1em;
   animation: growUpward 4s;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+  box-shadow: $box-shadow-md;
 
   &:nth-of-type(1) {
-    height: 300px;
+    height: 45%;
     animation-duration: 4s;
+    border-top-left-radius: 7px;
   }
   &:nth-of-type(2) {
-    height: 400px;
+    z-index: 1;
+    height: 55%;
     animation-duration: 5s;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
   }
   &:nth-of-type(3) {
-    height: 200px;
+    height: 35%;
     animation-duration: 3s;
+    border-top-right-radius: 7px;
   }
   
   .pedistal-name {

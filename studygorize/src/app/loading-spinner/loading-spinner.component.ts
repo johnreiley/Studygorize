@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
 
 @Component({
@@ -7,13 +7,15 @@ import { LoadingService } from '../shared/services/loading.service';
   styleUrls: ['./loading-spinner.component.scss']
 })
 export class LoadingSpinnerComponent implements OnInit {
+  @Input() message: string = '';
   isLoading = true;
 
   constructor(private loadingService: LoadingService) { }
 
   ngOnInit() {
-    this.loadingService.loadingChange.subscribe(isLoading => {
+    this.loadingService.loadingChange.subscribe(({isLoading, message}) => {
         this.isLoading = isLoading;
+        this.message = this.isLoading ? message : '';
     });
   }
 
