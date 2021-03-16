@@ -152,7 +152,6 @@ export class PartyComponent implements OnInit, OnDestroy {
       }
     });
     this.questionResults = [];
-    this.questionResponses = [];
   }
 
   onSkipQuestion() {
@@ -170,6 +169,7 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   showScoreboard() {
     if (this.currentQuestionIndex < this.partyQuestions.length - 1) {
+      this.questionResponses = [];
       this.partyState = PartyState.Scoreboard;
     } else {
       this.showPartyId = false;

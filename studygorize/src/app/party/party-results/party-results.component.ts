@@ -24,7 +24,9 @@ export class PartyResultsComponent implements OnInit {
         uuid: ""
       });
     }
-    this.confetti.start(3000);
+    setTimeout(() => {
+      this.confetti.start(3000);
+    }, 1000);
   }
 
   onNewParty() {
