@@ -42,7 +42,7 @@ export class ImportComponent implements OnInit {
   onSubmit() {
     if (this.fileForm.valid && this.csvInput.nativeElement.files[0]) {
       if (this.csvInput.nativeElement.files[0]) {
-        this.loadingService.startLoading();
+        this.loadingService.startLoading('Uploading file');
         this.topicService.saveCsvAsTopic(this.csvInput.nativeElement.files[0]).subscribe((id) => {
           if (id === undefined) {
             this.loadingService.stopLoading();

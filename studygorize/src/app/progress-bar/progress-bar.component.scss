@@ -1,0 +1,19 @@
+.progress {
+  margin-bottom: 1em;
+}
+
+.progress-bar {
+  width: 100%;
+  animation-name: slideRight;
+  animation-timing-function: linear;
+}
+
+@keyframes slideRight {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

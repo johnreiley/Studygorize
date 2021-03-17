@@ -13,6 +13,7 @@ export class TestOptionsComponent implements OnInit {
   testConfig: TestConfig = { 
     shuffle: false, 
     questionCount: 0, 
+    questionTimeLimit: 0,
     isMultiTopicTest: false,
     allowPrevousNavigation: true, 
     skipAttributesWithNoValue: true, 

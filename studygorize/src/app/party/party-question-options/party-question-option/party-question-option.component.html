@@ -1,0 +1,6 @@
+<div 
+  class="question-option" 
+  [ngClass]="{'muted-option': reveal && !isAnswer, 'highlighted-option': reveal && isAnswer}">
+  <span class="option-letter theme-font">{{ letter }}</span>
+  <span class="option-text">{{ option }}</span>
+</div>

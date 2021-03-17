@@ -83,7 +83,8 @@ export class TopicEditComponent implements OnInit {
       [], [], [], false
     );
     
-    this.loader.startLoading();
+    let message = this.isEditMode ? 'Applying changes' : 'Saving topic';
+    this.loader.startLoading(message);
 
     if (this.isEditMode) {
       topic.setTemplate = partialTopic.attributes.map((attribute, i) => {
@@ -109,7 +110,7 @@ export class TopicEditComponent implements OnInit {
   }
 
   onDelete() {
-    this.loader.startLoading();
+    this.loader.startLoading('');
     this.topicService.deleteTopic(this.topic.id).subscribe(() => {
       this.router.navigate(['/topics']);
       this.loader.stopLoading();

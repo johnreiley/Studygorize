@@ -4,6 +4,7 @@ export class TestConfig {
   constructor(
     public shuffle: boolean,
     public questionCount: number,
+    public questionTimeLimit: number,
     public isMultiTopicTest: boolean,
     public allowPrevousNavigation: boolean,
     public skipAttributesWithNoValue: boolean,

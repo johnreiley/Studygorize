@@ -1,1 +1,53 @@
-<p>party works!</p>
+<div class="view">
+  
+  <app-party-waiting-room 
+    *ngIf="partyState === PartyState.WaitingRoom"
+    [partyId]="partyId"
+    [users]="users"
+    (startParty)="startParty()">
+  </app-party-waiting-room>
+
+  <app-party-question-loading
+    *ngIf="partyState === PartyState.QuestionLoading"
+    [question]="partyQuestions[currentQuestionIndex].name"
+    [time]="5"
+    (showOptions)="showOptions()">
+  </app-party-question-loading>
+  
+  <app-party-question-options
+    *ngIf="partyState === PartyState.ShowOptions || partyState === PartyState.QuestionResult"
+    [duration]="questionDuration"
+    [question]="partyQuestions[currentQuestionIndex]"
+    [responses]="questionResponses"
+    (showAnswer)="onShowResults()"
+    (skipQuestion)="onSkipQuestion()"
+    (next)="showScoreboard()">
+  </app-party-question-options>
+
+  <app-party-scoreboard
+    *ngIf="partyState === PartyState.Scoreboard"
+    [users]="users"
+    (next)="loadNextQuestion()"
+  ></app-party-scoreboard>
+
+  <app-party-options 
+    *ngIf="partyState === PartyState.PartyOptions"
+    [topics]="topics" 
+    (createParty)="createParty($event)">
+  </app-party-options>
+
+  <app-party-results
+    *ngIf="partyState === PartyState.PartyResults"
+    [users]="users">
+  </app-party-results>
+
+</div>
+
+<section *ngIf="showQuestionCount" id="questionCount">
+  <h4>{{ currentQuestionIndex + 1 }}/{{ partyQuestions.length }}</h4>
+</section>
+<section *ngIf="showPartyId" id="partyId">
+  <div class="alert alert-primary text-center">
+    <strong>studygorize.party</strong> Party Code: <strong>{{ partyId }}</strong>
+  </div>
+</section>

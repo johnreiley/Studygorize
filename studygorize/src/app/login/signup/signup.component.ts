@@ -35,7 +35,7 @@ export class SignupComponent implements OnInit {
       this.setPasswordWarning(passwordMsg);
       return;
     }
-    this.loadingService.startLoading();
+    this.loadingService.startLoading('Creating an account');
     this.authService
       .register('email', 
         { email: email, password: password })

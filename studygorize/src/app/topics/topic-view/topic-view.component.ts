@@ -29,7 +29,7 @@ export class TopicViewComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.loader.startLoading();
+    this.loader.startLoading('');
     this.route.params.subscribe((params: Params) => {
       let id = params['id'];
       if (id) {
@@ -47,7 +47,7 @@ export class TopicViewComponent implements OnInit {
   }
 
   onDelete() {
-    this.loader.startLoading();
+    this.loader.startLoading('Deleting topic');
     this.topicService.deleteTopic(this.topic.id).subscribe(() => {
       this.router.navigate(['/topics']);
       this.loader.stopLoading();

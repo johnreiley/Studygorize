@@ -1,0 +1,42 @@
+<div class="content-wrapper-600 m-auto">
+  <div class="alert alert-primary text-center">
+    Join at <strong>studygorize-party.herokuapp.com</strong> with party code: <strong>{{ partyId }}</strong>
+  </div>
+  <div class="row mb-2">
+    <div class="col-6">
+      <h4>Party</h4>
+    </div>
+    <div class="col-6">
+      <div class="d-flex float-right">
+        <button disabled class="btn btn-secondary icon-btn mr-2">
+          <i class="material-icons">person</i>
+          {{ users.length }}
+        </button>
+        <button 
+          class="btn" 
+          [ngClass]="{'btn-secondary': (users.length < 2), ' btn-primary': (users.length > 1)}" 
+          [disabled]="users.length < 2"
+          (click)="onStart()">
+          Start
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div *ngIf="users.length > 0; else noOneHere" class="users-container">
+        <div
+          *ngFor="let user of users" 
+          class="user-tag alert alert-secondary">
+          <strong>{{ user.name }}</strong>
+        </div>
+      </div>
+      <ng-template #noOneHere>
+        <h5 class="text-center text-muted">Waiting for players to join...</h5>
+        <div class="progress w-100">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" style="width: 100%"></div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
