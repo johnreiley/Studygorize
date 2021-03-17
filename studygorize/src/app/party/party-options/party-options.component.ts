@@ -15,6 +15,7 @@ export class PartyOptionsComponent implements OnInit {
   partyConfig: TestConfig = {
     shuffle: false, 
     questionCount: 25, 
+    questionTimeLimit: 10,
     isMultiTopicTest: true,
     allowPrevousNavigation: false, 
     skipAttributesWithNoValue: true,
@@ -25,6 +26,7 @@ export class PartyOptionsComponent implements OnInit {
 
   showTopicOptionsError = false;
   showQuestionLimitError = false;
+  showTimeLimitError = false;
 
   constructor() { }
 
@@ -56,6 +58,13 @@ export class PartyOptionsComponent implements OnInit {
       isValid = false;
     } else {
       this.showQuestionLimitError = false;
+    }
+
+    if (this.partyConfig.questionTimeLimit === undefined || this.partyConfig.questionTimeLimit < 1 || this.partyConfig.questionTimeLimit > 999) {
+      this.showTimeLimitError = true;
+      isValid = false;
+    } else {
+      this.showTimeLimitError = false;
     }
     
     if (isValid) {

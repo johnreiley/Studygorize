@@ -4,9 +4,11 @@
   border-radius: 7px;
 }
 
+label h6 {
+  display: inline;
+}
 
-
-#questionLimit {
+#questionLimit, #timeLimit {
   max-width: 100px;
 }
 

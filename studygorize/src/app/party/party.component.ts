@@ -98,9 +98,11 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   createParty(partyConfig: TestConfig) {
     this.loadingService.startLoading('Creating party');
+    this.partyConfig = partyConfig;
     
     let test = this.testService.generateMultiTopicTest(partyConfig, this.topics);
     this.partyQuestions = this.partyService.convert(test);
+    this.questionDuration = partyConfig.questionTimeLimit;
 
     if (this.partyId === undefined) {
       let subscription = this.partyService.partyCreated.subscribe((partyId) => {
@@ -180,7 +182,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   }
   
   loadNextQuestion() {
-    this.questionDuration = this.DEFAULT_QUESTION_DURATION;
+    this.questionDuration = this.partyConfig.questionTimeLimit;
     this.currentQuestionIndex++;
     this.partyState = PartyState.QuestionLoading;
     this.partyService.loadQuestion();
