@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Topic } from 'src/app/shared/models/topic.model';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { TopicService } from 'src/app/shared/services/topic.service';
 
@@ -12,6 +13,7 @@ import { TopicService } from 'src/app/shared/services/topic.service';
 export class ImportComponent implements OnInit {
   @ViewChild('csvInput') csvInput: ElementRef;
   @ViewChild('form') fileForm: NgForm;
+  topic: Topic;
   isOpen = false;
   alertText = "";
   showAlert = false;
@@ -31,7 +33,16 @@ export class ImportComponent implements OnInit {
 
   onFileSelect() {
     if (this.csvInput.nativeElement.files[0]) {
-      this.showAlert = false;
+      this.topicService.convertCsvToTopic(this.csvInput.nativeElement.files[0]).subscribe((topic) => {
+        if (topic === undefined) {
+          this.loadingService.stopLoading();
+          this.alertText = this.alertTextOptions["badFormat"];
+          this.showAlert = true;
+        } else {
+          this.showAlert = false;
+          this.topic = topic;
+        }
+      });
     }
   }
 

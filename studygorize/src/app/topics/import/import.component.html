@@ -55,4 +55,16 @@
       </form>
     </div>
   </div>
+
+  <div class="preview-container">
+    <h4>Preview</h4>
+    <app-topic-table  
+      *ngIf="topic !== undefined; else noPreview" 
+      [topic]="topic" 
+      [isPreview]="true">
+    </app-topic-table>
+    <ng-template #noPreview>
+      Select a file to show a preview
+    </ng-template>
+  </div>
 </div>

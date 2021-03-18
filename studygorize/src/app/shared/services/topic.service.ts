@@ -209,6 +209,23 @@ export class TopicService {
     })
   }
 
+  public convertCsvToTopic(file): Observable<Topic> {
+    return new Observable<Topic>((observable) => {
+      this.papa.parse(file, {
+        header: true,
+        complete: (result) => {
+          if (!this.containsNameProperty(result.data[0])) {
+            observable.next(undefined);
+          } else {
+            let topic = this.ObjectArrayToTopic(result);
+            topic.title = file.name.split('.')[0];
+            observable.next(topic);
+          }
+        }
+      });
+    })
+  }
+
   public getTopics(): Observable<Topic[]> {
     if (localStorage.getItem(this.key)) {
       return new Observable<Topic[]>((observable) => {

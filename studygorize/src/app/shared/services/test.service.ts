@@ -56,9 +56,13 @@ export class TestService {
         attribute = topic.setTemplate[Math.floor(Math.random() * topic.setTemplate.length)];
       } while (attributeDictionary[attribute.id] === undefined);
 
-      let answerAttribute: DictionaryAttribute = attributeDictionary[attribute.id]
+      let answerAttribute = attributeDictionary[attribute.id]
         .splice(Math.floor(Math.random() * attributeDictionary[attribute.id].length), 1)[0];
-      
+      // don't count it if it's a blank string
+      if (answerAttribute.attributeValue === '') {
+        continue;
+      }
+
       let questionName;
       if (useLongQuestionName) {
         questionName = this.generateMultiTopicQuestionName(topic.title, answerAttribute.setName, attribute.value);
@@ -96,21 +100,30 @@ export class TestService {
       }
     }
 
+    console.log(attributeDictionary);
+    console.log(optionsBankDictionary);
+
     for (let i = 0; i < questionCount; i++) {
       // randomly select which attribute to use
       do {
         attribute = setTemplate[Math.floor(Math.random() * setTemplate.length)];
-      } while (attributeDictionary[attribute.id] === undefined);
+      } while (attributeDictionary[attribute.id] === undefined || attributeDictionary[attribute.id].length === 0);
 
       // pick the answer
       let answerIndex = Math.floor(Math.random() * attributeDictionary[attribute.id].length);
       let answerAttribute: DictionaryAttribute = attributeDictionary[attribute.id]
-      .splice(answerIndex, 1)[0];
+        .splice(answerIndex, 1)[0];
+      if (answerAttribute.attributeValue === '') {
+        continue;
+      }
 
       // generate the options
       let attributeArray: string[] = this.distinct([ ...optionsBankDictionary[attribute.id] ].map(da => da.attributeValue));
       attributeArray.splice(attributeArray.indexOf(answerAttribute.attributeValue), 1);
-      attributeArray = this.shuffle(attributeArray);
+      attributeArray = this.shuffle(attributeArray).filter(a => a !== '');
+      if (attributeArray.length === 0) {
+        continue;
+      }
       attributeArray = attributeArray.splice(0, (attributeArray.length > 3 ? 3 : attributeArray.length));
       let options = [answerAttribute.attributeValue, ...attributeArray];
       options = this.shuffle(options);
@@ -138,10 +151,6 @@ export class TestService {
   private generateAttributeDictionary(setTemplate: Attribute[], sets: Set[], config: TestConfig): any {
     let attributeDictionary = {};
 
-    if (config.skipAttributesWithNoValue) {
-      sets = this.filterAttributesWithNoValue(sets);
-    }
-
     setTemplate.forEach(attribute => {
       if (attributeDictionary[attribute.id] === undefined) {
         attributeDictionary[attribute.id] = [];
@@ -161,6 +170,10 @@ export class TestService {
         delete attributeDictionary[attribute.id];
       }
     })
+
+    if (config.skipAttributesWithNoValue) {
+      attributeDictionary = this.filterAttributesWithOneValue(attributeDictionary);
+    }
 
     return attributeDictionary;
   }
@@ -200,6 +213,18 @@ export class TestService {
       set.attributes = set.attributes.filter(a => a.value !== "");
       return set;
     });
+  }
+  
+  private filterAttributesWithOneValue(attributeDictionary: any): any {
+    for(let attributeId in attributeDictionary) {
+      let numValues = (<Array<DictionaryAttribute>>attributeDictionary[attributeId])
+        .filter(da => da.attributeValue !== "")
+        .length;
+      if (numValues < 2) {
+        delete attributeDictionary[attributeId];
+      }
+    }
+    return attributeDictionary;
   }
 
   private shuffle(array: any[]): any[] {
@@ -299,6 +324,7 @@ export class TestService {
 
     // make sure there aren't more questions than expected because I'm paranoid
     questions.splice(finalQuestionCount);
+    console.log(questions);
     return new Test(questions, undefined, undefined);
   }
 
