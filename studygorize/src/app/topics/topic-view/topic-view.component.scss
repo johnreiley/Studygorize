@@ -1,28 +1,28 @@
 @import '../../../partials/variables';
 
-.table-responsive-xl {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: .25rem;
-  margin-bottom: 1rem;
-  border: solid 1px lightgray;
-  overflow-x: scroll;
+// .table-responsive-xl {
+//   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+//   border-radius: .25rem;
+//   margin-bottom: 1rem;
+//   border: solid 1px lightgray;
+//   overflow-x: scroll;
 
-  .table {
-    margin-bottom: 0;
-  }
-}
+//   .table {
+//     margin-bottom: 0;
+//   }
+// }
 
-tbody th,
-thead th:first-of-type {
-  position: sticky;
-  left: -1px;
-  box-shadow: $box-shadow-sm;
-}
+// tbody th,
+// thead th:first-of-type {
+//   position: sticky;
+//   left: -1px;
+//   box-shadow: $box-shadow-sm;
+// }
 
-tbody th {
-  background-color: white;
-}
+// tbody th {
+//   background-color: white;
+// }
 
-tbody tr {
-  cursor: pointer;
-}
+// tbody tr {
+//   cursor: pointer;
+// }
