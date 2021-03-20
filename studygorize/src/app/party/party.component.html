@@ -38,7 +38,8 @@
 
   <app-party-results
     *ngIf="partyState === PartyState.PartyResults"
-    [users]="users">
+    [users]="users"
+    (redoParty)="redoParty()">
   </app-party-results>
 
 </div>

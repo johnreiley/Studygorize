@@ -11,6 +11,7 @@ import { ConfettiService } from 'src/app/shared/services/confetti.service';
 export class PartyResultsComponent implements OnInit {
   @Input() users: PartyUser[] = [];
   @Output() newParty = new EventEmitter<void>();
+  @Output() redoParty = new EventEmitter<void>();
 
   constructor(private confetti: ConfettiService,
     private router: Router) { }
@@ -31,7 +32,13 @@ export class PartyResultsComponent implements OnInit {
 
   onNewParty() {
     this.newParty.emit();
-    this.router.navigate(['topics', 'party']);
+    this.router.navigate(['topics']).then(() => {
+      this.router.navigate(['topics', 'party']);
+    });
+  }
+
+  onRedo() {
+    this.redoParty.emit();
   }
 
 }

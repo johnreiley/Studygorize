@@ -15,7 +15,7 @@ export class LoadingService {
   //   this.loadingChange.next(this.isLoading);
   // }
 
-  startLoading(message: string) {
+  startLoading(message: string = "") {
     this.isLoading = true;
     this.loadingChange.next({isLoading: this.isLoading, message});
   }
