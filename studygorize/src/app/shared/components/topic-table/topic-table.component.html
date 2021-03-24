@@ -11,11 +11,12 @@
     </thead>
     <tbody>
       <ng-container *ngIf="isPreview; else showFull">
-        <tr *ngFor="let set of topic?.sets">
+        <tr *ngFor="let set of topic?.sets; let i = index">
           <th>{{ set.name }}</th>
           <td *ngFor="let setAttribute of set?.attributes">
             {{ setAttribute.value }}
           </td>
+          <td>{{ tags[i] }}</td>
         </tr>
       </ng-container>
       <ng-template #showFull>
