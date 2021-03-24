@@ -45,6 +45,7 @@ import { PartyQuestionOptionComponent } from './party/party-question-options/par
 import { PartyScoreboardComponent } from './party/party-scoreboard/party-scoreboard.component';
 import { PartyScoreboardLabelComponent } from './party/party-scoreboard/party-scoreboard-label/party-scoreboard-label.component';
 import { PartyResultsComponent } from './party/party-results/party-results.component';
+import { TopicTableComponent } from './shared/components/topic-table/topic-table.component';
 
 // const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: { withCredentials: false } };
 
@@ -83,7 +84,8 @@ import { PartyResultsComponent } from './party/party-results/party-results.compo
     PartyQuestionOptionComponent,
     PartyScoreboardComponent,
     PartyScoreboardLabelComponent,
-    PartyResultsComponent
+    PartyResultsComponent,
+    TopicTableComponent
   ],
   imports: [
     BrowserModule,

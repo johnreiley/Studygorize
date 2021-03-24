@@ -1,8 +1,7 @@
-// $primary: rgb(30, 192, 165);
+@import './partials/variables';
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 @import './partials/fonts';
-@import './partials/variables';
 @import './partials/cards';
 @import './partials/content-wrapper';
 @import './partials/toasts';
@@ -25,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn.btn-primary {
-    box-shadow: 0 3px 10px 0 #007bff42;
+    box-shadow: 0 3px 10px 0 $primary-btn-shadow;
 }
 
 /******* QUESTION OPTIONS *******/
