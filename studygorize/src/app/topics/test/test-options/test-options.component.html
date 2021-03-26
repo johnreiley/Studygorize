@@ -41,6 +41,26 @@
         You need to select at least one type of question
       </div>
     </fieldset>
+
+    <!-- QUESTION LIMIT -->
+    <fieldset class="form-group">
+      <label for="questionLimit"><h6 class="mb-1">Question Limit</h6></label>
+      <i 
+        class="material-icons text-primary help-icon" 
+        placement="right"
+        ngbPopover='The maximum number of questions to be generated (set the question limit to zero to remove any limit)'>
+        help</i>
+      <input [(ngModel)]="testConfig.questionCount" 
+        id="questionLimit" 
+        name="questionCount" 
+        class="form-control" 
+        type="number" 
+        min="0">
+      <div *ngIf="showQuestionLimitError" class="alert alert-danger" role="alert">
+        Enter a valid question limit
+      </div>
+    </fieldset>
+
     <div class="form-group submit-btn-container mb-0">
       <button type="submit" class="btn btn-primary">Begin Test</button>
     </div>

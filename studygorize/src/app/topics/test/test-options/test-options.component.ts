@@ -12,7 +12,7 @@ export class TestOptionsComponent implements OnInit {
   @Input() topics: Topic[];
   testConfig: TestConfig = { 
     shuffle: false, 
-    questionCount: 0, 
+    questionCount: 25, 
     questionTimeLimit: 0,
     isMultiTopicTest: false,
     allowPrevousNavigation: true, 
@@ -23,6 +23,7 @@ export class TestOptionsComponent implements OnInit {
   };
   showQuestionTypesError = false;
   showTopicOptionsError = false;
+  showQuestionLimitError = false;
 
   constructor() { }
 
@@ -56,6 +57,13 @@ export class TestOptionsComponent implements OnInit {
       isValid = false;
     } else {
       this.showTopicOptionsError = false;
+    }
+
+    if (this.testConfig.questionCount === undefined || this.testConfig.questionCount < 0) {
+      this.showQuestionLimitError = true;
+      isValid = false;
+    } else {
+      this.showQuestionLimitError = false;
     }
     
     if (isValid) {
