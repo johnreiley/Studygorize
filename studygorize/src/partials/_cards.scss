@@ -11,7 +11,7 @@
 .card {
   border: none;
   box-shadow: $box-shadow-xs;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.2s;
 }
 
 .drag-icon:active ~ app-attribute-card .card {

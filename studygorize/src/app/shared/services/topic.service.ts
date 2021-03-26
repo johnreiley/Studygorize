@@ -28,7 +28,6 @@ export class TopicService {
         this.unsubscribeRealTime();
       } else if (isLoggedIn) {
         this.topicCollectionRef = firebaseService.getCollectionReference(this.authService.getUid(), this.key);
-        // this.topicCollectionRef.
         this.unsubscribeRealTime = this.topicCollectionRef.onSnapshot((snapshot) => {
           let updatedTopics: Topic[] = [];
           snapshot.forEach(doc => {
@@ -115,6 +114,7 @@ export class TopicService {
   private compileAllTags(topic: Topic): Category[] {
     let allTags: Category[] = [];
     topic.sets.forEach(set => {
+      console.log(set.name, ": ", set.tags);
       allTags.push(...set.tags);
     });
     allTags = this.removeDuplicateTagsById(allTags);
@@ -348,7 +348,7 @@ export class TopicService {
       this.getTopic(topicId).subscribe(topic => {
         newSet.attributes = newSet.attributes.map(a => { return { ...a } });
         newSet.tags = this.removeDuplicateTagsByName(this.updateTagIds(newSet.tags, topic.categories));
-        topic.sets[topic.sets.indexOf(oldSet)] = { ...newSet };
+        topic.sets[topic.sets.findIndex(s => s.id === oldSet.id)] = { ...newSet };
         topic.categories = this.compileAllTags(topic);
         this.topicCollectionRef.doc(topicId).set({ ...topic })
         .then(() => {

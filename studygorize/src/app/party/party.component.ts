@@ -34,7 +34,6 @@ export class PartyComponent implements OnInit, OnDestroy {
   questionResponseCount: number = 0;
   questionResponses: number[] = [];
   private partyService: PartyService;
-  private DEFAULT_QUESTION_DURATION: number = 10;
 
   constructor(private topicService: TopicService,
     private testService: TestService,
@@ -62,7 +61,7 @@ export class PartyComponent implements OnInit, OnDestroy {
         this.users.splice(index, 1);
       }
       if (this.users.length === 0 && this.partyState !== PartyState.WaitingRoom) {
-        // this.endParty();
+        this.endParty();
       }
     });
 
@@ -116,12 +115,10 @@ export class PartyComponent implements OnInit, OnDestroy {
   }
 
   startParty() {
-    if (this.users.length > 1) {
-      this.showPartyId = true;
-      this.showQuestionCount = true;
-      this.partyState = PartyState.QuestionLoading;
-      this.partyService.loadQuestion();
-    }
+    this.showPartyId = true;
+    this.showQuestionCount = true;
+    this.partyState = PartyState.QuestionLoading;
+    this.partyService.loadQuestion();
   }
 
   showOptions() {
@@ -186,6 +183,16 @@ export class PartyComponent implements OnInit, OnDestroy {
     this.currentQuestionIndex++;
     this.partyState = PartyState.QuestionLoading;
     this.partyService.loadQuestion();
+  }
+
+  redoParty() {
+    this.loadingService.startLoading();
+    this.currentQuestionIndex = 0;
+    this.users.forEach(u => u.score = 0);
+    this.questionDuration = this.partyConfig.questionTimeLimit;
+    this.questionResponses = [];
+    this.startParty();
+    this.loadingService.stopLoading();
   }
 
   endParty() {
