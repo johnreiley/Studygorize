@@ -1,7 +1,12 @@
 .options-container {
   border: solid 1px lightgray;
   padding: 1em;
+  margin-bottom: 1em;
   border-radius: 7px;
+}
+
+#questionLimit {
+  max-width: 100px;
 }
 
 .submit-btn-container {
