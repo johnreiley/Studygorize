@@ -14,3 +14,35 @@
     }
   }
 }
+
+
+.custom-control {
+  padding-left: 1.75rem;
+}
+
+.custom-control-input {
+  width: 1.25rem;
+  height: 1.5rem;
+}
+
+.custom-checkbox .custom-control-label::before {
+  border-radius: 0.35rem;
+}
+.custom-checkbox .custom-control-label,
+.custom-radio .custom-control-label {
+  padding: 0.25rem;
+}
+.custom-checkbox .custom-control-label:hover::before,
+.custom-checkbox .custom-control-label:hover::after,
+.custom-radio .custom-control-label:hover::before,
+.custom-radio .custom-control-label:hover::after {
+  transform: scale(1.1);
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  top: 0.375rem;
+  left: -1.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}

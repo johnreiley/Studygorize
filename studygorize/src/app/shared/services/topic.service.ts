@@ -28,7 +28,6 @@ export class TopicService {
         this.unsubscribeRealTime();
       } else if (isLoggedIn) {
         this.topicCollectionRef = firebaseService.getCollectionReference(this.authService.getUid(), this.key);
-        // this.topicCollectionRef.
         this.unsubscribeRealTime = this.topicCollectionRef.onSnapshot((snapshot) => {
           let updatedTopics: Topic[] = [];
           snapshot.forEach(doc => {
@@ -115,6 +114,7 @@ export class TopicService {
   private compileAllTags(topic: Topic): Category[] {
     let allTags: Category[] = [];
     topic.sets.forEach(set => {
+      console.log(set.name, ": ", set.tags);
       allTags.push(...set.tags);
     });
     allTags = this.removeDuplicateTagsById(allTags);
@@ -209,6 +209,23 @@ export class TopicService {
     })
   }
 
+  public convertCsvToTopic(file): Observable<Topic> {
+    return new Observable<Topic>((observable) => {
+      this.papa.parse(file, {
+        header: true,
+        complete: (result) => {
+          if (!this.containsNameProperty(result.data[0])) {
+            observable.next(undefined);
+          } else {
+            let topic = this.ObjectArrayToTopic(result);
+            topic.title = file.name.split('.')[0];
+            observable.next(topic);
+          }
+        }
+      });
+    })
+  }
+
   public getTopics(): Observable<Topic[]> {
     if (localStorage.getItem(this.key)) {
       return new Observable<Topic[]>((observable) => {
@@ -222,10 +239,10 @@ export class TopicService {
   public getTopic(id: string): Observable<Topic> {
     return new Observable<Topic>((observable) => {
       if (this.topics.length > 0) {
-        observable.next(this.topics.find(r => r.id === id))
+        observable.next(JSON.parse(JSON.stringify(this.topics.find(r => r.id === id))));
       } else {
         this.fetchTopics().subscribe((topics) => {
-          observable.next(topics.find(r => r.id === id));
+          observable.next(JSON.parse(JSON.stringify(topics.find(r => r.id === id))));
         })
       }
     });
@@ -331,7 +348,7 @@ export class TopicService {
       this.getTopic(topicId).subscribe(topic => {
         newSet.attributes = newSet.attributes.map(a => { return { ...a } });
         newSet.tags = this.removeDuplicateTagsByName(this.updateTagIds(newSet.tags, topic.categories));
-        topic.sets[topic.sets.indexOf(oldSet)] = { ...newSet };
+        topic.sets[topic.sets.findIndex(s => s.id === oldSet.id)] = { ...newSet };
         topic.categories = this.compileAllTags(topic);
         this.topicCollectionRef.doc(topicId).set({ ...topic })
         .then(() => {

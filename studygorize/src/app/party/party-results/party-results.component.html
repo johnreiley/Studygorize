@@ -1,0 +1,18 @@
+<div class="part-results-container">
+  <button id="newPartyBtn" class="btn btn-primary" (click)="onNewParty()">New Party</button>
+  <button id="redoPartyBtn" class="btn btn-primary icon-btn-right" (click)="onRedo()">Redo <i class="material-icons">replay</i></button>
+  <div class="results">
+    <div class="place-pedistal">
+      <div class="pedistal-name">{{users[1]?.name}}</div>
+      <div class="pedistal-score">{{users[1]?.score}}</div>
+    </div>
+    <div class="place-pedistal">
+      <div class="pedistal-name">{{users[0]?.name}}</div>
+      <div class="pedistal-score">{{users[0]?.score}}</div>
+    </div>
+    <div class="place-pedistal">
+      <div class="pedistal-name">{{users[2]?.name}}</div>
+      <div class="pedistal-score">{{users[2]?.score}}</div>
+    </div>
+  </div>
+</div>

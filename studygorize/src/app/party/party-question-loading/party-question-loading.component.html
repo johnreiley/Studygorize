@@ -1,0 +1,9 @@
+<div class="question-container">
+  <div class="wrapper">
+    <h3 class="text-center">{{question}}</h3>
+    <app-progress-bar
+      [seconds]="time"
+      (progressDone)="onProgressDone()">
+    </app-progress-bar>
+  </div>
+</div>

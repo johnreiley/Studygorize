@@ -1,0 +1,48 @@
+<div class="options-container">
+  <h4>Test Options</h4>
+  <form (ngSubmit)=onSubmit() #configForm="ngForm">
+
+    <!-- TOPIC OPTIONS -->
+    <fieldset class="form-group" *ngIf="testConfig.isMultiTopicTest">
+      <h6 class="mb-2">Topics</h6>
+      <div class="custom-control custom-checkbox" *ngFor="let topicOption of testConfig.topicOptions; let i = index;">
+        <input [(ngModel)]="topicOption.include" 
+          type="checkbox" 
+          class="custom-control-input"
+          name="topics"
+          id="topicCheck{{ i + 1 }}">
+          <label for="topicCheck{{ i + 1 }}" class="custom-control-label">{{ topicOption.topicTitle }}</label>
+      </div>
+      <div *ngIf="showTopicOptionsError" class="alert alert-danger" role="alert">
+        You need to select at least one topic
+      </div>
+    </fieldset>
+
+    <!-- QUESTION TYPES -->
+    <fieldset class="form-group">
+      <h6 class="mb-2">Question Types</h6>
+      <div class="custom-control custom-checkbox">
+        <input [(ngModel)]="testConfig.includeMultipleChoice" 
+          type="checkbox" 
+          class="custom-control-input" 
+          name="questionTypes" 
+          id="multiChoiceCheck">
+        <label for="multiChoiceCheck" class="custom-control-label">Multiple Choice</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input [(ngModel)]="testConfig.includeShortAnswer"  
+          type="checkbox" 
+          class="custom-control-input" 
+          name="questionTypes" 
+          id="shortAnswerCheck">
+        <label for="shortAnswerCheck" class="custom-control-label">Short Answer</label>
+      </div>
+      <div *ngIf="showQuestionTypesError" class="alert alert-danger" role="alert">
+        You need to select at least one type of question
+      </div>
+    </fieldset>
+    <div class="form-group submit-btn-container mb-0">
+      <button type="submit" class="btn btn-primary">Begin Test</button>
+    </div>
+  </form>
+</div>

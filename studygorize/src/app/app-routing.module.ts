@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateOptionsComponent } from './create-options/create-options.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './login/signup/signup.component';
+import { PartyComponent } from './party/party.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ImportComponent } from './topics/import/import.component';
@@ -20,6 +21,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent},
   { path: 'create', component: CreateOptionsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics', component: TopicsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/party', component: PartyComponent, canActivate: [AuthGuard], pathMatch: 'full'},
+  { path: 'topics/test', component: TestComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/new', component: TopicEditComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/import', component: ImportComponent, canActivate: [AuthGuard], pathMatch: 'full'},
   { path: 'topics/:id', component: TopicViewComponent, canActivate: [AuthGuard], pathMatch: 'full'},

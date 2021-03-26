@@ -40,24 +40,9 @@
       [set]="set">
     </app-set-lite>
   </div>
-  <div class="table-responsive-xl" *ngIf="!isGridView">
-    <table class="table table-bordered table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Name</th>
-          <th *ngFor="let attribute of topic?.setTemplate">
-            {{ attribute.value }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let set of topic?.sets" [routerLink]="['set/' + set?.id]">
-          <th>{{ set.name }}</th>
-          <td *ngFor="let setAttribute of set?.attributes">
-            {{ setAttribute.value }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <app-topic-table 
+    *ngIf="!isGridView"
+    [topic]="topic"
+    [isPreview]="false">
+  </app-topic-table>
 </div>

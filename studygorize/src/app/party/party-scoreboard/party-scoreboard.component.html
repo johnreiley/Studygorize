@@ -1,0 +1,28 @@
+<button (click)="onNext()" id="nextBtn" class="btn btn-primary">Next</button>
+<div class="scoreboard-container">
+  <ul>
+    <app-party-scoreboard-label
+      *ngFor="let user of users"
+      [name]="user.name"
+      [score]="user.score"
+    ></app-party-scoreboard-label>
+  </ul>
+</div>
+
+<!-- <div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="scoreboard-container">
+      <ul>
+        <app-party-scoreboard-label
+          *ngFor="let user of users"
+          [name]="user.name"
+          [score]="user.score"
+        ></app-party-scoreboard-label>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-1">
+    <button (click)="onNext()" id="nextBtn" class="btn btn-primary">Next</button>
+  </div>
+</div> -->

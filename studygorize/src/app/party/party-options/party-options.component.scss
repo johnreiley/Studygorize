@@ -1,0 +1,22 @@
+.options-container {
+  border: solid 1px lightgray;
+  padding: 1em;
+  border-radius: 7px;
+}
+
+label h6 {
+  display: inline;
+}
+
+#questionLimit, #timeLimit {
+  max-width: 100px;
+}
+
+.submit-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.alert.alert-danger {
+  margin-top: 0.5em;
+}

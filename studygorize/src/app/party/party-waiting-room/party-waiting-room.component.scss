@@ -1,0 +1,21 @@
+@import '../../../partials/animations';
+
+.users-container {
+  border: solid 1px lightgray;
+  padding: 1em;
+  border-radius: 7px;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.user-tag {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  width: fit-content;
+  height: fit-content;
+  animation: popIn 1s;
+}

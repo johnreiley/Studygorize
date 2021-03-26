@@ -1,8 +1,13 @@
 <div class="content-wrapper-600 m-auto">
-  <div class="test-content" *ngIf="!showResults; else results">
+  <app-test-options *ngIf="showOptions" [topics]=topics (submitConfig)="onStartTest($event)"></app-test-options>
+  
+  <div class="test-content" *ngIf="!showResults && !showOptions">
     <div class="row">
       <div class="col-10">
-        <h2>{{ topic?.title }} Test</h2>
+        <h2>
+          <span *ngIf="!isMultiTopicTest">{{ topic?.title }} </span>
+          Test
+        </h2>
       </div>
       <div class="col-2">
         <span class="counter">{{ currentQuestionIndex + 1 }}/{{ test?.questions.length }}</span>
@@ -10,15 +15,22 @@
     </div>
     <form>
       <div id="{{'question-' + (currentQuestionIndex + 1)}}" class="form-group">
-        <label for="{{'questionInput-' + (currentQuestionIndex + 1)}}">  
-          <strong class="mr-1">{{ currentQuestionIndex + 1 }}.</strong><span>{{ test?.questions[currentQuestionIndex].name }}</span>
-        </label>
-        <input 
-          name="answerInput"
-          class="form-control" 
-          type="text" 
-          id="{{'questionInput-' + (currentQuestionIndex + 1)}}" 
-          [(ngModel)]="test?.questions[currentQuestionIndex].userResponse">
+        <div class="question-container" [ngSwitch]=test?.questions[currentQuestionIndex].getQuestionType()>
+          <app-short-answer-question
+            *ngSwitchCase="questionTypes.ShortAnswer"
+            [index] = currentQuestionIndex
+            [question] = test?.questions[currentQuestionIndex]
+            [response] = "test?.questions[currentQuestionIndex].userResponse"
+            (onChangeEvent)="updateQuestionResponse($event)"
+          ></app-short-answer-question>
+          <app-multiple-choice-question
+            *ngSwitchCase="questionTypes.MultipleChoice"
+            [index] = currentQuestionIndex
+            [question] = test?.questions[currentQuestionIndex]
+            [radioSelected] = "test?.questions[currentQuestionIndex].userResponse"
+            (onChangeEvent)="updateQuestionResponse($event)"
+          ></app-multiple-choice-question>
+        </div>
       </div>
       <div class="row">
         <div class="col-12 mb-3">
@@ -52,10 +64,25 @@
     </form>
   </div>
 
-  <ng-template #results>
-    <h2>{{ topic?.title }} Test</h2>
+  <div class="results-content" *ngIf="showResults">
+    <h2>
+      <span *ngIf="!isMultiTopicTest">{{ topic?.title }} </span>
+      Test Results
+    </h2>
     <h4>Grade: {{ test.grade }}%</h4>
     <h4>Correct: {{ test.totalCorrect }}/{{ test.questions.length }}</h4>
+    <div class="form-group">
+      <button class="btn btn-primary icon-btn-right" (click)="onNewTest()">
+        New Test
+        <i class="material-icons">undo</i>
+      </button>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary icon-btn-right" (click)="onRedoTest()">
+        Redo Test
+        <i class="material-icons">refresh</i>
+      </button>
+    </div>
     <div *ngFor="let question of test?.questions; let i = index;" id="{{'question-' + i}}" class="form-group">
       <label for="{{'questionInput-' + i}}">  
         <strong class="mr-1">{{ i + 1 }}.</strong><span>{{ question.name }}</span>
@@ -82,5 +109,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
+  </div>
 </div>

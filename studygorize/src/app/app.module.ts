@@ -1,14 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
+// import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { Router, Scroll } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs/operators';
-
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -31,6 +32,22 @@ import { StudyCardComponent } from './topics/study/study-card/study-card.compone
 import { CreateOptionsComponent } from './create-options/create-options.component';
 import { ImportComponent } from './topics/import/import.component';
 import { TestComponent } from './topics/test/test.component';
+import { MultipleChoiceQuestionComponent } from './topics/test/multiple-choice-question/multiple-choice-question.component';
+import { ShortAnswerQuestionComponent } from './topics/test/short-answer-question/short-answer-question.component';
+import { TestOptionsComponent } from './topics/test/test-options/test-options.component';
+import { PartyComponent } from './party/party.component';
+import { PartyWaitingRoomComponent } from './party/party-waiting-room/party-waiting-room.component';
+import { PartyOptionsComponent } from './party/party-options/party-options.component';
+import { PartyQuestionLoadingComponent } from './party/party-question-loading/party-question-loading.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { PartyQuestionOptionsComponent } from './party/party-question-options/party-question-options.component';
+import { PartyQuestionOptionComponent } from './party/party-question-options/party-question-option/party-question-option.component';
+import { PartyScoreboardComponent } from './party/party-scoreboard/party-scoreboard.component';
+import { PartyScoreboardLabelComponent } from './party/party-scoreboard/party-scoreboard-label/party-scoreboard-label.component';
+import { PartyResultsComponent } from './party/party-results/party-results.component';
+import { TopicTableComponent } from './shared/components/topic-table/topic-table.component';
+
+// const socketConfig: SocketIoConfig = { url: 'http://localhost:8080', options: { withCredentials: false } };
 
 @NgModule({
   declarations: [
@@ -54,15 +71,31 @@ import { TestComponent } from './topics/test/test.component';
     StudyCardComponent,
     CreateOptionsComponent,
     ImportComponent,
-    TestComponent
+    TestComponent,
+    MultipleChoiceQuestionComponent,
+    ShortAnswerQuestionComponent,
+    TestOptionsComponent,
+    PartyComponent,
+    PartyWaitingRoomComponent,
+    PartyOptionsComponent,
+    PartyQuestionLoadingComponent,
+    ProgressBarComponent,
+    PartyQuestionOptionsComponent,
+    PartyQuestionOptionComponent,
+    PartyScoreboardComponent,
+    PartyScoreboardLabelComponent,
+    PartyResultsComponent,
+    TopicTableComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    // SocketIoModule.forRoot(socketConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

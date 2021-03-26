@@ -6,22 +6,22 @@ import { Subject } from 'rxjs';
 })
 export class LoadingService {
   private isLoading = false;
-  loadingChange = new Subject<boolean>();
+  loadingChange = new Subject<{isLoading: boolean, message: string}>();
 
   constructor() { }
 
-  toggleLoading() {
-    this.isLoading = !this.isLoading;
-    this.loadingChange.next(this.isLoading);
-  }
+  // toggleLoading() {
+  //   this.isLoading = !this.isLoading;
+  //   this.loadingChange.next(this.isLoading);
+  // }
 
-  startLoading() {
+  startLoading(message: string = "") {
     this.isLoading = true;
-    this.loadingChange.next(this.isLoading);
+    this.loadingChange.next({isLoading: this.isLoading, message});
   }
   
   stopLoading() {
     this.isLoading = false;
-    this.loadingChange.next(this.isLoading);
+    this.loadingChange.next({isLoading: this.isLoading, message: ''});
   }
 }

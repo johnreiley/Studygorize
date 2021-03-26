@@ -1,0 +1,11 @@
+<label for="{{'questionInput-' + (index + 1)}}">  
+  <strong class="mr-1">{{ index + 1 }}.</strong><span>{{ question?.name }}</span>
+</label>
+<input 
+  name="answerInput"
+  class="form-control" 
+  type="text" 
+  id="{{'questionInput-' + (index + 1)}}"
+  [(ngModel)]="response"
+  (keyup)="onChange()"
+  (change)="onChange()">
