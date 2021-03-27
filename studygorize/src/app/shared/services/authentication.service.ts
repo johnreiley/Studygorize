@@ -17,7 +17,6 @@ export class AuthenticationService {
   constructor(
     private firebaseService: FirebaseService,
     private router: Router) {
-    console.log('auth.service constructor')
     this.auth = this.firebaseService.firebaseInstance.auth;
     const userState = localStorage.getItem('user');
     if (userState) {
@@ -25,9 +24,7 @@ export class AuthenticationService {
       this.isLoggedIn = true;
     }
     this.auth().onAuthStateChanged((user) => {
-      console.log('auth state changed!');
       if (user) {
-        console.log('there is a user!')
         this.userState = user;
         localStorage.setItem('user', JSON.stringify(this.userState));
         this.isLoggedIn = true;

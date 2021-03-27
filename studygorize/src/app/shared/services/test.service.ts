@@ -11,13 +11,14 @@ import { MultipleChoiceQuestion } from '../models/test-models/multipleChoiceQues
 import { cloneDeep } from 'lodash';
 import { QuestionType } from '../models/test-models/questionType.model';
 import { TypedQuestion } from '../models/test-models/typedQuestion.model';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TestService {
 
-  constructor() {}
+  constructor(private logger: LoggerService) {}
 
   private generateQuestionName(setName: string, attributeName: string) {
     return `${setName} : ${attributeName}`;
@@ -56,12 +57,13 @@ export class TestService {
         attribute = topic.setTemplate[Math.floor(Math.random() * topic.setTemplate.length)];
       } while (attributeDictionary[attribute.id] === undefined);
 
-      let answerAttribute = attributeDictionary[attribute.id]
-        .splice(Math.floor(Math.random() * attributeDictionary[attribute.id].length), 1)[0];
-      // don't count it if it's a blank string
-      if (answerAttribute.attributeValue === '') {
-        continue;
+      let answerIndex: number;
+      let answerAttribute = new DictionaryAttribute("", "");
+      while (answerAttribute !== undefined && answerAttribute.attributeValue === '') {
+        answerIndex = Math.floor(Math.random() * attributeDictionary[attribute.id].length);
+        answerAttribute = attributeDictionary[attribute.id][answerIndex][0];
       }
+      answerAttribute = attributeDictionary[attribute.id].splice(answerIndex, 1)[0];
 
       let questionName;
       if (useLongQuestionName) {
@@ -100,9 +102,6 @@ export class TestService {
       }
     }
 
-    console.log(attributeDictionary);
-    console.log(optionsBankDictionary);
-
     for (let i = 0; i < questionCount; i++) {
       // randomly select which attribute to use
       do {
@@ -110,18 +109,25 @@ export class TestService {
       } while (attributeDictionary[attribute.id] === undefined || attributeDictionary[attribute.id].length === 0);
 
       // pick the answer
-      let answerIndex = Math.floor(Math.random() * attributeDictionary[attribute.id].length);
-      let answerAttribute: DictionaryAttribute = attributeDictionary[attribute.id]
-        .splice(answerIndex, 1)[0];
-      if (answerAttribute.attributeValue === '') {
-        continue;
+      let answerIndex: number;
+      let answerAttribute = new DictionaryAttribute("", "");
+      while (answerAttribute !== undefined && answerAttribute.attributeValue === '') {
+        answerIndex = Math.floor(Math.random() * attributeDictionary[attribute.id].length);
+        answerAttribute = attributeDictionary[attribute.id][answerIndex][0];
       }
+      answerAttribute = attributeDictionary[attribute.id].splice(answerIndex, 1)[0];
 
       // generate the options
       let attributeArray: string[] = this.distinct([ ...optionsBankDictionary[attribute.id] ].map(da => da.attributeValue));
       attributeArray.splice(attributeArray.indexOf(answerAttribute.attributeValue), 1);
       attributeArray = this.shuffle(attributeArray).filter(a => a !== '');
       if (attributeArray.length === 0) {
+        this.logger.log(
+          `EMPTY ATTRIBUTE ARRAY CASE:
+           test.service.ts line 127
+           TOPIC ID: ${topic.id}
+           SET NAME: ${answerAttribute.setName}
+           TOPIC: ${JSON.stringify(topic)}`);
         continue;
       }
       attributeArray = attributeArray.splice(0, (attributeArray.length > 3 ? 3 : attributeArray.length));
@@ -303,6 +309,8 @@ export class TestService {
     let finalQuestionCount = maxQuestionCount;
     if (config.questionCount < maxQuestionCount && config.questionCount !== 0) {
       maxQuestionCount = config.questionCount;
+    } else if (maxQuestionCount === 0) {
+      return new Test([], undefined, undefined);
     }
 
     // generate the questions
@@ -324,7 +332,6 @@ export class TestService {
 
     // make sure there aren't more questions than expected because I'm paranoid
     questions.splice(finalQuestionCount);
-    console.log(questions);
     return new Test(questions, undefined, undefined);
   }
 

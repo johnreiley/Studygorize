@@ -26,7 +26,6 @@ export class FirebaseService {
   }
 
   getCollectionReference(uid: string, key: string) {
-    console.log('getCollectionReference()')
     return this.firebaseInstance.firestore().collection(`users/${uid}/${key}`);
   }
 }
