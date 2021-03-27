@@ -53,14 +53,15 @@ export class PartyOptionsComponent implements OnInit {
       this.showTopicOptionsError = false;
     }
 
-    if (this.partyConfig.questionCount === undefined || this.partyConfig.questionCount < 0) {
+    if (this.partyConfig.questionCount === undefined || isNaN(this.partyConfig.questionCount) || this.partyConfig.questionCount < 0) {
       this.showQuestionLimitError = true;
       isValid = false;
     } else {
       this.showQuestionLimitError = false;
     }
 
-    if (this.partyConfig.questionTimeLimit === undefined || this.partyConfig.questionTimeLimit < 1 || this.partyConfig.questionTimeLimit > 999) {
+    if (this.partyConfig.questionTimeLimit === undefined || isNaN(this.partyConfig.questionCount) || 
+        this.partyConfig.questionTimeLimit < 1 || this.partyConfig.questionTimeLimit > 999) {
       this.showTimeLimitError = true;
       isValid = false;
     } else {

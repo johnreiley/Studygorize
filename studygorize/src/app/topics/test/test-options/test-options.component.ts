@@ -59,7 +59,7 @@ export class TestOptionsComponent implements OnInit {
       this.showTopicOptionsError = false;
     }
 
-    if (this.testConfig.questionCount === undefined || this.testConfig.questionCount < 0) {
+    if (this.testConfig.questionCount === undefined || isNaN(this.testConfig.questionCount) || this.testConfig.questionCount < 0) {
       this.showQuestionLimitError = true;
       isValid = false;
     } else {

@@ -16,9 +16,7 @@ export class AppComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private loadingService: LoadingService) {
-      console.log('app.component constructor')
-  }
+    private loadingService: LoadingService) {}
 
   ngOnInit(): void {
     this.authService.authStateChange.subscribe(isLoggedIn => {
