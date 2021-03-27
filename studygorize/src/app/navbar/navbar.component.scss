@@ -3,6 +3,19 @@
     margin-bottom: 1em;
 }
 
+.navbar-icon {
+    z-index: 1;
+    height: 50px;
+    position: absolute;
+    left: 25px;
+    top: 16px;
+}
+
+.navbar-brand {
+    z-index: 2;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .nav-link {
     display: flex;
     align-items: center;
