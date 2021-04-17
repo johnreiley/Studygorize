@@ -30,6 +30,7 @@
           id="questionLimit" 
           name="questionCount" 
           class="form-control" 
+          inputmode="numeric"
           type="number" 
           min="0">
         <div *ngIf="showQuestionLimitError" class="alert alert-danger" role="alert">
@@ -49,6 +50,7 @@
           name="timeLimit" 
           class="form-control" 
           type="number" 
+          inputmode="numeric"
           min="1"
           max="999">
         <div *ngIf="showTimeLimitError" class="alert alert-danger" role="alert">
