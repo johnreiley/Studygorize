@@ -27,14 +27,18 @@ export class PartyOptionsComponent implements OnInit {
   showTopicOptionsError = false;
   showQuestionLimitError = false;
   showTimeLimitError = false;
+  topicsIsOpen = true;
 
   constructor() { }
 
   ngOnInit(): void {
     if (this.topics !== undefined) {
       this.topics.forEach(topic => {
+        let attributeOptions = topic.setTemplate.map((a) => {
+          return { attributeTitle: a.value, attributeId: a.id, include: false }
+        });
         this.partyConfig.topicOptions.push({
-          topicTitle: topic.title, topicId: topic.id, include: false
+          topicTitle: topic.title, topicId: topic.id, include: false, attributeOptions
         });
         this.partyConfig.topicOptions.sort((t1, t2) => {
           return t1.topicTitle >= t2.topicTitle ? 1 : -1;
@@ -71,6 +75,10 @@ export class PartyOptionsComponent implements OnInit {
     if (isValid) {
       this.createParty.next(this.partyConfig);
     }
+  }
+
+  onToggleTopics() {
+    this.topicsIsOpen = !this.topicsIsOpen;
   }
 
 }

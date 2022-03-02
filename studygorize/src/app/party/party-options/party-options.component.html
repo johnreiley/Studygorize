@@ -5,14 +5,26 @@
 
       <!-- TOPIC OPTIONS -->
       <fieldset class="form-group">
-        <h6 class="mb-2">Topics</h6>
-        <div class="custom-control custom-checkbox" *ngFor="let topicOption of partyConfig.topicOptions; let i = index;">
-          <input [(ngModel)]="topicOption.include" 
-            type="checkbox" 
-            class="custom-control-input"
-            name="topics"
-            id="topicCheck{{ i + 1 }}">
-            <label for="topicCheck{{ i + 1 }}" class="custom-control-label">{{ topicOption.topicTitle }}</label>
+        <h6 
+          id="topicsTitle"
+          class="mb-2"
+          data-toggle="collapse"
+          href="#topics"
+          aria-expanded="true"
+          aria-controls="topics"
+          (click)="onToggleTopics()">
+          Topics
+          <i class="material-icons collapse-icon" [ngClass]="{'rotate-180': topicsIsOpen, 'pr-0': topicsIsOpen}">expand_more</i>
+        </h6>
+        <div id="topics" class="collapse show">
+          <div class="custom-control custom-checkbox" *ngFor="let topicOption of partyConfig.topicOptions; let i = index;">
+            <input [(ngModel)]="topicOption.include" 
+              type="checkbox" 
+              class="custom-control-input"
+              name="topics"
+              id="topicCheck{{ i + 1 }}">
+              <label for="topicCheck{{ i + 1 }}" class="custom-control-label">{{ topicOption.topicTitle }}</label>
+          </div>      
         </div>
         <div *ngIf="showTopicOptionsError" class="alert alert-danger" role="alert">
           You need to select at least one topic

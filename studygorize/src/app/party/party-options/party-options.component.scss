@@ -5,6 +5,15 @@
   border-radius: 7px;
 }
 
+#topicsTitle {
+  cursor: pointer;
+}
+
+.collapse-icon {
+  position: relative;
+  top: 5px;
+}
+
 label h6 {
   display: inline;
 }
@@ -20,4 +29,8 @@ label h6 {
 
 .alert.alert-danger {
   margin-top: 0.5em;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }

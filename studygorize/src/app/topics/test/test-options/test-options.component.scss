@@ -5,6 +5,15 @@
   border-radius: 7px;
 }
 
+#topicsTitle {
+  cursor: pointer;
+}
+
+.collapse-icon {
+  position: relative;
+  top: 5px;
+}
+
 #questionLimit {
   max-width: 100px;
 }
@@ -16,4 +25,8 @@
 
 .alert.alert-danger {
   margin-top: 0.5em;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }

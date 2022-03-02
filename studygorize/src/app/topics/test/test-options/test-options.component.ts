@@ -24,6 +24,7 @@ export class TestOptionsComponent implements OnInit {
   showQuestionTypesError = false;
   showTopicOptionsError = false;
   showQuestionLimitError = false;
+  topicsIsOpen = true;
 
   constructor() { }
 
@@ -31,8 +32,11 @@ export class TestOptionsComponent implements OnInit {
     if (this.topics !== undefined) {
       this.testConfig.isMultiTopicTest = true;
       this.topics.forEach(topic => {
+        let attributeOptions = topic.setTemplate.map((a) => {
+          return { attributeTitle: a.value, attributeId: a.id, include: false }
+        });
         this.testConfig.topicOptions.push({
-          topicTitle: topic.title, topicId: topic.id, include: false
+          topicTitle: topic.title, topicId: topic.id, include: false, attributeOptions
         });
         this.testConfig.topicOptions.sort((t1, t2) => {
           return t1.topicTitle >= t2.topicTitle ? 1 : -1;
@@ -69,6 +73,14 @@ export class TestOptionsComponent implements OnInit {
     if (isValid) {
       this.submitConfig.next(this.testConfig);
     }
+  }
+
+  onToggleTopic(e) {
+    
+  }
+
+  onToggleTopics() {
+    this.topicsIsOpen = !this.topicsIsOpen;
   }
 
 }
